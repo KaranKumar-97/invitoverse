@@ -1,0 +1,40 @@
+/**
+ * Template registry (docs/05-template-engine.md §6).
+ * Adding a template = one folder in src/templates/<slug> + one line here + one line in components.ts.
+ * Manifests and demo data are plain objects (no React) and safe to import anywhere.
+ */
+import type { TemplateManifest } from "@/lib/invitation/manifest";
+import type { DesignConfigInput, InvitationContentInput } from "@/lib/invitation/schema";
+import { royalHeritageDemo } from "./royal-heritage/demo";
+import { royalHeritageManifest } from "./royal-heritage/manifest";
+import { minimalLuxuryDemo } from "./minimal-luxury/demo";
+import { minimalLuxuryManifest } from "./minimal-luxury/manifest";
+
+export type TemplateDemo = {
+  content: InvitationContentInput;
+  design: Partial<DesignConfigInput>;
+  /** Events the demo "Sharma Family" guest is invited to. */
+  guestEventIds: string[];
+};
+
+export const templateManifests = {
+  "royal-heritage": royalHeritageManifest,
+  "minimal-luxury": minimalLuxuryManifest,
+} as const satisfies Record<string, TemplateManifest>;
+
+export type TemplateSlug = keyof typeof templateManifests;
+
+export const templateDemos: Record<TemplateSlug, TemplateDemo> = {
+  "royal-heritage": royalHeritageDemo,
+  "minimal-luxury": minimalLuxuryDemo,
+};
+
+export const TEMPLATE_SLUGS = Object.keys(templateManifests) as TemplateSlug[];
+
+export function isTemplateSlug(value: string): value is TemplateSlug {
+  return Object.hasOwn(templateManifests, value);
+}
+
+export function getManifest(slug: string): TemplateManifest | undefined {
+  return isTemplateSlug(slug) ? templateManifests[slug] : undefined;
+}

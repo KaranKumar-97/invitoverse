@@ -1,0 +1,376 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* `dark:` follows the studio theme (data-theme on <html>), not the OS directly. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/*
+ * Studio design tokens (docs/11-design-system.md §2).
+ * shadcn/ui semantic variables are mapped onto the studio palette.
+ * NOTE: shadcn's `--accent` is a hover surface; the brand maroon is `--maroon`.
+ */
+:root {
+  /* studio palette */
+  --ink: #17130f;
+  --ink-soft: #4a433b;
+  --muted-ink: #736b62; /* 4.95:1 on canvas, 4.54:1 on muted (WCAG AA) */
+  --canvas: #fbf8f3;
+  --surface: #ffffff;
+  --line: #ece5da;
+  --maroon: #7a1f2b;
+  --maroon-soft: #f4e6e3;
+  --gold: #b8915a;
+  /* gold foil (decoration) + gold text that passes AA on canvas */
+  --gold-1: #b8873b;
+  --gold-2: #e7c77b;
+  --gold-3: #8a6224;
+  --gold-ink: #8f6e3f;
+  --glow: rgba(231, 199, 123, 0.28);
+  --success: #2f7a4f;
+  --warning: #b7791f;
+  --danger: #b42318;
+
+  /* shadcn semantic mapping */
+  --background: var(--canvas);
+  --foreground: var(--ink);
+  --card: var(--surface);
+  --card-foreground: var(--ink);
+  --popover: var(--surface);
+  --popover-foreground: var(--ink);
+  --primary: var(--ink);
+  --primary-foreground: #ffffff;
+  --secondary: var(--surface);
+  --secondary-foreground: var(--ink);
+  --muted: #f3eee6;
+  --muted-foreground: var(--muted-ink);
+  --accent: #f3eee6;
+  --accent-foreground: var(--ink);
+  --destructive: var(--danger);
+  --border: var(--line);
+  --input: var(--line);
+  --ring: var(--maroon);
+
+  /* radius & elevation */
+  --radius: 14px;
+  --r-sm: 8px;
+  --r-md: 14px;
+  --r-lg: 22px;
+  --shadow-card: 0 1px 2px rgba(23, 19, 15, 0.04), 0 8px 24px -8px rgba(23, 19, 15, 0.1);
+  --shadow-float: 0 24px 60px -20px rgba(23, 19, 15, 0.25);
+}
+
+/* Dark studio theme — "velvet night". Invitation pages never use it (ForceLightTheme). */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --ink: #f5ece0;
+  --ink-soft: #d6c8b6;
+  --muted-ink: #ab9d8c;
+  --canvas: #120f0d;
+  --surface: #1b1714;
+  --line: #2f2823;
+  --maroon: #e7a3ac;
+  --maroon-soft: #351c20;
+  --gold: #d9b06a;
+  --gold-1: #d6ab5e;
+  --gold-2: #f3d99b;
+  --gold-3: #b5853a;
+  --gold-ink: #d9b06a;
+  --glow: rgba(214, 171, 94, 0.16);
+  --success: #6cc08f;
+  --warning: #e6b450;
+  --danger: #f08a7e;
+
+  --primary: #f1e4cf;
+  --primary-foreground: #17130f;
+  --muted: #221d19;
+  --accent: #26201b;
+  --accent-foreground: var(--ink);
+  --input: #3a322b;
+
+  --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.03) inset, 0 14px 30px -14px rgba(0, 0, 0, 0.7);
+  --shadow-float: 0 30px 70px -24px rgba(0, 0, 0, 0.85);
+}
+:root[data-theme="dark"] body {
+  background:
+    radial-gradient(1100px 560px at 85% -10%, rgba(122, 31, 43, 0.26), transparent 60%),
+    radial-gradient(800px 480px at 0% 35%, rgba(217, 176, 106, 0.07), transparent 60%),
+    var(--canvas);
+  background-attachment: fixed;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-line: var(--line);
+  --color-maroon: var(--maroon);
+  --color-maroon-soft: var(--maroon-soft);
+  --color-gold: var(--gold);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-fraunces), "Cormorant Garamond", ui-serif, serif;
+
+  --radius-sm: var(--r-sm);
+  --radius-md: var(--r-md);
+  --radius-lg: var(--r-lg);
+  --radius-xl: calc(var(--r-lg) + 4px);
+
+  --shadow-card: var(--shadow-card);
+  --shadow-float: var(--shadow-float);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-background font-sans text-foreground antialiased;
+  }
+  :focus-visible {
+    outline: 2px solid var(--maroon);
+    outline-offset: 2px;
+  }
+}
+
+@layer utilities {
+  /* Editorial serif display type */
+  .text-display-xl {
+    font-family: var(--font-fraunces), Georgia, serif;
+    font-size: clamp(2.8rem, 6.4vw, 5.6rem);
+    line-height: 1;
+    font-weight: 500;
+    letter-spacing: -0.025em;
+  }
+  .text-display-l {
+    font-family: var(--font-fraunces), Georgia, serif;
+    font-size: clamp(2.1rem, 4.2vw, 3.5rem);
+    line-height: 1.06;
+    font-weight: 500;
+    letter-spacing: -0.022em;
+  }
+  /* Gold foil accent words (italic serif, slow shimmer) */
+  .text-foil {
+    font-family: var(--font-fraunces), Georgia, serif;
+    font-style: italic;
+    font-weight: 400;
+    background: linear-gradient(
+      100deg,
+      var(--gold-3),
+      var(--gold-2) 35%,
+      var(--gold-1) 55%,
+      var(--gold-2) 75%,
+      var(--gold-3)
+    );
+    background-size: 250% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: foil-shimmer 7s linear infinite;
+    padding-right: 0.06em; /* italic overhang isn't clipped */
+  }
+  /* Section label with gold hairlines */
+  .eyebrow-rule {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    letter-spacing: 0.26em;
+  }
+  .eyebrow-rule::before,
+  .eyebrow-rule.is-center::after {
+    content: "";
+    width: 1.75rem;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold-1));
+  }
+  .eyebrow-rule.is-center::after {
+    background: linear-gradient(90deg, var(--gold-1), transparent);
+  }
+  .text-eyebrow {
+    font-size: 0.75rem;
+    line-height: 1;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+}
+
+/* ── Marketing motion (docs/09 §3.1). Transform/opacity only; neutralised by reduced motion below. ── */
+@keyframes mk-rise {
+  from {
+    opacity: 0;
+    transform: translateY(0.45em);
+  }
+}
+.mk-word {
+  display: inline-block;
+  animation: mk-rise 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--i, 0) * 60ms + 80ms);
+}
+@keyframes mk-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+.mk-fade-up {
+  animation: mk-fade-up 800ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--delay, 0ms);
+}
+@keyframes mk-float {
+  50% {
+    transform: translateY(-10px) rotate(var(--tilt, 0deg));
+  }
+}
+.mk-float {
+  transform: rotate(var(--tilt, 0deg));
+  animation: mk-float 6s ease-in-out infinite;
+  animation-delay: var(--delay, 0ms);
+}
+@keyframes mk-sheet-in {
+  from {
+    transform: translateX(100%);
+  }
+}
+.mk-sheet[open] {
+  animation: mk-sheet-in 280ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes foil-shimmer {
+  to {
+    background-position: -250% 0;
+  }
+}
+
+/* Primary buttons: in the components layer so utility classes (bg-white, bg-[#…]) still win. */
+@layer components {
+  .btn-lux {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--primary) 86%, white),
+      var(--primary)
+    );
+    box-shadow:
+      0 10px 24px -12px rgba(23, 19, 15, 0.55),
+      inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  }
+  .btn-lux::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      110deg,
+      transparent 30%,
+      rgba(255, 255, 255, 0.24) 50%,
+      transparent 70%
+    );
+    transform: translateX(-120%);
+    transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
+  }
+  .btn-lux:hover::after {
+    transform: translateX(120%);
+  }
+  /* Gold in both themes (e.g. on the maroon call-to-action) */
+  .btn-gold.btn-gold {
+    background: linear-gradient(135deg, #f3d99b, #d6ab5e 60%, #b5853a);
+    box-shadow:
+      0 12px 30px -12px rgba(214, 171, 94, 0.55),
+      inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  }
+  :root[data-theme="dark"] .btn-lux {
+    background: linear-gradient(135deg, var(--gold-2), var(--gold-1) 60%, var(--gold-3));
+    color: #2a1c0c;
+    box-shadow:
+      0 12px 30px -12px rgba(214, 171, 94, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  }
+}
+
+/* Theme toggle knob */
+.theme-toggle-knob {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--gold-2), var(--gold-1));
+  box-shadow: 0 2px 8px var(--glow);
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+:root[data-theme="dark"] .theme-toggle-knob {
+  transform: translateX(28px);
+}
+
+/* Paper grain overlay (studio pages) */
+.studio-grain {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.045;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+:root[data-theme="dark"] .studio-grain {
+  opacity: 0.07;
+  mix-blend-mode: screen;
+}
+
+/* Smooth theme switch */
+.theme-transition,
+.theme-transition * {
+  transition:
+    background-color 0.35s ease,
+    border-color 0.35s ease,
+    color 0.35s ease !important;
+}
+
+.mk-auto-hide {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 720px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mk-word,
+  .mk-fade-up,
+  .mk-float,
+  .mk-sheet[open],
+  .text-foil {
+    animation: none !important;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

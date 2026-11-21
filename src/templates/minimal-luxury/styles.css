@@ -1,0 +1,32 @@
+/* Minimal Luxury — scoped to the template root. */
+[data-template="minimal-luxury"] .ml-caps {
+  font-family: var(--f-body);
+  font-size: 0.68rem;
+  font-weight: 400;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--c-muted);
+}
+[data-template="minimal-luxury"] .ml-rule {
+  height: 1px;
+  background: color-mix(in srgb, var(--c-text) 14%, transparent);
+}
+[data-template="minimal-luxury"] .ml-link {
+  font-family: var(--f-body);
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--c-text);
+  border-bottom: 1px solid color-mix(in srgb, var(--c-accent) 70%, transparent);
+  padding-bottom: 2px;
+  min-height: 2.75rem;
+}
+[data-template="minimal-luxury"] .ml-link:hover {
+  color: var(--c-accent);
+}
+[data-template="minimal-luxury"] .ml-emboss {
+  color: var(--c-surface);
+  text-shadow:
+    0 1px 0 color-mix(in srgb, #fff 70%, transparent),
+    0 -1px 0 color-mix(in srgb, var(--c-text) 18%, transparent);
+}

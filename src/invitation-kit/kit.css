@@ -1,0 +1,133 @@
+/* Shared invitation styles + keyframes. Everything reads the theme CSS variables. */
+.inv-root {
+  background-color: var(--c-bg);
+  color: var(--c-text);
+  font-family: var(--f-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  min-height: 100dvh;
+  overflow-x: clip;
+}
+.inv-root ::selection {
+  background: var(--c-accent);
+  color: var(--c-accent-contrast);
+}
+.inv-root :focus-visible {
+  outline: 2px solid var(--c-accent);
+  outline-offset: 3px;
+}
+.f-display {
+  font-family: var(--f-display);
+}
+.f-heading {
+  font-family: var(--f-heading);
+}
+.f-body {
+  font-family: var(--f-body);
+}
+.f-script {
+  font-family: var(--f-script);
+}
+.inv-pre-line {
+  white-space: pre-line;
+}
+
+@keyframes vs-rise {
+  0% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(var(--drift, 0px), -110vh, 0);
+    opacity: 0;
+  }
+}
+@keyframes vs-fall {
+  0% {
+    transform: translate3d(0, -10vh, 0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(var(--drift, 0px), 110vh, 0) rotate(var(--spin, 360deg));
+    opacity: 0;
+  }
+}
+@keyframes vs-twinkle {
+  0%,
+  100% {
+    opacity: 0.15;
+    transform: scale(0.7);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+/* Music button entrance (transform/opacity only). */
+@keyframes vs-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+}
+.vs-pop-in {
+  animation: vs-pop 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .vs-pop-in {
+    animation-duration: 1ms;
+  }
+}
+
+@keyframes vs-eq {
+  0%,
+  100% {
+    transform: scaleY(0.35);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+@keyframes vs-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -8px, 0);
+  }
+}
+@keyframes vs-shimmer {
+  0% {
+    transform: translateX(-120%) skewX(-20deg);
+  }
+  60%,
+  100% {
+    transform: translateX(220%) skewX(-20deg);
+  }
+}
+@keyframes vs-pulse-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(1.35);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .inv-root [data-ambient] {
+    animation: none !important;
+  }
+}
