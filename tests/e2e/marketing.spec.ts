@@ -124,12 +124,15 @@ test.describe("theme", () => {
     const theme = () => page.evaluate(() => document.documentElement.dataset.theme);
     await page.goto("/");
     expect(await theme()).toBe("light");
+    // Phones keep the switch in the menu; wider screens show it in the header.
+    if (!(await page.getByRole("button", { name: "Switch to dark theme" }).first().isVisible()))
+      await page.getByRole("button", { name: "Open menu" }).click();
     await page.getByRole("button", { name: "Switch to dark theme" }).first().click();
     expect(await theme()).toBe("dark");
 
     await page.reload();
     expect(await theme()).toBe("dark"); // remembered, applied before paint by theme-init.js
-    await expect(page.getByRole("button", { name: "Switch to light theme" }).first()).toBeVisible();
+    await expect(page.locator('button[aria-label="Switch to light theme"]').first()).toBeAttached();
 
     // Invitation demo: always light (full load and client-side navigation).
     await page.goto("/templates/royal-heritage/preview");

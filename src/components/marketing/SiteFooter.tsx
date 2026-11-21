@@ -3,6 +3,7 @@ import { Mail } from "lucide-react";
 import { Logo } from "@/components/brand/Logo";
 import { SITE, whatsappChatUrl } from "@/lib/marketing/site";
 import { WhatsAppIcon } from "./WhatsAppChip";
+import { BRAND } from "@/lib/brand";
 
 const COLUMNS = [
   {
@@ -40,9 +41,11 @@ export function SiteFooter() {
           <Logo />
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-ink-soft">{SITE.mission}</p>
           <div className="mt-5 flex gap-2">
-            <SocialLink href={`mailto:${SITE.email}`} label="Email us">
-              <Mail className="size-4" />
-            </SocialLink>
+            {SITE.email && (
+              <SocialLink href={`mailto:${SITE.email}`} label="Email us">
+                <Mail className="size-4" />
+              </SocialLink>
+            )}
             {wa && (
               <SocialLink href={wa} label="WhatsApp us" external>
                 <WhatsAppIcon className="size-4" />
@@ -76,7 +79,9 @@ export function SiteFooter() {
         ))}
       </div>
       <div className="mx-auto flex max-w-7xl flex-col gap-2 border-t border-line px-4 py-6 text-xs text-muted-foreground sm:flex-row sm:justify-between sm:px-6 lg:px-8">
-        <p>© {new Date().getFullYear()} Vivah Studio. All rights reserved.</p>
+        <p>
+          © {new Date().getFullYear()} {BRAND.name}. All rights reserved.
+        </p>
         <p>
           Made in India <span className="text-maroon">♥</span>
         </p>

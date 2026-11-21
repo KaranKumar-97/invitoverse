@@ -13,6 +13,7 @@ import { VideoBlock } from "@/invitation-kit/media/VideoBlock";
 import { Reveal } from "@/invitation-kit/motion/Reveal";
 import type { SectionProps } from "@/invitation-kit/types";
 import { ArchFrame, InvocationArt, MandalaCorner, Ornament, Seal } from "./decor";
+import { BRAND } from "@/lib/brand";
 
 function SectionTitle({ eyebrow, title }: { eyebrow?: string; title: string }) {
   return (
@@ -359,7 +360,7 @@ export function Footer({ data }: SectionProps) {
         <p className="rh-eyebrow mt-12 text-[0.6rem] opacity-70">
           Made with{" "}
           <Link href="/?ref=invite" className="underline-offset-4 hover:underline">
-            Vivah Studio
+            {BRAND.name}
           </Link>
         </p>
       </Reveal>

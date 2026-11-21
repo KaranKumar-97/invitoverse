@@ -1,4 +1,5 @@
 import "server-only";
+import { BRAND } from "@/lib/brand";
 
 /**
  * Transactional email via the Resend REST API (no SDK). Uses the same key as magic links.
@@ -21,7 +22,7 @@ export async function sendEmail(msg: EmailMessage): Promise<void> {
     method: "POST",
     headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
     body: JSON.stringify({
-      from: process.env.EMAIL_FROM ?? "Vivah Studio <onboarding@resend.dev>",
+      from: process.env.EMAIL_FROM ?? `${BRAND.name} <onboarding@resend.dev>`,
       to: [msg.to],
       subject: msg.subject,
       text: msg.text,

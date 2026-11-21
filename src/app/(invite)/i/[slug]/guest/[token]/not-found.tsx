@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BRAND } from "@/lib/brand";
 
 /**
  * One page for every failure (unknown, revoked, other invitation's token, unpublished, rate limited)
@@ -22,7 +23,7 @@ export default function GuestLinkNotFound() {
           href="/"
           className="mt-8 inline-block text-xs tracking-[0.2em] text-muted-foreground uppercase hover:text-ink"
         >
-          Vivah Studio
+          {BRAND.name}
         </Link>
       </div>
     </main>

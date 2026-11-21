@@ -62,7 +62,8 @@ describe("local upload tokens", () => {
     const [body, mac] = t.split(".");
     const forged = Buffer.from(JSON.stringify({ ...claims, maxBytes: 1e9 })).toString("base64url");
     expect(verifyLocalToken(`${forged}.${mac}`)).toBeNull();
-    expect(verifyLocalToken(`${body}.x${mac.slice(1)}`)).toBeNull();
+    // Flip the first signature character (always to a different one, or the "tamper" is a no-op).
+    expect(verifyLocalToken(`${body}.${mac[0] === "x" ? "y" : "x"}${mac.slice(1)}`)).toBeNull();
     expect(verifyLocalToken(signLocalToken({ ...claims, exp: Date.now() - 1 }))).toBeNull();
     expect(
       verifyLocalToken(signLocalToken({ ...claims, key: "vivah/../../etc/passwd.png" })),

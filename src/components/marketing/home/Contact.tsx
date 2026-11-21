@@ -33,17 +33,19 @@ export function Contact({ standalone = false }: { standalone?: boolean }) {
                 </a>
               </li>
             )}
-            <li>
-              <a
-                href={`mailto:${SITE.email}`}
-                className="inline-flex items-center gap-3 font-medium hover:text-maroon"
-              >
-                <span className="grid size-10 place-items-center rounded-full bg-maroon-soft text-maroon">
-                  <Mail className="size-5" />
-                </span>
-                {SITE.email}
-              </a>
-            </li>
+            {SITE.email && (
+              <li>
+                <a
+                  href={`mailto:${SITE.email}`}
+                  className="inline-flex items-center gap-3 font-medium hover:text-maroon"
+                >
+                  <span className="grid size-10 place-items-center rounded-full bg-maroon-soft text-maroon">
+                    <Mail className="size-5" />
+                  </span>
+                  {SITE.email}
+                </a>
+              </li>
+            )}
           </ul>
         </div>
         <ContactForm />

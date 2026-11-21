@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og";
+import { BRAND } from "@/lib/brand";
 
 /** GET /og — default 1200×630 social card for studio (marketing) pages. Static and cacheable. */
 export const dynamic = "force-static";
@@ -18,11 +19,14 @@ export function GET() {
       }}
     >
       <div style={{ display: "flex", alignItems: "baseline", fontSize: 40, fontWeight: 700 }}>
-        {"Vivah"}
-        <span style={{ color: "#7A1F2B" }}>.</span>
-        <span style={{ marginLeft: 14, fontSize: 22, letterSpacing: 6, color: "#4A433B" }}>
-          {"STUDIO"}
-        </span>
+        {`${BRAND.lead}`}
+        {BRAND.accent ? (
+          <span
+            style={{ marginLeft: 12, color: "#B8873B", fontStyle: "italic" }}
+          >{`${BRAND.accent}`}</span>
+        ) : (
+          <span style={{ color: "#B8873B" }}>.</span>
+        )}
       </div>
       <div style={{ display: "flex", flexDirection: "column" }}>
         <div

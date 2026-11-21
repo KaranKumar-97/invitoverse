@@ -5,7 +5,9 @@ professionally designed templates. Think "digital wedding invitation studio": a 
 marketing site, an owner dashboard with a live-preview editor, and per-invitation animated
 websites served from one centralized Next.js app.
 
-> Working name is "Vivah Studio". Rename freely — it is only used in copy and the package name.
+> Product name: **Invitation Banao**, set in ONE place — `src/lib/brand.ts` (override with
+> `NEXT_PUBLIC_BRAND_NAME`, read at build time). Never hard-code the name; import `BRAND`.
+> Internal names (database, repo, Cloudinary folder, package name) stay neutral and never use it.
 
 ## Read these first (in order)
 

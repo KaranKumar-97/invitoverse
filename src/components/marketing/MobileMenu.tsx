@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRef } from "react";
 import { Menu, X } from "lucide-react";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { MAIN_NAV } from "./nav";
 
 /**
@@ -57,6 +58,10 @@ export function MobileMenu() {
             >
               Sign in
             </Link>
+            <div className="flex items-center justify-between border-t border-line py-4 text-base font-medium text-ink-soft">
+              Appearance
+              <ThemeToggle />
+            </div>
           </nav>
         </div>
       </dialog>

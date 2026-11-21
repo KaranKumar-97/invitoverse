@@ -10,6 +10,7 @@ import { googleEnabled } from "@/server/auth/config";
 import { safeCallbackUrl } from "@/lib/action-result";
 import { EmailSignInForm } from "./EmailSignInForm";
 import { signInWithGoogle } from "./actions";
+import { BRAND } from "@/lib/brand";
 
 export const metadata: Metadata = { title: "Sign in", robots: { index: false } };
 
@@ -39,7 +40,7 @@ export default async function LoginPage({
       <aside className="relative hidden overflow-hidden bg-[#2a0e12] lg:block">
         <EnvelopeArt />
         <div className="absolute inset-x-12 bottom-12 text-[#f6e7c8]">
-          <p className="text-eyebrow text-[#cdb78f]">Vivah Studio</p>
+          <p className="text-eyebrow text-[#cdb78f]">{BRAND.name}</p>
           <p className="mt-3 max-w-md font-display text-4xl leading-tight">
             Invitations that open like a love letter.
           </p>

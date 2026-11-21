@@ -1,4 +1,5 @@
 import { SectionHeading } from "./SectionHeading";
+import { SITE } from "@/lib/marketing/site";
 
 const STEPS = [
   {
@@ -101,7 +102,7 @@ function ShareArt() {
     <div className="w-[70%] space-y-2" aria-hidden>
       <div className="ml-auto w-4/5 rounded-xl rounded-br-sm bg-[#dcf8c6] p-2.5 text-[11px] text-ink shadow-card">
         <p className="font-semibold">You&apos;re invited 💌</p>
-        <p className="truncate text-[10px] text-ink-soft">vivah.studio/i/meera-aarav</p>
+        <p className="truncate text-[10px] text-ink-soft">{new URL(SITE.url).host}/i/meera-aarav</p>
       </div>
       <div
         className="mk-float w-3/5 rounded-xl rounded-bl-sm bg-surface p-2.5 text-[11px] shadow-card ring-1 ring-line"

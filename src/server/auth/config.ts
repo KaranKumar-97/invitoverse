@@ -6,6 +6,7 @@ import Resend from "next-auth/providers/resend";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@/server/db/prisma";
 import { logEvent } from "@/server/log";
+import { BRAND } from "@/lib/brand";
 
 const isDev = process.env.NODE_ENV !== "production";
 
@@ -23,7 +24,7 @@ if (resendKey || isDev) {
   providers.push(
     Resend({
       apiKey: resendKey ?? "dev-console",
-      from: process.env.EMAIL_FROM ?? "Vivah Studio <onboarding@resend.dev>",
+      from: process.env.EMAIL_FROM ?? `${BRAND.name} <onboarding@resend.dev>`,
       maxAge: 10 * 60, // 10 minutes (docs/13-security.md §1)
       ...(resendKey
         ? {}

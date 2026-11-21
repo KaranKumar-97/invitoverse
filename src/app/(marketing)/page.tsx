@@ -39,7 +39,7 @@ export default function HomePage() {
               "@id": `${SITE.url}/#org`,
               name: SITE.name,
               url: SITE.url,
-              email: SITE.email,
+              ...(SITE.email ? { email: SITE.email } : {}),
               description: SITE.mission,
             },
             {

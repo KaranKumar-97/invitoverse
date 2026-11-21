@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { LegalPage } from "@/components/marketing/LegalPage";
-import { SITE } from "@/lib/marketing/site";
+import { contactPhrase, SITE } from "@/lib/marketing/site";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
@@ -56,12 +56,12 @@ export default function PrivacyPage() {
           title: "Retention and deletion",
           body: [
             "You can unpublish, archive or delete an invitation at any time. Deleted invitations, their guest lists and media are permanently purged after 30 days.",
-            `To delete your account or request a copy of your data, email ${SITE.email}.`,
+            `To delete your account or request a copy of your data, ${contactPhrase("email")}.`,
           ],
         },
         {
           title: "Contact",
-          body: [`Questions about privacy? Write to ${SITE.email}.`],
+          body: [`Questions about privacy? Please ${contactPhrase()}.`],
         },
       ]}
     />

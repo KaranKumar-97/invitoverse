@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { LegalPage } from "@/components/marketing/LegalPage";
-import { SITE } from "@/lib/marketing/site";
+import { contactPhrase, SITE } from "@/lib/marketing/site";
 
 export const metadata: Metadata = {
   title: "Terms of Service",
@@ -57,7 +57,7 @@ export default function TermsPage() {
           title: "Changes and contact",
           body: [
             "We may update these terms; we will notify you of material changes by email. These terms are governed by the laws of India.",
-            `Questions? Write to ${SITE.email}.`,
+            `Questions? Please ${contactPhrase()}.`,
           ],
         },
       ]}

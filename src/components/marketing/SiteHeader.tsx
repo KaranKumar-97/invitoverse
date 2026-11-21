@@ -9,11 +9,11 @@ import { MAIN_NAV } from "./nav";
 export function SiteHeader() {
   return (
     <HeaderShell>
-      <div className="mx-auto flex h-16 max-w-7xl items-center gap-6 px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto flex h-16 max-w-7xl items-center gap-6 px-4 sm:px-6 md:gap-5 lg:gap-6 lg:px-8">
         <Logo />
         <nav
           aria-label="Main"
-          className="hidden items-center gap-7 text-sm font-medium text-ink-soft md:flex"
+          className="hidden items-center gap-5 text-sm font-medium text-ink-soft md:flex lg:gap-7"
         >
           {MAIN_NAV.map((n) => (
             <Link key={n.href} href={n.href} className="transition-colors hover:text-ink">
@@ -22,7 +22,7 @@ export function SiteHeader() {
           ))}
         </nav>
         <div className="ml-auto flex items-center gap-2">
-          <ThemeToggle className="mr-1" />
+          <ThemeToggle className="mr-1 hidden sm:inline-flex" />
           <Link
             href="/login"
             className="hidden px-3 text-sm font-medium text-ink-soft hover:text-ink md:block"

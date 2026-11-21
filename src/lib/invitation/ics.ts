@@ -1,6 +1,7 @@
 /** Minimal RFC 5545 calendar file for one event (used client-side now, by /api/v1/ics later). */
 import { toInstant } from "./dates";
 import type { InvitationEvent } from "./schema";
+import { BRAND } from "@/lib/brand";
 
 const escape = (s: string) =>
   s
@@ -44,11 +45,11 @@ export function buildIcs(input: {
   const lines = [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
-    "PRODID:-//Vivah Studio//Invitation//EN",
+    `PRODID:-//${BRAND.name}//Invitation//EN`,
     "CALSCALE:GREGORIAN",
     "METHOD:PUBLISH",
     "BEGIN:VEVENT",
-    `UID:${event.id}@${input.uidDomain ?? "vivah.studio"}`,
+    `UID:${event.id}@${input.uidDomain ?? "digital-invites"}`,
     `DTSTAMP:${stamp(start)}`,
     `DTSTART:${stamp(start)}`,
     `DTEND:${stamp(end)}`,

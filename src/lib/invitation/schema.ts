@@ -48,7 +48,7 @@ export type EventIcon = z.infer<typeof EventIconSchema>;
 const MediaUrl = z
   .string()
   .min(1)
-  .refine(isAllowedMediaUrl, "Media must be uploaded to Vivah Studio");
+  .refine(isAllowedMediaUrl, "Media must be uploaded in the editor");
 
 export const MediaRefSchema = z.object({
   assetId: z.string().min(1),

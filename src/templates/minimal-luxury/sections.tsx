@@ -11,6 +11,7 @@ import { VideoBlock } from "@/invitation-kit/media/VideoBlock";
 import { Reveal } from "@/invitation-kit/motion/Reveal";
 import type { SectionProps } from "@/invitation-kit/types";
 import { Monogram } from "./decor";
+import { BRAND } from "@/lib/brand";
 
 const wrap = "px-6 py-20 sm:px-10 sm:py-24";
 
@@ -358,7 +359,7 @@ export function Footer({ data }: SectionProps) {
         <p className="ml-caps mt-14 text-[0.55rem] opacity-70">
           Made with{" "}
           <Link href="/?ref=invite" className="underline-offset-4 hover:underline">
-            Vivah Studio
+            {BRAND.name}
           </Link>
         </p>
       </Reveal>

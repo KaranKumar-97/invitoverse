@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BRAND } from "@/lib/brand";
 
 /** Shown for unknown, unpublished, archived or disabled invitations. Reveals nothing about which. */
 export default function InvitationNotFound() {
@@ -19,7 +20,7 @@ export default function InvitationNotFound() {
           href="/"
           className="mt-8 inline-block text-xs tracking-[0.2em] text-muted-foreground uppercase hover:text-ink"
         >
-          Vivah Studio
+          {BRAND.name}
         </Link>
       </div>
     </main>
