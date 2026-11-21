@@ -18,13 +18,13 @@ const cinzelDeco = Cinzel_Decorative({
 });
 const cinzel = Cinzel({
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  // Variable font: no fixed weights (fixed-weight requests can return URLs next/font can't parse).
   variable: "--font-rh-cinzel",
   display: "swap",
 });
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  // Variable font: no fixed weights (fixed-weight requests can return URLs next/font can't parse).
   style: ["normal", "italic"],
   variable: "--font-rh-cormorant",
   display: "swap",
@@ -45,7 +45,7 @@ const playfairSc = Playfair_Display_SC({
 });
 const playfair = Playfair_Display({
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  // Variable font: no fixed weights (fixed-weight requests can return URLs next/font can't parse).
   variable: "--font-rh-playfair",
   display: "swap",
   preload: false,

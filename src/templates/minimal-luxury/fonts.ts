@@ -10,21 +10,21 @@ import type { FontStacks } from "@/invitation-kit/types";
 
 const bodoni = Bodoni_Moda({
   subsets: ["latin"],
-  weight: ["400", "500"],
+  // Variable font: no fixed weights (fixed-weight requests can return URLs next/font can't parse).
   style: ["normal", "italic"],
   variable: "--font-ml-bodoni",
   display: "swap",
 });
 const cormorant = Cormorant({
   subsets: ["latin"],
-  weight: ["400", "500"],
+  // Variable font: no fixed weights (fixed-weight requests can return URLs next/font can't parse).
   style: ["normal", "italic"],
   variable: "--font-ml-cormorant",
   display: "swap",
 });
 const jost = Jost({
   subsets: ["latin"],
-  weight: ["300", "400"],
+  // Variable font: no fixed weights (fixed-weight requests can return URLs next/font can't parse).
   variable: "--font-ml-jost",
   display: "swap",
 });
@@ -45,7 +45,7 @@ const caslon = Libre_Caslon_Text({
 });
 const manrope = Manrope({
   subsets: ["latin"],
-  weight: ["300", "400"],
+  // Variable font: no fixed weights (fixed-weight requests can return URLs next/font can't parse).
   variable: "--font-ml-manrope",
   display: "swap",
   preload: false,
