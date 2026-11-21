@@ -27,9 +27,9 @@ flowchart LR
 
 | Env | Branch | Database | Cloudinary | Domain |
 |---|---|---|---|---|
-| Local | any | Docker Postgres 16 or personal Neon branch | dev folder `vivah-dev/` | `localhost:3000` |
-| Preview | PRs | Neon **branch per PR** (Vercel–Neon integration) | `vivah-preview/` | `*.vercel.app` (auth via Google test client) |
-| Production | `main` | Neon main branch | `vivah/` | `invitationbanao.com` |
+| Local | any | Docker Postgres 16 or personal Neon branch | dev folder `invitoverse-dev/` | `localhost:3000` |
+| Preview | PRs | Neon **branch per PR** (Vercel–Neon integration) | `invitoverse-preview/` | `*.vercel.app` (auth via Google test client) |
+| Production | `main` | Neon main branch | `invitoverse/` | `invitationbanao.com` |
 
 ## 3. CI/CD pipeline
 

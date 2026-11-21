@@ -26,7 +26,7 @@ scroll motion, but all render the same `InvitationContent` (see [05-template-eng
 | Cinematic Elegance | Vihaan & Kavya | Goa | Welcome dinner, Sangeet, Beach wedding |
 | Modern Editorial | Rhea & Arjun | Mumbai | Engagement, Wedding, Reception |
 
-Demo photos: commissioned or licensed stock (Unsplash/Pexels license) uploaded to the platform Cloudinary folder `vivah/demo/`. Record source + license in `src/templates/<slug>/CREDITS.md`.
+Demo photos: commissioned or licensed stock (Unsplash/Pexels license) uploaded to the platform Cloudinary folder `invitoverse/demo/`. Record source + license in `src/templates/<slug>/CREDITS.md`.
 
 ---
 

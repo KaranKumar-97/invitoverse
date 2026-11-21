@@ -87,8 +87,8 @@ describe("publish checklist", () => {
 
 describe("share helpers", () => {
   it("builds public and WhatsApp URLs", () => {
-    const url = publicInvitationUrl("https://vivah.studio/", "priya-rahul");
-    expect(url).toBe("https://vivah.studio/i/priya-rahul");
+    const url = publicInvitationUrl("https://invitationbanao.com/", "priya-rahul");
+    expect(url).toBe("https://invitationbanao.com/i/priya-rahul");
     const wa = whatsappShareUrl(invitationShareText("Priya & Rahul", url));
     expect(wa.startsWith("https://wa.me/?text=")).toBe(true);
     expect(decodeURIComponent(wa.split("text=")[1])).toContain("Priya & Rahul are getting married");

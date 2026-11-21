@@ -84,7 +84,7 @@ describe("URL allow-lists", () => {
   it.each([
     ["/templates/royal-heritage/demo/couple.svg", true],
     ["/templates/../../etc/passwd", false],
-    ["https://res.cloudinary.com/vivah/image/upload/a.jpg", true],
+    ["https://res.cloudinary.com/demo/image/upload/a.jpg", true],
     ["https://example.com/a.jpg", false],
   ])("media %s → %s", (url, ok) => expect(isAllowedMediaUrl(url)).toBe(ok));
 });

@@ -33,6 +33,8 @@ export const RESERVED_SLUGS = new Set([
   "terms",
   "vivah",
   "vivah-studio",
+  "invitation-banao",
+  "invitoverse",
   "www",
 ]);
 

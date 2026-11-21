@@ -319,7 +319,7 @@ model MediaAsset {
   kind         MediaKind
   role         MediaRole?
   provider     MediaProvider @default(CLOUDINARY)
-  publicId     String                                  // vivah/{userId}/{invitationId}/{nanoid}
+  publicId     String                                  // invitoverse/{userId}/{invitationId}/{nanoid}
   url          String                                  // original secure URL
   mimeType     String?
   bytes        Int?
@@ -445,5 +445,5 @@ Migrations run with `prisma migrate deploy` against `DATABASE_URL_UNPOOLED` in t
 
 `prisma/seed.ts`:
 1. Upsert the 5 templates from `src/templates/registry.ts` manifests.
-2. Dev only: create `demo@vivah.local` with a published "Rahul & Priya" invitation (`/i/rahul-priya`) and
+2. Dev only: create `demo@invitoverse.local` with a published "Rahul & Priya" invitation (`/i/rahul-priya`) and
    3 guests — Rahul Sharma (ALL), Amit Verma (ALL), Sharma Family (SELECTED: Sangeet + Wedding) — for local testing.

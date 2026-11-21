@@ -4,7 +4,7 @@ Single Next.js app (Node runtime) — no monorepo for the MVP. Boundaries are en
 lint rules instead of packages.
 
 ```
-vivah-studio/
+invitoverse/
 ├── CLAUDE.md
 ├── docs/                                  # these planning docs
 ├── prisma/
@@ -167,8 +167,8 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
 LAUNCH_ALL_FREE=true
 
 # Database (Neon)
-DATABASE_URL=postgresql://...-pooler.../vivah?sslmode=require
-DATABASE_URL_UNPOOLED=postgresql://.../vivah?sslmode=require
+DATABASE_URL=postgresql://...-pooler.../neondb?sslmode=require
+DATABASE_URL_UNPOOLED=postgresql://.../neondb?sslmode=require
 
 # Auth.js
 AUTH_SECRET=

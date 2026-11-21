@@ -13,7 +13,7 @@ import type { InspectedMedia, MediaStorage } from "./types";
  * mirroring Cloudinary's signed direct uploads. Never enabled in production.
  */
 export const LOCAL_ROOT = resolve(process.cwd(), ".data", "uploads");
-const KEY_RE = /^vivah\/[a-z0-9]+\/[a-z0-9]+\/[a-z0-9]{12}\.[a-z0-9]{2,5}$/;
+const KEY_RE = /^invitoverse\/[a-z0-9]+\/[a-z0-9]+\/[a-z0-9]{12}\.[a-z0-9]{2,5}$/;
 
 export type LocalUploadClaims = {
   key: string;

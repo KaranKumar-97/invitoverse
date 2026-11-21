@@ -27,7 +27,7 @@ async function requireOwnedInvitation(ctx: Ctx, invitationId: string) {
   return inv;
 }
 
-const keyPrefix = (ctx: Ctx, invitationId: string) => `vivah/${ctx.userId}/${invitationId}/`;
+const keyPrefix = (ctx: Ctx, invitationId: string) => `invitoverse/${ctx.userId}/${invitationId}/`;
 
 export function toDTO(
   a: Pick<

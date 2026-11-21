@@ -25,7 +25,7 @@ if (testDb && testDb === devDb) {
   );
 }
 // Read by tests/integration/global-setup.ts (runs in this process, before workers start).
-process.env.VIVAH_TEST_DATABASE_URL = testDb;
+process.env.INVITOVERSE_TEST_DATABASE_URL = testDb;
 
 export default defineConfig({
   plugins: [react()],

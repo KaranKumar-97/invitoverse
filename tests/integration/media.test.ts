@@ -55,7 +55,8 @@ beforeEach(async () => {
 });
 
 afterAll(async () => {
-  for (const u of users) await rm(join(LOCAL_ROOT, "vivah", u), { recursive: true, force: true });
+  for (const u of users)
+    await rm(join(LOCAL_ROOT, "invitoverse", u), { recursive: true, force: true });
   await resetDb();
   await prisma.$disconnect();
 });
@@ -70,7 +71,7 @@ describe("uploads", () => {
       height: 800,
       mimeType: "image/png",
     });
-    expect(dto.url).toMatch(/^\/api\/v1\/media\/local\/vivah\//);
+    expect(dto.url).toMatch(/^\/api\/v1\/media\/local\/invitoverse\//);
     expect((await media.listMedia(a, invitationId)).map((m) => m.id)).toEqual([dto.id]);
   });
 
@@ -118,7 +119,7 @@ describe("uploads", () => {
       media.confirmUpload(a, {
         invitationId,
         role: "GALLERY",
-        key: `vivah/${b.userId}/${invitationId}/abcdefghijkl.png`,
+        key: `invitoverse/${b.userId}/${invitationId}/abcdefghijkl.png`,
       }),
       "NOT_FOUND",
     );
@@ -245,7 +246,7 @@ describe("saveDraft media references", () => {
       background: {
         type: "UPLOAD" as const,
         assetId: "nope",
-        url: "/api/v1/media/local/vivah/x/y/abcdefghijkl.png",
+        url: "/api/v1/media/local/invitoverse/x/y/abcdefghijkl.png",
       },
     };
     await expectCode(

@@ -1,4 +1,4 @@
-// Vivah Studio — MVP schema. Source of truth: docs/03-database.md §3
+// MVP schema. Source of truth: docs/03-database.md §3
 // JSON columns (draftContent, draftDesign, published*) are validated with Zod in src/lib/invitation.
 
 generator client {

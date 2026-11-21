@@ -3,9 +3,9 @@ import { scrubDeep, scrubString } from "@/lib/observability/scrub";
 
 describe("scrub", () => {
   it("removes guest tokens from invitation URLs", () => {
-    expect(scrubString("https://vivah.studio/i/priya-rahul/guest/RWfLjvLgNqyS2r1sMgjung?x=1")).toBe(
-      "https://vivah.studio/i/priya-rahul/guest/[token]?x=1",
-    );
+    expect(
+      scrubString("https://invitationbanao.com/i/priya-rahul/guest/RWfLjvLgNqyS2r1sMgjung?x=1"),
+    ).toBe("https://invitationbanao.com/i/priya-rahul/guest/[token]?x=1");
   });
 
   it("removes emails, phone numbers and secret query params", () => {

@@ -56,7 +56,7 @@ Rules:
 ## 5. Uploads
 
 - Direct-to-Cloudinary **signed** uploads; signature only after authz, quota and type checks.
-- Signed params pin `folder=vivah/{userId}/{invitationId}`, `public_id`, `resource_type`, allowed formats, max bytes (via upload preset), and eager transforms.
+- Signed params pin `folder=invitoverse/{userId}/{invitationId}`, `public_id`, `resource_type`, allowed formats, max bytes (via upload preset), and eager transforms.
 - Server confirms each upload via Cloudinary Admin API before recording it (trust nothing from the client).
 - Allowed: images `jpg, jpeg, png, webp, heic, avif` ≤ 15 MB; video `mp4, mov, webm` ≤ 100 MB; audio `mp3, m4a, aac` ≤ 10 MB.
 - Images delivered with Cloudinary transformations, which strip metadata (EXIF GPS) — set `fl_strip_profile`/default strip on delivery and `exif: false` on upload.

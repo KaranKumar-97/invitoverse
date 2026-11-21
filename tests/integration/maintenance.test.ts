@@ -53,7 +53,8 @@ beforeEach(async () => {
 });
 
 afterAll(async () => {
-  for (const u of users) await rm(join(LOCAL_ROOT, "vivah", u), { recursive: true, force: true });
+  for (const u of users)
+    await rm(join(LOCAL_ROOT, "invitoverse", u), { recursive: true, force: true });
   await resetDb();
   await prisma.$disconnect();
 });

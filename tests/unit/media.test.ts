@@ -48,7 +48,7 @@ describe("Cloudinary signature", () => {
 
 describe("local upload tokens", () => {
   const claims = {
-    key: "vivah/user1/inv1/abcdefghijkl.png",
+    key: "invitoverse/user1/inv1/abcdefghijkl.png",
     kind: "IMAGE" as const,
     mimeType: "image/png",
     maxBytes: 100,
@@ -66,14 +66,14 @@ describe("local upload tokens", () => {
     expect(verifyLocalToken(`${body}.${mac[0] === "x" ? "y" : "x"}${mac.slice(1)}`)).toBeNull();
     expect(verifyLocalToken(signLocalToken({ ...claims, exp: Date.now() - 1 }))).toBeNull();
     expect(
-      verifyLocalToken(signLocalToken({ ...claims, key: "vivah/../../etc/passwd.png" })),
+      verifyLocalToken(signLocalToken({ ...claims, key: "invitoverse/../../etc/passwd.png" })),
     ).toBeNull();
   });
 });
 
 describe("media URL allow-list", () => {
   it("accepts local dev URLs but not traversal", () => {
-    expect(isAllowedMediaUrl("/api/v1/media/local/vivah/u/i/abcdefghijkl.png")).toBe(true);
+    expect(isAllowedMediaUrl("/api/v1/media/local/invitoverse/u/i/abcdefghijkl.png")).toBe(true);
     expect(isAllowedMediaUrl("/api/v1/media/local/../secrets")).toBe(false);
   });
 });

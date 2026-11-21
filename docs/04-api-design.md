@@ -94,7 +94,7 @@ sequenceDiagram
     participant SA as confirmMediaUpload
     C->>API: kind, bytes, mime (owner session)
     API->>API: authz + quota + mime/size allowlist
-    API-->>C: signature (folder vivah/{userId}/{invId}, publicId, eager transforms)
+    API-->>C: signature (folder invitoverse/{userId}/{invId}, publicId, eager transforms)
     C->>CL: direct upload (progress events)
     CL-->>C: { public_id, secure_url }
     C->>SA: publicId

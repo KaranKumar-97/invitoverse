@@ -20,7 +20,7 @@ export async function POST(req: Request) {
     const user = await requireUser();
     const form = await req.formData();
     const claims = verifyLocalToken(String(form.get("token") ?? ""));
-    if (!claims || !claims.key.startsWith(`vivah/${user.id}/`))
+    if (!claims || !claims.key.startsWith(`invitoverse/${user.id}/`))
       throw new AppError("FORBIDDEN", "Upload link expired. Please try again.");
     const file = form.get("file");
     if (!(file instanceof File)) throw new AppError("VALIDATION", "No file received.");

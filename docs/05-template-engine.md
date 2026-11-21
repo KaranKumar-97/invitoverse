@@ -129,7 +129,7 @@ declares which). Unknown/unsupported sections in a design config are ignored by 
     }
   ],
   "media": {
-    "couplePhotos": [{ "assetId": "clxa1…", "url": "https://res.cloudinary.com/vivah/image/upload/v1/vivah/u/i/a1.jpg", "width": 2400, "height": 3600, "alt": "Priya and Rahul at Lodhi Garden", "focal": { "x": 0.5, "y": 0.35 } }],
+    "couplePhotos": [{ "assetId": "clxa1…", "url": "https://res.cloudinary.com/demo/image/upload/v1/invitoverse/u/i/a1.jpg", "width": 2400, "height": 3600, "alt": "Priya and Rahul at Lodhi Garden", "focal": { "x": 0.5, "y": 0.35 } }],
     "familyPhotos": [],
     "gallery": [{ "assetId": "clxa2…", "url": "https://res.cloudinary.com/…/a2.jpg", "width": 3000, "height": 2000, "alt": "" }],
     "video": { "type": "UPLOAD", "assetId": "clxa9…", "url": "https://res.cloudinary.com/…/v1.mp4", "posterUrl": "https://res.cloudinary.com/…/v1.jpg" },

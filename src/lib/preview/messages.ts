@@ -4,7 +4,7 @@
  */
 import type { DesignConfig, DraftContent, SectionKey } from "@/lib/invitation/schema";
 
-export const PREVIEW_CHANNEL = "vivah-preview/v1";
+export const PREVIEW_CHANNEL = "invitoverse-preview/v1";
 
 export type EditorToPreview =
   | { type: "draft:update"; content: DraftContent; design: DesignConfig }

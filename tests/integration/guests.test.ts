@@ -128,9 +128,9 @@ describe("guest management", () => {
       displayName: '=HYPERLINK("http://evil")',
       notes: "+cmd",
     });
-    const { csv, filename } = await g.exportGuestsCsv(a, id, "https://vivah.studio");
+    const { csv, filename } = await g.exportGuestsCsv(a, id, "https://invitationbanao.com");
     expect(filename).toBe(`${slug}-guests.csv`);
-    expect(csv).toContain(`https://vivah.studio/i/${slug}/guest/`);
+    expect(csv).toContain(`https://invitationbanao.com/i/${slug}/guest/`);
     expect(csv).toContain(`"'=HYPERLINK(""http://evil"")"`);
     expect(csv).toContain("'+cmd");
   });

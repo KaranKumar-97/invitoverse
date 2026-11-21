@@ -49,7 +49,7 @@ export function buildIcs(input: {
     "CALSCALE:GREGORIAN",
     "METHOD:PUBLISH",
     "BEGIN:VEVENT",
-    `UID:${event.id}@${input.uidDomain ?? "digital-invites"}`,
+    `UID:${event.id}@${input.uidDomain ?? "invitoverse"}`,
     `DTSTAMP:${stamp(start)}`,
     `DTSTART:${stamp(start)}`,
     `DTEND:${stamp(end)}`,
