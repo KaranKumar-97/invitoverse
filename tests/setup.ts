@@ -14,6 +14,10 @@ vi.mock("next/font/google", () => {
   // Every Google font used in src/. Add new ones here when a template loads another family.
   const names = [
     "Bodoni_Moda",
+    "Rozha_One",
+    "Parisienne",
+    "Marcellus",
+    "EB_Garamond",
     "Cinzel",
     "Cinzel_Decorative",
     "Cormorant",

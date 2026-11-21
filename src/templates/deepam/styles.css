@@ -1,0 +1,105 @@
+/* Deepam — scoped to the template root. Animations use transform/opacity only. */
+[data-template="deepam"] .dp-glow-text {
+  color: var(--c-accent);
+  text-shadow: 0 0 22px color-mix(in srgb, var(--c-accent) 45%, transparent);
+}
+[data-template="deepam"] .dp-eyebrow {
+  font-family: var(--f-heading);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  color: var(--c-muted);
+}
+[data-template="deepam"] .dp-heading {
+  font-family: var(--f-heading);
+  letter-spacing: 0.08em;
+}
+[data-template="deepam"] .dp-card {
+  position: relative;
+  border-radius: 28px;
+  background: color-mix(in srgb, var(--c-surface) 90%, transparent);
+  border: 1px solid color-mix(in srgb, var(--c-accent) 40%, transparent);
+  box-shadow:
+    inset 0 0 0 6px var(--c-surface),
+    inset 0 0 0 7px color-mix(in srgb, var(--c-accent) 22%, transparent),
+    0 30px 60px -32px rgba(0, 0, 0, 0.55);
+}
+/* Scalloped top edge, like a temple doorway trim. */
+[data-template="deepam"] .dp-scallop::before {
+  content: "";
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  top: -9px;
+  height: 10px;
+  background: radial-gradient(
+      circle at 8px 10px,
+      color-mix(in srgb, var(--c-accent) 70%, transparent) 0 3px,
+      transparent 3.5px
+    )
+    0 0 / 16px 10px repeat-x;
+}
+[data-template="deepam"] .dp-button {
+  border: 1px solid color-mix(in srgb, var(--c-accent) 70%, transparent);
+  color: var(--c-accent);
+  border-radius: 999px;
+  padding: 0.55rem 1.1rem;
+  font-family: var(--f-heading);
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease;
+}
+[data-template="deepam"] .dp-button:hover {
+  background: var(--c-accent);
+  color: var(--c-accent-contrast);
+}
+[data-template="deepam"] .dp-kolam-bg {
+  background-image:
+    radial-gradient(
+      circle,
+      color-mix(in srgb, var(--c-accent) 22%, transparent) 1.2px,
+      transparent 1.6px
+    ),
+    radial-gradient(
+      circle,
+      color-mix(in srgb, var(--c-accent) 12%, transparent) 1px,
+      transparent 1.4px
+    );
+  background-size:
+    28px 28px,
+    28px 28px;
+  background-position:
+    0 0,
+    14px 14px;
+}
+@keyframes dp-flicker {
+  0%,
+  100% {
+    transform: scale(1, 1) rotate(0deg);
+    opacity: 1;
+  }
+  25% {
+    transform: scale(0.96, 1.05) rotate(-2deg);
+  }
+  50% {
+    transform: scale(1.03, 0.95) rotate(1.5deg);
+    opacity: 0.93;
+  }
+  75% {
+    transform: scale(0.98, 1.04) rotate(-1deg);
+  }
+}
+@keyframes dp-breathe {
+  50% {
+    transform: scale(1.06);
+    opacity: 0.75;
+  }
+}
+@keyframes dp-kolam-turn {
+  to {
+    transform: rotate(360deg);
+  }
+}

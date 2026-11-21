@@ -53,6 +53,33 @@ function palace(w, h, base, color) {
   return `<path d="${d}" fill="${color}"/>${arches}`;
 }
 
+/** Stepped temple towers (gopurams) on the horizon, edges lined with lamp dots. */
+function temples(w, h, base, color, lamp) {
+  const y = h * base;
+  let out = `<rect x="0" y="${y}" width="${w}" height="${h - y}" fill="${color}"/>`;
+  const towers = [
+    [0.22, 0.16, 0.34],
+    [0.5, 0.22, 0.5],
+    [0.8, 0.15, 0.3],
+  ];
+  for (const [cxF, bwF, hF] of towers) {
+    const cx = w * cxF;
+    let bw = w * bwF;
+    let top = y;
+    const tiers = 6;
+    const th = (h * hF) / tiers;
+    for (let i = 0; i < tiers; i++) {
+      out += `<rect x="${(cx - bw / 2).toFixed(0)}" y="${(top - th).toFixed(0)}" width="${bw.toFixed(0)}" height="${th.toFixed(0)}" fill="${color}"/>`;
+      for (let k = 0; k <= 6; k++)
+        out += `<circle cx="${(cx - bw / 2 + (bw * k) / 6).toFixed(0)}" cy="${(top - th).toFixed(0)}" r="${(w / 300).toFixed(1)}" fill="${lamp}"/>`;
+      top -= th;
+      bw *= 0.82;
+    }
+    out += `<path d="M${(cx - bw / 2).toFixed(0)} ${top.toFixed(0)} Q${cx.toFixed(0)} ${(top - th * 1.6).toFixed(0)} ${(cx + bw / 2).toFixed(0)} ${top.toFixed(0)} Z" fill="${color}"/>`;
+  }
+  return out;
+}
+
 function stringLights(r, w, h, color, rows = 3) {
   let out = "";
   for (let k = 0; k < rows; k++) {
@@ -164,6 +191,54 @@ const SETS = {
       },
     ],
   },
+  deepam: {
+    couple: { sky: ["#1e1030", "#5a2a4a", "#f2a541"], sun: "#ffd27a", ink: "#140a20" },
+    gallery: [
+      {
+        kind: "temple",
+        w: 1600,
+        h: 1067,
+        sky: ["#1e1030", "#6a2c4c", "#f2a541"],
+        ink: "#140a20",
+        lights: "#ffd27a",
+        seed: 31,
+      },
+      {
+        kind: "garland",
+        w: 1067,
+        h: 1600,
+        sky: ["#2a1840", "#5a1f3a"],
+        flowers: ["#fffaf0", "#f6a823", "#f2711f"],
+        seed: 32,
+      },
+      { kind: "lights", w: 1600, h: 1067, sky: ["#120818", "#2a1840"], color: "#ffc45a", seed: 33 },
+      {
+        kind: "bokeh",
+        w: 1067,
+        h: 1600,
+        sky: ["#2a1840", "#140a20"],
+        colors: ["#ffd27a", "#f2a541", "#fff3d6"],
+        seed: 34,
+      },
+      {
+        kind: "temple",
+        w: 1600,
+        h: 1067,
+        sky: ["#0f0a1c", "#2a1840", "#7a3b2e"],
+        ink: "#0b0614",
+        lights: "#ffb347",
+        seed: 35,
+      },
+      {
+        kind: "garland",
+        w: 1600,
+        h: 1067,
+        sky: ["#5e0f12", "#2a0a0c"],
+        flowers: ["#fde68a", "#f97316", "#fffaf0"],
+        seed: 36,
+      },
+    ],
+  },
   "minimal-luxury": {
     couple: { sky: ["#efe8dc", "#d9cbb4", "#b9a688"], sun: "#f8f3ea", ink: "#2b2622" },
     gallery: [
@@ -208,6 +283,10 @@ for (const [slug, set] of Object.entries(SETS)) {
       body +=
         bokeh(r, g.w, g.h * 0.6, [g.lights, "#fff"], 26, g.w / 80, g.w / 30) +
         palace(g.w, g.h, 0.62, g.ink);
+    if (g.kind === "temple")
+      body +=
+        bokeh(r, g.w, g.h * 0.55, [g.lights, "#fff"], 22, g.w / 90, g.w / 32) +
+        temples(g.w, g.h, 0.8, g.ink, g.lights);
     if (g.kind === "garland")
       body +=
         bokeh(r, g.w, g.h, ["#000"], 10, g.w / 10, g.w / 5, [0.1, 0.25]) +

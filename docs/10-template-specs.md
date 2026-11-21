@@ -122,6 +122,26 @@ Demo photos: commissioned or licensed stock (Unsplash/Pexels license) uploaded t
 
 ---
 
+## 5b. Deepam (built 2026-11-22)
+
+**Identity:** A devotional South-Indian temple wedding at dusk — brass, lamp-light, kolam, mango-leaf torans.
+
+| Aspect | Spec |
+|---|---|
+| Palettes | Saffron Dusk (default) · Temple Stone · Kumkum |
+| Fonts | Marcellus / EB Garamond / Parisienne · Rozha One / Lora / Parisienne |
+| Decor | Original SVG: diya + flame, kolam rings, gopuram with lamp-lit tiers, mango-leaf & marigold toran, kalash, lotus divider, brass puja plate |
+| Envelope | Brass puja plate with a kolam and an unlit diya; invocation, names (or guest name) above |
+| Opening | Tap → flame catches (scale + fade) → glow blooms → kolam rings ripple outward (scale + rotate + fade) → the light widens and the invitation appears |
+| Scroll motion | Soft rises in warm lamp-light; embers drift up (particles, auto-off on reduced motion / Save-Data) |
+| Hero | Toran across the top, invocation, gopuram behind the names, date with lotus divider, city |
+| Events | Lamp-lit timeline — a thread of light with a lamp marking each function |
+| Couple | Circular portraits framed by a kolam ring |
+| Options | `showGopuram`, `showToran`, `lampRow` (lamp columns either side on desktop) |
+| Desktop | Centered 640px column with columns of lamps either side |
+
+---
+
 ## 6. Envelope component contract
 
 ```ts

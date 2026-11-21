@@ -19,6 +19,7 @@ import { demoGuest } from "@/templates/demo-guest";
 import { templateDemos, templateManifests, type TemplateDemo } from "@/templates/registry";
 import RoyalHeritage from "@/templates/royal-heritage";
 import MinimalLuxury from "@/templates/minimal-luxury";
+import Deepam from "@/templates/deepam";
 import Starter from "@/templates/_starter";
 import { starterManifest } from "@/templates/_starter/manifest";
 import { starterDemo } from "@/templates/_starter/demo";
@@ -39,6 +40,11 @@ const CASES: Case[] = [
     manifest: templateManifests["minimal-luxury"],
     demo: templateDemos["minimal-luxury"],
     Component: MinimalLuxury,
+  },
+  {
+    manifest: templateManifests.deepam,
+    demo: templateDemos.deepam,
+    Component: Deepam,
   },
   { manifest: starterManifest, demo: starterDemo, Component: Starter },
 ];
