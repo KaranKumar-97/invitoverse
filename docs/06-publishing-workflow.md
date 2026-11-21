@@ -113,7 +113,7 @@ Implementation notes:
 
 - **Copy link** — `navigator.clipboard.writeText` with fallback.
 - **WhatsApp** — `https://wa.me/?text=` + URL-encoded message:
-  `"Priya & Rahul are getting married! 💍 Open your invitation: https://vivah.studio/i/rahul-priya"`.
+  `"Priya & Rahul are getting married! 💍 Open your invitation: https://invitationbanao.com/i/rahul-priya"`.
   For guests with a phone, `https://wa.me/91XXXXXXXXXX?text=…`. Clicking marks guest `SHARED`.
 - **QR code** — generated client-side (`qrcode`), downloadable PNG with the couple's names under it.
 - **OG preview** — WhatsApp shows the OG image (template-styled, names + date). Guest routes use the

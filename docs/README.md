@@ -1,4 +1,4 @@
-# Vivah Studio — Planning Docs
+# Invitation Banao — Planning Docs
 
 Planning and specification for the MVP of a premium animated wedding-invitation website builder.
 These docs are written for two readers: the product owner reviewing the plan, and Claude Code

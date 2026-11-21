@@ -4,7 +4,7 @@
 
 ```mermaid
 flowchart LR
-    U[Users / Guests] --> DNS[DNS<br/>vivah.studio]
+    U[Users / Guests] --> DNS[DNS<br/>invitationbanao.com]
     DNS --> VE[Vercel Edge Network<br/>CDN + middleware]
     VE --> VF[Vercel Functions<br/>Node.js runtime<br/>RSC, Server Actions, API]
     VE -->|cached ISR pages,<br/>static assets| U
@@ -29,7 +29,7 @@ flowchart LR
 |---|---|---|---|---|
 | Local | any | Docker Postgres 16 or personal Neon branch | dev folder `vivah-dev/` | `localhost:3000` |
 | Preview | PRs | Neon **branch per PR** (Vercel–Neon integration) | `vivah-preview/` | `*.vercel.app` (auth via Google test client) |
-| Production | `main` | Neon main branch | `vivah/` | `vivah.studio` |
+| Production | `main` | Neon main branch | `vivah/` | `invitationbanao.com` |
 
 ## 3. CI/CD pipeline
 

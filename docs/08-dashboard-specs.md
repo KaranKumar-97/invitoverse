@@ -163,4 +163,4 @@ Three short steps in a centered card (progress dots), each one screen on mobile:
 - All destructive actions confirm; all forms keyboard accessible; visible focus rings.
 - Skeleton loaders for lists; optimistic updates for reorder and toggles.
 - Unsaved-changes guard is not needed (autosave), but block navigation while a save is in flight.
-- Every dashboard page title follows `"{Page} · Vivah Studio"`.
+- Every dashboard page title follows `"{Page} · Invitation Banao"`.

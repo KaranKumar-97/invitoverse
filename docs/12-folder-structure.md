@@ -175,7 +175,7 @@ AUTH_SECRET=
 AUTH_GOOGLE_ID=
 AUTH_GOOGLE_SECRET=
 AUTH_RESEND_KEY=
-EMAIL_FROM="Vivah Studio <hello@vivah.studio>"
+EMAIL_FROM="Invitation Banao <hello@invitationbanao.com>"
 
 # Cloudinary
 CLOUDINARY_CLOUD_NAME=

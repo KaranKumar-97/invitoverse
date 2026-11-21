@@ -142,7 +142,7 @@ type GuestRow = {
   eventAccess: "ALL" | "SELECTED"; eventIds: string[];
   status: "NOT_SHARED" | "SHARED" | "OPENED";
   openCount: number; firstOpenedAt?: string; lastOpenedAt?: string;
-  url: string;                     // https://vivah.studio/i/rahul-priya/guest/Xk3...
+  url: string;                     // https://invitationbanao.com/i/rahul-priya/guest/Xk3...
   whatsappUrl: string;             // https://wa.me/?text=... (or wa.me/<phone>?text=...)
 };
 

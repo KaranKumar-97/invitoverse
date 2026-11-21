@@ -1,4 +1,4 @@
-# Vivah Studio
+# Invitation Banao
 
 Premium animated wedding-invitation websites. Planning docs live in [`docs/`](docs/README.md);
 Claude Code conventions are in [`CLAUDE.md`](CLAUDE.md).

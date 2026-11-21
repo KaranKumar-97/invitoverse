@@ -10,7 +10,7 @@ scroll motion, but all render the same `InvitationContent` (see [05-template-eng
 - Envelope screen: monogram/initials, "You're invited" line, guest name if personalized (`"For Sharma Family"`), **Open Invitation** button (min 48px tall, high contrast), subtle idle animation, "Tap to open" hint.
 - Opening choreography ≤ 3.8 s at `DRAMATIC`, ≤ 2.6 s `STANDARD`, ≤ 1.4 s `SUBTLE`; skippable by tapping again.
 - Music starts on the Open tap with 1.5 s fade-in; persistent round mute button (bottom-right, 44px).
-- Countdown, events (map + calendar buttons), gallery with lightbox, footer with hashtag and "Made with Vivah Studio" badge.
+- Countdown, events (map + calendar buttons), gallery with lightbox, footer with hashtag and "Made with Invitation Banao" badge.
 - 3+ palettes, 2 font pairs, 2+ backgrounds, 1–3 template options.
 - Demo content (`demo.ts`) with realistic Indian wedding data (below).
 - Passes the template contract test (renders with demo data, with guest, with every option, under reduced motion).

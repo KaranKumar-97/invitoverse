@@ -1,4 +1,4 @@
-# CLAUDE.md — Vivah Studio (working name)
+# CLAUDE.md — Invitation Banao
 
 A premium web app for creating animated, personalized wedding invitation websites from
 professionally designed templates. Think "digital wedding invitation studio": a luxury

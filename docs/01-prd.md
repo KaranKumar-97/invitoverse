@@ -2,7 +2,7 @@
 
 ## 1. Summary
 
-Vivah Studio lets a couple (or a family member / planner acting for them) create a premium,
+Invitation Banao lets a couple (or a family member / planner acting for them) create a premium,
 animated wedding invitation **website** in minutes: pick a designer template, fill in names,
 events and photos, preview it live, publish, and share one link — or a personalized link per
 guest — over WhatsApp.
@@ -101,7 +101,7 @@ IDs are referenced from phases and tests.
 - **FR-I1** Envelope intro screen with couple initials/monogram, guest name if personalized, and **Open Invitation** button.
 - **FR-I2** Opening sequence (template-specific): envelope opens → card unfolds/reveals → cinematic intro → main invitation.
 - **FR-I3** Music starts only after the Open tap (browser autoplay policy); floating mute/unmute control always visible.
-- **FR-I4** Sections (each can be hidden/reordered by owner): Hero (names, date), Welcome/guest greeting, Couple, Families, Countdown, Events (schedule + venue + map link + add-to-calendar `.ics`), Gallery (lightbox), Video, Invitation message, Footer (hashtag, "Made with Vivah Studio" badge).
+- **FR-I4** Sections (each can be hidden/reordered by owner): Hero (names, date), Welcome/guest greeting, Couple, Families, Countdown, Events (schedule + venue + map link + add-to-calendar `.ics`), Gallery (lightbox), Video, Invitation message, Footer (hashtag, "Made with Invitation Banao" badge).
 - **FR-I5** Countdown to the first event (or wedding date) in the invitation's timezone; after the date shows "Just married" state.
 - **FR-I6** "Skip intro" for repeat visits (sessionStorage) and for reduced-motion users.
 - **FR-I7** Open Graph image (names + date on template-styled card) for rich WhatsApp previews.
@@ -174,7 +174,7 @@ flowchart LR
 sequenceDiagram
     actor G as Guest (phone)
     participant W as WhatsApp
-    participant App as Vivah Studio
+    participant App as Invitation Banao
     G->>W: Taps link
     W->>App: GET /i/rahul-priya/guest/{token}
     App-->>G: Envelope screen (guest name, monogram) — fast, no music yet

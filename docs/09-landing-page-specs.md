@@ -79,7 +79,7 @@ Form (name, email/phone, message) → `/api/v1/contact`; plus WhatsApp and email
 - "What's inside": supported sections list, envelope style, animation style, palettes (swatches clickable → preview updates via query param), font pairs.
 - Primary CTA **Use this design** → `/dashboard/invitations/new?template=slug` (auth redirect preserves it). Secondary: **Open live demo**.
 - "You may also like" — 3 other templates.
-- Metadata: title "Royal Heritage — Animated Wedding Invitation | Vivah Studio", OG = template poster.
+- Metadata: title "Royal Heritage — Animated Wedding Invitation | Invitation Banao", OG = template poster.
 
 ## 6. Live demo (`/templates/[slug]/preview`)
 - Exactly the guest experience with `demo.ts` data, including envelope and music (demo track).

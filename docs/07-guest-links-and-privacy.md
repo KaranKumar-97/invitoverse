@@ -10,10 +10,10 @@
 ## 2. URL format
 
 ```
-https://vivah.studio/i/{invitationSlug}/guest/{token}
+https://invitationbanao.com/i/{invitationSlug}/guest/{token}
 
-https://vivah.studio/i/rahul-priya/guest/q7Jx2mV9kP0aLr4tWc8NbE
-https://vivah.studio/i/rahul-priya/guest/Zt3pH6yQs1Fd9uBn0Ke5Rw
+https://invitationbanao.com/i/rahul-priya/guest/q7Jx2mV9kP0aLr4tWc8NbE
+https://invitationbanao.com/i/rahul-priya/guest/Zt3pH6yQs1Fd9uBn0Ke5Rw
 ```
 
 - `invitationSlug` — human-friendly, chosen by owner (e.g. `rahul-priya`). Not secret.

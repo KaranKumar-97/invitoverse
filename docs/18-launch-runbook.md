@@ -1,6 +1,6 @@
 # 18 — Launch Runbook
 
-Step-by-step for taking Vivah Studio from this repository to a live domain. Everything in the code is
+Step-by-step for taking Invitation Banao from this repository to a live domain. Everything in the code is
 ready; the steps below need **your accounts** and are done in each provider's dashboard. Budget about
 half a day, plus DNS propagation time.
 
@@ -11,7 +11,7 @@ Tick the boxes as you go. Doc 14 §8 is the summary checklist; this is the detai
 ## 0. Before you start
 
 - [ ] Code is in a GitHub repository (private is fine). CI (`.github/workflows/ci.yml`) runs on every PR.
-- [ ] You own the domain (e.g. `vivah.studio`) and can edit its DNS.
+- [ ] You own the domain (e.g. `invitationbanao.com`) and can edit its DNS.
 - [ ] Generate two secrets locally and keep them in a password manager:
 
 ```bash
@@ -45,7 +45,7 @@ The first is `AUTH_SECRET`, the second `CRON_SECRET`.
 
 1. Add your domain; create the **SPF, DKIM and DMARC** records it shows. Wait for "Verified".
 2. Create an API key → `AUTH_RESEND_KEY`.
-3. `EMAIL_FROM="Vivah Studio <hello@yourdomain>"`, `CONTACT_INBOX=` the address that receives contact-form messages.
+3. `EMAIL_FROM="Invitation Banao <hello@yourdomain>"`, `CONTACT_INBOX=` the address that receives contact-form messages.
 
 ## 4. Sign-in — Google OAuth
 
