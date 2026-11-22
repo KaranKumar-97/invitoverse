@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   addDays,
   alignEventsToWedding,
+  countdownTarget,
   dateParts,
   daysBetween,
   formatLongDate,
@@ -90,5 +91,31 @@ describe("aligning sample events to the wedding date", () => {
       { name: "Wedding", date: "2026-11-25" },
       { name: "TBD", date: "" },
     ]);
+  });
+});
+
+describe("countdownTarget", () => {
+  const ev = (date: string, startTime: string) =>
+    ({ date, startTime }) as Parameters<typeof countdownTarget>[0]["events"][number];
+
+  it("targets the wedding date, not an earlier or later event", () => {
+    // The bug: sample events a year out made the countdown say 369 days.
+    expect(
+      countdownTarget({
+        weddingDate: "2026-11-25",
+        timezone: "Asia/Kolkata",
+        events: [ev("2027-11-26", "19:30"), ev("2027-11-27", "17:00")],
+      }),
+    ).toBe("2026-11-24T18:30:00.000Z"); // 25 Nov 00:00 IST
+  });
+
+  it("uses the first event's time on the wedding day", () => {
+    expect(
+      countdownTarget({
+        weddingDate: "2026-11-25",
+        timezone: "Asia/Kolkata",
+        events: [ev("2026-11-24", "19:00"), ev("2026-11-25", "20:00"), ev("2026-11-25", "17:00")],
+      }),
+    ).toBe("2026-11-25T11:30:00.000Z"); // 17:00 IST
   });
 });

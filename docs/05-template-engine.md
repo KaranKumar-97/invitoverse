@@ -59,7 +59,7 @@ Common section keys (the vocabulary every template maps to):
 | `greeting` | Personalized welcome (guest) or generic welcome | `messages.welcome`, `guest` |
 | `couple` | Bride & groom photos + short bios | `couple`, `media.couplePhotos` |
 | `families` | Parents / families lines ("With the blessings of…") | `families` |
-| `countdown` | Days/hours/min/sec to first event | `events[0].date` or `weddingDate` |
+| `countdown` | Days/hours/min/sec to the wedding date | `weddingDate` (+ that day's first event time) |
 | `events` | Schedule with venue, map, add-to-calendar | `events` (guest-filtered) |
 | `gallery` | Photo grid + lightbox | `media.gallery`, `media.familyPhotos` |
 | `video` | Invitation/pre-wedding video | `media.video` |

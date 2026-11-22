@@ -80,14 +80,20 @@ export function sortEvents(events: readonly InvitationEvent[]): InvitationEvent[
   return [...events].sort((a, b) => (a.date + a.startTime).localeCompare(b.date + b.startTime));
 }
 
-/** Countdown targets the first visible event, else the wedding date at midnight. */
+/**
+ * Countdown targets the wedding date the couple chose (create step 2 / Details), never an event
+ * on another day. Its time is the earliest event on that day, else midnight — all in the
+ * invitation's timezone.
+ */
 export function countdownTarget(
   content: Pick<InvitationContent, "events" | "weddingDate" | "timezone">,
 ): string {
-  const first = sortEvents(content.events)[0];
-  return (
-    first
-      ? toInstant(first.date, first.startTime, content.timezone)
-      : toInstant(content.weddingDate, "00:00", content.timezone)
+  const onTheDay = sortEvents(content.events).find(
+    (e) => e.date === content.weddingDate && e.startTime,
+  );
+  return toInstant(
+    content.weddingDate,
+    onTheDay?.startTime ?? "00:00",
+    content.timezone,
   ).toISOString();
 }

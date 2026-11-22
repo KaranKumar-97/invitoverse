@@ -91,7 +91,7 @@ flowchart LR
 ```
 
 - Filtering is in `resolveRenderable` on the server; filtered-out events never leave the server.
-- Countdown targets the guest's **first visible event** (so a Reception-only guest counts down to the Reception).
+- Countdown targets the **wedding date** for every guest (time: the first event they can see on that day, else midnight).
 - `.ics` endpoint for a restricted event requires `?t={token}` and re-checks access.
 - If `SELECTED` resolves to zero events (all deleted), show the general invitation without the events section and log a warning for the owner's checklist.
 

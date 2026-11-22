@@ -102,7 +102,7 @@ IDs are referenced from phases and tests.
 - **FR-I2** Opening sequence (template-specific): envelope opens → card unfolds/reveals → cinematic intro → main invitation.
 - **FR-I3** Music starts only after the Open tap (browser autoplay policy); floating mute/unmute control always visible.
 - **FR-I4** Sections (each can be hidden/reordered by owner): Hero (names, date), Welcome/guest greeting, Couple, Families, Countdown, Events (schedule + venue + map link + add-to-calendar `.ics`), Gallery (lightbox), Video, Invitation message, Footer (hashtag, "Made with Invitation Banao" badge).
-- **FR-I5** Countdown to the first event (or wedding date) in the invitation's timezone; after the date shows "Just married" state.
+- **FR-I5** Countdown to the wedding date (time of that day's first event, else midnight) in the invitation's timezone; after the date shows "Just married" state.
 - **FR-I6** "Skip intro" for repeat visits (sessionStorage) and for reduced-motion users.
 - **FR-I7** Open Graph image (names + date on template-styled card) for rich WhatsApp previews.
 

@@ -61,7 +61,7 @@ describe("resolveRenderable", () => {
     expect(r.sections).not.toContain("events");
   });
 
-  it("counts down to the guest's first visible event", () => {
+  it("counts down to the wedding date for everyone, even a Reception-only guest", () => {
     const all = resolve();
     const guest = resolve(undefined, {
       displayName: "X",
@@ -70,10 +70,9 @@ describe("resolveRenderable", () => {
       eventAccess: "SELECTED",
       eventIds: ["evt_reception4"],
     });
-    expect(new Date(guest.countdownTo).getTime()).toBeGreaterThan(
-      new Date(all.countdownTo).getTime(),
-    );
-    expect(guest.countdownTo).toBe("2027-02-14T14:30:00.000Z"); // 20:00 IST
+    // Wedding day is 13 Feb; its first event starts 18:30 IST.
+    expect(all.countdownTo).toBe("2027-02-13T13:00:00.000Z");
+    expect(guest.countdownTo).toBe("2027-02-12T18:30:00.000Z"); // no visible event that day → midnight IST
   });
 
   it("applies only customizable palette overrides", () => {
