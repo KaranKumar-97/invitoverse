@@ -47,19 +47,27 @@ export function ScratchReveal({
   const last = useRef<{ x: number; y: number } | null>(null);
   const moves = useRef(0);
 
+  // Side effects run outside the state updater: React may call updaters twice (Strict Mode),
+  // which burst petals and fired onReveal twice.
+  const done = useRef(false);
   const reveal = useCallback(() => {
-    setRevealed((was) => {
-      if (was) return was;
-      if (wrap.current) burstPetals(wrap.current, { reducedMotion });
-      try {
-        navigator.vibrate?.(25);
-      } catch {
-        /* not supported */
-      }
-      onReveal?.();
-      return true;
-    });
+    if (done.current) return;
+    done.current = true;
+    drawing.current = false;
+    setRevealed(true);
+    if (wrap.current) burstPetals(wrap.current, { reducedMotion });
+    try {
+      navigator.vibrate?.(25);
+    } catch {
+      /* not supported */
+    }
+    onReveal?.();
   }, [onReveal, reducedMotion]);
+
+  // Depend on the colour values, not the array: callers usually pass an inline literal, and a
+  // parent that re-renders (e.g. a ticking countdown) would otherwise repaint the foil every
+  // second and wipe the guest's scratching.
+  const [foilA, foilB] = foil ?? [];
 
   // Paint the foil, sized to the card at device pixel ratio.
   useEffect(() => {
@@ -71,14 +79,28 @@ export function ScratchReveal({
       setCanScratch(false);
       return;
     }
+    let painted = false;
     const paint = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       const { width, height } = box.getBoundingClientRect();
-      el.width = Math.max(1, Math.round(width * dpr));
-      el.height = Math.max(1, Math.round(height * dpr));
+      const w = Math.max(1, Math.round(width * dpr));
+      const h = Math.max(1, Math.round(height * dpr));
+      // ResizeObserver also fires once on observe and on sub-pixel noise: nothing to redo.
+      if (painted && w === el.width && h === el.height) return;
+      // Keep what was already scratched when the card really changes size.
+      let scratched: HTMLCanvasElement | null = null;
+      if (painted) {
+        scratched = document.createElement("canvas");
+        scratched.width = el.width;
+        scratched.height = el.height;
+        scratched.getContext("2d")?.drawImage(el, 0, 0);
+      }
+      painted = true;
+      el.width = w;
+      el.height = h;
       const css = getComputedStyle(box);
       const accent = css.getPropertyValue("--c-accent").trim() || "#c9a227";
-      const [a, b] = foil ?? [accent, "#fff3cf"];
+      const [a, b] = foilA && foilB ? [foilA, foilB] : [accent, "#fff3cf"];
       const g = ctx.createLinearGradient(0, 0, el.width, el.height);
       g.addColorStop(0, a);
       g.addColorStop(0.45, b);
@@ -96,12 +118,18 @@ export function ScratchReveal({
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.fillText(label.toUpperCase(), el.width / 2, el.height / 2);
+      if (scratched) {
+        // Keep the new foil only where the old one was still intact (scaled to the new size).
+        ctx.globalCompositeOperation = "destination-in";
+        ctx.drawImage(scratched, 0, 0, el.width, el.height);
+        ctx.globalCompositeOperation = "source-over";
+      }
     };
     paint();
     const ro = new ResizeObserver(paint);
     ro.observe(box);
     return () => ro.disconnect();
-  }, [foil, label, revealed]);
+  }, [foilA, foilB, label, revealed]);
 
   const point = (e: React.PointerEvent<HTMLCanvasElement>) => {
     const r = e.currentTarget.getBoundingClientRect();
@@ -125,17 +153,28 @@ export function ScratchReveal({
     ctx.stroke();
     last.current = p;
     // Check progress every few moves (sampling keeps it cheap on old phones).
-    if (++moves.current % 6 === 0) {
-      const { width, height } = e.currentTarget;
-      const data = ctx.getImageData(0, 0, width, height).data;
-      let clear = 0;
-      let total = 0;
-      for (let i = 3; i < data.length; i += 4 * 24) {
-        total++;
-        if (data[i]! < 40) clear++;
-      }
-      if (clear / total >= threshold) reveal();
+    if (++moves.current % 6 === 0) checkProgress(e.currentTarget);
+  };
+
+  const checkProgress = (el: HTMLCanvasElement) => {
+    const ctx = el.getContext("2d");
+    if (!ctx || done.current) return;
+    const data = ctx.getImageData(0, 0, el.width, el.height).data;
+    let clear = 0;
+    let total = 0;
+    for (let i = 3; i < data.length; i += 4 * 24) {
+      total++;
+      if (data[i]! < 40) clear++;
     }
+    if (total && clear / total >= threshold) reveal();
+  };
+
+  const endStroke = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    if (!drawing.current) return;
+    drawing.current = false;
+    last.current = null;
+    // Lifting the finger after a long stroke should count, not wait for the next touch.
+    checkProgress(e.currentTarget);
   };
 
   return (
@@ -153,14 +192,8 @@ export function ScratchReveal({
               e.currentTarget.setPointerCapture(e.pointerId);
             }}
             onPointerMove={scratch}
-            onPointerUp={() => {
-              drawing.current = false;
-              last.current = null;
-            }}
-            onPointerCancel={() => {
-              drawing.current = false;
-              last.current = null;
-            }}
+            onPointerUp={endStroke}
+            onPointerCancel={endStroke}
           />
         )}
         {revealed && (
