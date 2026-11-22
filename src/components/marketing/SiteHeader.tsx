@@ -3,6 +3,7 @@ import { Logo } from "@/components/brand/Logo";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { HeaderShell } from "./HeaderShell";
+import { AccountLink } from "./AccountLink";
 import { MobileMenu } from "./MobileMenu";
 import { MAIN_NAV } from "./nav";
 
@@ -23,12 +24,7 @@ export function SiteHeader() {
         </nav>
         <div className="ml-auto flex items-center gap-2">
           <ThemeToggle className="mr-1 hidden sm:inline-flex" />
-          <Link
-            href="/login"
-            className="hidden px-3 text-sm font-medium text-ink-soft hover:text-ink md:block"
-          >
-            Sign in
-          </Link>
+          <AccountLink className="hidden px-3 text-sm font-medium text-ink-soft hover:text-ink md:block" />
           <Button asChild className="h-10 rounded-full px-4 sm:px-5">
             <Link href="/dashboard/invitations/new">
               <span className="sm:hidden">Create</span>

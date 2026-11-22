@@ -11,7 +11,8 @@ export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
   return (
     <nav aria-label="Dashboard" className="flex flex-col gap-1">
       {DASHBOARD_NAV.map(({ href, label, icon: Icon, external }) => {
-        const active = href === "/dashboard" ? pathname === href : pathname.startsWith(href);
+        const active =
+          href === "/dashboard" || href === "/" ? pathname === href : pathname.startsWith(href);
         return (
           <Link
             key={href}

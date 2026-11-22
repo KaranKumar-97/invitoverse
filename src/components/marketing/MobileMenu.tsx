@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRef } from "react";
 import { Menu, X } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { AccountLink } from "./AccountLink";
 import { MAIN_NAV } from "./nav";
 
 /**
@@ -51,13 +52,7 @@ export function MobileMenu() {
                 {n.label}
               </Link>
             ))}
-            <Link
-              href="/login"
-              onClick={close}
-              className="py-4 text-base font-medium text-ink-soft"
-            >
-              Sign in
-            </Link>
+            <AccountLink onClick={close} className="py-4 text-base font-medium text-ink-soft" />
             <div className="flex items-center justify-between border-t border-line py-4 text-base font-medium text-ink-soft">
               Appearance
               <ThemeToggle />

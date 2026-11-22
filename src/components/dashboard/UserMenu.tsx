@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { LogOut, User } from "lucide-react";
+import { Globe, LogOut, User } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -39,6 +39,11 @@ export function UserMenu({
         <DropdownMenuItem asChild>
           <Link href="/dashboard/account">
             <User /> Account
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href="/">
+            <Globe /> Home page
           </Link>
         </DropdownMenuItem>
         <form action={signOutAction}>
