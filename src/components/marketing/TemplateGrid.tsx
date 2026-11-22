@@ -19,7 +19,8 @@ type Props = {
 /** Category chips (with counts) + responsive grid. Filtering is client-side over static data. */
 export function TemplateGrid({ items, comingSoon, withUrlState = false, className }: Props) {
   const [category, setCategory] = useState<TemplateCategory | "ALL">("ALL");
-  const [sort, setSort] = useState<Sort>("featured");
+  // Newest designs first by default; "Featured" keeps the curated registry order.
+  const [sort, setSort] = useState<Sort>("newest");
 
   // Read initial state from the URL after hydration (keeps the page statically rendered).
   useEffect(() => {
@@ -27,7 +28,7 @@ export function TemplateGrid({ items, comingSoon, withUrlState = false, classNam
     const params = new URLSearchParams(window.location.search);
     const cat = CATEGORIES.find((c) => c.param === params.get("category"));
     if (cat) setCategory(cat.id);
-    if (params.get("sort") === "newest") setSort("newest");
+    if (params.get("sort") === "featured") setSort("featured");
   }, [withUrlState]);
 
   const update = (next: { category?: TemplateCategory | "ALL"; sort?: Sort }) => {
@@ -40,7 +41,7 @@ export function TemplateGrid({ items, comingSoon, withUrlState = false, classNam
     const param = CATEGORIES.find((x) => x.id === c)?.param;
     if (param) params.set("category", param);
     else params.delete("category");
-    if (s === "newest") params.set("sort", "newest");
+    if (s === "featured") params.set("sort", "featured");
     else params.delete("sort");
     const qs = params.toString();
     window.history.replaceState(null, "", `${window.location.pathname}${qs ? `?${qs}` : ""}`);
@@ -90,8 +91,8 @@ export function TemplateGrid({ items, comingSoon, withUrlState = false, classNam
               onChange={(e) => update({ sort: e.target.value as Sort })}
               className="h-10 rounded-full border border-line bg-surface px-4 text-sm"
             >
-              <option value="featured">Featured</option>
               <option value="newest">Newest</option>
+              <option value="featured">Featured</option>
             </select>
           </label>
         )}

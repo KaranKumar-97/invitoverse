@@ -39,7 +39,7 @@ hamburger → sheet; primary action as a floating button on list screens.
 | Stat cards (4) | Invitations · Published · Guests · Opens (last 7 days sparkline optional) |
 | Continue editing | Most recently edited invitation: cover thumbnail, title, status pill, "Unpublished changes" badge, buttons **Edit**, **Share** |
 | Recent invitations | Up to 5 rows → "View all" |
-| Start new | Horizontal carousel of template posters → create flow |
+| Start new | Horizontal carousel of template posters (newest first) → create flow |
 | Empty state (first visit) | Large illustration + "Create your first invitation" + 3 featured templates |
 
 ## 3. Invitations list (`/dashboard/invitations`)

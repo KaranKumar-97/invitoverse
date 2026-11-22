@@ -70,7 +70,7 @@ Form (name, email/phone, message) → `/api/v1/contact`; plus WhatsApp and email
 "Your love story deserves a beautiful beginning." + Choose a design.
 
 ## 4. Catalogue (`/templates`)
-- Same chips as home + sort (Featured / Newest). URL state `?category=floral`.
+- Same chips as home + sort (**Newest** by default / Featured). URL state `?category=floral`, `?sort=featured`.
 - Grid of cards as in 3.2; SSG with all categories; filtering client-side.
 
 ## 5. Template detail (`/templates/[slug]`)

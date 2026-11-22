@@ -7,12 +7,15 @@ import { LoopVideo } from "../LoopVideo";
 import { PhoneFrame } from "../PhoneFrame";
 import { TrackedLink } from "../TrackedLink";
 
+/** Hero phones, in order: front-centre, left, right (mobile: first to last in the swipe row). */
+const HERO_TEMPLATES = ["meenakshi", "mandir", "royal-heritage"] as const;
+
 const WORDS = "Invitations that open like a love letter.".split(" ");
 const FOIL = new Set(["love", "letter."]);
 
 /** Home hero (docs/09 §3.1): staggered headline + floating phones playing real template openings. */
 export function Hero() {
-  const phones = CATALOGUE.slice(0, 3);
+  const phones = HERO_TEMPLATES.flatMap((slug) => CATALOGUE.filter((t) => t.slug === slug));
   return (
     <section className="relative overflow-hidden">
       <div
