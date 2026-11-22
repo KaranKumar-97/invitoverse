@@ -78,6 +78,7 @@ test("no CSP violations across public, guest and owner pages", async ({
     ["/templates/royal-heritage/preview", open],
     ["/templates/minimal-luxury/preview?guest=1", open],
     ["/templates/deepam/preview?palette=temple-stone", open],
+    ["/templates/meenakshi/preview?guest=1", open],
     [`/i/${slug}`, open],
     [`/i/${slug}/guest/${guest.token}`, open],
     ["/login"],

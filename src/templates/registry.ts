@@ -11,6 +11,8 @@ import { minimalLuxuryDemo } from "./minimal-luxury/demo";
 import { minimalLuxuryManifest } from "./minimal-luxury/manifest";
 import { deepamDemo } from "./deepam/demo";
 import { deepamManifest } from "./deepam/manifest";
+import { meenakshiDemo } from "./meenakshi/demo";
+import { meenakshiManifest } from "./meenakshi/manifest";
 
 export type TemplateDemo = {
   content: InvitationContentInput;
@@ -23,6 +25,7 @@ export const templateManifests = {
   "royal-heritage": royalHeritageManifest,
   "minimal-luxury": minimalLuxuryManifest,
   deepam: deepamManifest,
+  meenakshi: meenakshiManifest,
 } as const satisfies Record<string, TemplateManifest>;
 
 export type TemplateSlug = keyof typeof templateManifests;
@@ -31,6 +34,7 @@ export const templateDemos: Record<TemplateSlug, TemplateDemo> = {
   "royal-heritage": royalHeritageDemo,
   "minimal-luxury": minimalLuxuryDemo,
   deepam: deepamDemo,
+  meenakshi: meenakshiDemo,
 };
 
 export const TEMPLATE_SLUGS = Object.keys(templateManifests) as TemplateSlug[];
