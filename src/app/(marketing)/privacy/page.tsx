@@ -21,6 +21,7 @@ export default function PrivacyPage() {
             "Invitation content: the names, events, venues, photos, videos, music and messages you add to your invitations.",
             "Guest list: names, greetings, notes and optional phone numbers you enter for your guests. You decide what to add; guests never enter data themselves.",
             "Usage: whether an invitation link was opened and how many times, and basic technical logs (IP address, browser) kept for security and abuse prevention.",
+            "Anonymous visit statistics (pages viewed, referring site, country, device type) through Vercel Web Analytics. It uses no cookies, and private parts of links, such as a guest's personal link, are removed before anything is sent.",
           ],
         },
         {

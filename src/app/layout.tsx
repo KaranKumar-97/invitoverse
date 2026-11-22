@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter, Fraunces } from "next/font/google";
 import "./globals.css";
 import { BRAND } from "@/lib/brand";
+import { SiteAnalytics } from "@/components/analytics/SiteAnalytics";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
 const fraunces = Fraunces({
@@ -51,7 +52,12 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         {/* eslint-disable-next-line @next/next/no-sync-scripts */}
         <script src="/theme-init.js" />
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        {/* Only on Vercel: elsewhere /_vercel/insights doesn't exist (and dev loads a third-party
+            debug script the CSP blocks). */}
+        {process.env.VERCEL === "1" && <SiteAnalytics />}
+      </body>
     </html>
   );
 }

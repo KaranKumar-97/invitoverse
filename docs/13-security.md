@@ -93,7 +93,7 @@ Rules:
 
 - Collect minimum data: owner email/name; guest names and optional phone entered by the owner (owner is data fiduciary for their guest list; we are processor).
 - Privacy policy explains what's stored, retention (deleted invitations purged after 30 days), and how to request deletion.
-- No third-party ad trackers. Analytics on invitation pages limited to privacy-friendly Vercel Analytics with token-stripped paths.
+- No third-party ad trackers. Page views go to cookieless Vercel Web Analytics, on Vercel deployments only (`SiteAnalytics` in the root layout). Every URL passes `analyticsUrl()` (`src/lib/analytics.ts`) first: guest tokens and invitation ids become `[token]`/`[id]`, `/preview/*` is dropped, and only `ref`/`utm_*` query params are kept. Invitation pages send `Referrer-Policy: no-referrer`, so tokens never reach a later page's referrer either.
 - Guest phone numbers and private notes never leave the dashboard.
 - Data export of guest list (CSV) available to the owner.
 

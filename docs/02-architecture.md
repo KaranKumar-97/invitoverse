@@ -32,7 +32,7 @@
 `clsx`, `tailwind-merge`, `lucide-react`), `cloudinary` (server), `next-cloudinary` (optional),
 `resend`, `@upstash/ratelimit`, `@upstash/redis`, `qrcode`, `date-fns`, `date-fns-tz`, `nanoid`
 (not for tokens — tokens use `crypto.randomBytes`), `sonner` (toasts), `yet-another-react-lightbox`,
-`@sentry/nextjs`, `vitest`, `@testing-library/react`, `@playwright/test`.
+`@sentry/nextjs`, `@vercel/analytics` (page views; URLs scrubbed by `src/lib/analytics.ts`), `vitest`, `@testing-library/react`, `@playwright/test`.
 
 Anything else: ask first.
 
