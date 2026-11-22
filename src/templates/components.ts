@@ -14,4 +14,5 @@ export const templateComponents: Record<TemplateSlug, TemplateComponent> = {
   "minimal-luxury": dynamic(() => import("./minimal-luxury")),
   deepam: dynamic(() => import("./deepam")),
   meenakshi: dynamic(() => import("./meenakshi")),
+  mandir: dynamic(() => import("./mandir")),
 };

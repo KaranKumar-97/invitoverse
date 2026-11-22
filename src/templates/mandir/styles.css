@@ -1,0 +1,89 @@
+/* Mandir — scoped to the template root. Animations use transform/opacity only. */
+[data-template="mandir"] {
+  --md-gold: color-mix(in srgb, #b8862b 80%, var(--c-accent));
+  --md-line: color-mix(in srgb, var(--c-accent) 45%, #c9a25a);
+  --md-card: color-mix(in srgb, var(--c-surface) 88%, transparent);
+  /*
+   * Width of the invitation column, shared by the painted page and the content so the two
+   * always line up: the painting's own 9:16 at full height, never under 26rem (short
+   * landscape screens) or over 640px, and never wider than the screen.
+   */
+  --md-col: min(100vw, max(26rem, min(640px, 56.25dvh)));
+  /* Hero box: the full screen, or the painting's natural 9:16 if that is taller (landscape). */
+  --md-hero-h: max(100dvh, calc(var(--md-col) * 16 / 9));
+}
+[data-template="mandir"] .md-col {
+  width: var(--md-col);
+}
+[data-template="mandir"] .md-hero {
+  height: var(--md-hero-h);
+}
+/* With "walk in" on, the hero stays pinned for an extra 75% of a screen of scrolling. */
+[data-template="mandir"] .md-hero-track {
+  height: calc(var(--md-hero-h) + 75dvh);
+}
+[data-template="mandir"] .md-eyebrow {
+  font-family: var(--f-heading);
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  font-size: 0.68rem;
+  color: var(--md-gold);
+}
+[data-template="mandir"] .md-heading {
+  font-family: var(--f-heading);
+  color: var(--c-text);
+  letter-spacing: 0.01em;
+}
+[data-template="mandir"] .md-accent {
+  color: var(--c-accent);
+}
+[data-template="mandir"] .md-card-body {
+  background: var(--md-card);
+  border: 1px solid var(--md-line);
+  border-top: 0;
+  border-radius: 0 0 20px 20px;
+  box-shadow: 0 24px 50px -34px rgba(74, 38, 32, 0.45);
+}
+[data-template="mandir"] .md-tile {
+  background: var(--c-surface);
+  border-radius: 14px;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.8) inset,
+    0 10px 24px -14px rgba(74, 38, 32, 0.35);
+}
+[data-template="mandir"] .md-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border-radius: 999px;
+  padding: 0.55rem 1.05rem;
+  font-size: 0.8rem;
+  border: 1px solid var(--md-line);
+  color: var(--c-text);
+  background: transparent;
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease;
+}
+[data-template="mandir"] .md-button:first-child {
+  background: var(--c-accent);
+  border-color: var(--c-accent);
+  color: var(--c-accent-contrast);
+}
+[data-template="mandir"] .md-button:hover {
+  background: var(--c-accent);
+  color: var(--c-accent-contrast);
+}
+/* Polaroid-style frame for carousel photos. */
+[data-template="mandir"] .md-polaroid {
+  background: #fff;
+  padding: 10px 10px 34px;
+  border-radius: 4px;
+  box-shadow: 0 18px 34px -18px rgba(60, 30, 10, 0.55);
+}
+@keyframes md-glow {
+  50% {
+    opacity: 0.55;
+    transform: scale(1.06);
+  }
+}

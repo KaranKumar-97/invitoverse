@@ -21,6 +21,7 @@ import RoyalHeritage from "@/templates/royal-heritage";
 import MinimalLuxury from "@/templates/minimal-luxury";
 import Deepam from "@/templates/deepam";
 import Meenakshi from "@/templates/meenakshi";
+import Mandir from "@/templates/mandir";
 import Starter from "@/templates/_starter";
 import { starterManifest } from "@/templates/_starter/manifest";
 import { starterDemo } from "@/templates/_starter/demo";
@@ -51,6 +52,11 @@ const CASES: Case[] = [
     manifest: templateManifests.meenakshi,
     demo: templateDemos.meenakshi,
     Component: Meenakshi,
+  },
+  {
+    manifest: templateManifests.mandir,
+    demo: templateDemos.mandir,
+    Component: Mandir,
   },
   { manifest: starterManifest, demo: starterDemo, Component: Starter },
 ];
