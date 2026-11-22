@@ -135,3 +135,9 @@ if (typeof window !== "undefined") {
     };
   }
 }
+
+// jsdom has no canvas: components fall back (e.g. the scratch card shows only "tap to reveal").
+if (typeof HTMLCanvasElement !== "undefined") {
+  HTMLCanvasElement.prototype.getContext = (() =>
+    null) as unknown as HTMLCanvasElement["getContext"];
+}

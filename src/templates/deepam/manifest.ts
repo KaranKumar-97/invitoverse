@@ -113,6 +113,23 @@ export const deepamManifest = {
         { value: "none", label: "None" },
       ],
     },
+    {
+      key: "scratchDate",
+      type: "boolean",
+      label: "Scratch card to reveal the date",
+      default: true,
+    },
+    {
+      key: "galleryStyle",
+      type: "select",
+      label: "Gallery style",
+      default: "carousel",
+      choices: [
+        { value: "carousel", label: "Swipe carousel" },
+        { value: "grid", label: "Grid" },
+      ],
+    },
+    { key: "scrollMotion", type: "boolean", label: "Cover moves as guests scroll", default: true },
   ],
   media: { couplePhotos: { max: 2 }, gallery: { max: 24 }, video: true, music: true },
   defaultMusicTrackId: "raag-dawn",

@@ -5,12 +5,13 @@ import { useState } from "react";
 import type { MediaRef } from "@/lib/invitation/schema";
 import { cn } from "@/lib/utils";
 import { Reveal } from "../motion/Reveal";
+import { Carousel } from "./Carousel";
 import { KitImage } from "./KitImage";
 
 const LightboxView = dynamic(() => import("./LightboxView"), { ssr: false });
 
 /**
- * Photo grid with lightbox. Templates control the look via `variant` and class names;
+ * Photo grid (or swipe carousel) with lightbox. Templates control the look via `variant` and class names;
  * the kit owns behaviour (lazy images, keyboard-accessible buttons, lightbox).
  */
 export function Gallery({
@@ -21,13 +22,24 @@ export function Gallery({
   imageClassName,
 }: {
   images: MediaRef[];
-  variant?: "masonry" | "grid" | "editorial";
+  variant?: "masonry" | "grid" | "editorial" | "carousel";
   className?: string;
   itemClassName?: string;
   imageClassName?: string;
 }) {
   const [open, setOpen] = useState<number | null>(null);
   if (images.length === 0) return null;
+
+  if (variant === "carousel") {
+    return (
+      <>
+        <Carousel images={images} onOpen={setOpen} cardClassName={itemClassName} />
+        {open !== null && (
+          <LightboxView images={images} index={open} onClose={() => setOpen(null)} />
+        )}
+      </>
+    );
+  }
 
   const layout =
     variant === "masonry"

@@ -131,3 +131,25 @@
     animation: none !important;
   }
 }
+
+/* Scratch card: the last of the foil dissolves after a reveal. */
+@keyframes vs-foil-clear {
+  from {
+    opacity: 0.85;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.04);
+  }
+}
+/* "Scroll to explore" hint: gentle bob. */
+@keyframes vs-hint-bob {
+  0%,
+  100% {
+    transform: translate(-50%, 0);
+  }
+  50% {
+    transform: translate(-50%, -5px);
+  }
+}

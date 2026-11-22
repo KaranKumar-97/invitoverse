@@ -12,6 +12,8 @@ import { Gallery } from "@/invitation-kit/media/Gallery";
 import { KitImage } from "@/invitation-kit/media/KitImage";
 import { VideoBlock } from "@/invitation-kit/media/VideoBlock";
 import { Reveal } from "@/invitation-kit/motion/Reveal";
+import { ScrollMotion } from "@/invitation-kit/motion/ScrollMotion";
+import { ScratchReveal } from "@/invitation-kit/interactive/ScratchReveal";
 import type { SectionProps } from "@/invitation-kit/types";
 import { Gopuram, Kalash, KolamRing, Lamp, LotusDivider, Toran } from "./decor";
 
@@ -29,12 +31,33 @@ function SectionTitle({ eyebrow, title }: { eyebrow?: string; title: string }) {
 
 const wrap = "px-5 py-16 sm:px-8 sm:py-20";
 
+/** Scroll-driven motion when the template option is on; a plain wrapper otherwise. */
+function HeroMotion({
+  on,
+  to,
+  children,
+  className,
+}: {
+  on: boolean;
+  to: { y?: number; scale?: number; opacity?: number };
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return on ? (
+    <ScrollMotion to={to} className={className}>
+      {children}
+    </ScrollMotion>
+  ) : (
+    <div className={className}>{children}</div>
+  );
+}
+
 export function Hero({ data }: SectionProps) {
   const c = data.content;
   const [first, second] = orderedNames(c.couple);
   const p = dateParts(c.weddingDate);
   return (
-    <section className="relative flex min-h-dvh flex-col items-center px-5 pb-16 text-center">
+    <section className="relative flex min-h-dvh flex-col items-center px-5 pb-24 text-center">
       {Boolean(data.options.showToran) && (
         <Toran className="absolute top-0 left-1/2 max-w-[440px] -translate-x-1/2" />
       )}
@@ -54,12 +77,14 @@ export function Hero({ data }: SectionProps) {
                   "radial-gradient(closest-side, color-mix(in srgb, var(--c-accent) 28%, transparent), transparent)",
               }}
             />
-            <Gopuram
-              className="relative w-full"
-              lit
-              // Tower colour: accent mixed with temple-stone brown, so it reads as stone on every palette.
-              style={{ color: "color-mix(in srgb, var(--c-accent) 45%, #3a2416)" }}
-            />
+            <HeroMotion on={Boolean(data.options.scrollMotion)} to={{ scale: 1.4, y: 40 }}>
+              <Gopuram
+                className="relative w-full"
+                lit
+                // Tower colour: accent mixed with temple-stone brown, so it reads as stone on every palette.
+                style={{ color: "color-mix(in srgb, var(--c-accent) 45%, #3a2416)" }}
+              />
+            </HeroMotion>
           </Reveal>
         )}
         <Reveal delay={0.2} as="p" className="dp-eyebrow mt-8">
@@ -161,6 +186,35 @@ export function Families({ data }: SectionProps) {
   );
 }
 
+/** Scratch the brass foil to reveal the wedding date. */
+function SaveTheDate({ data }: { data: SectionProps["data"] }) {
+  const p = dateParts(data.content.weddingDate);
+  return (
+    <Reveal className="mb-16 flex flex-col items-center text-center">
+      <p className="dp-eyebrow">Mark your calendar</p>
+      <h2 className="dp-heading dp-glow-text mt-3 text-[1.75rem] sm:text-[2rem]">Save the Date</h2>
+      <LotusDivider className="mx-auto mt-4" />
+      <ScratchReveal
+        className="mt-7 w-[min(84vw,330px)] rounded-[28px]"
+        label="Scratch to reveal the date"
+        tapLabel="Or tap to reveal"
+        tapClassName="text-[var(--c-muted)]"
+      >
+        <div className="dp-card flex aspect-[1.6/1] flex-col items-center justify-center px-6">
+          <p className="dp-eyebrow">{p.weekday}</p>
+          <p className="f-display dp-glow-text mt-1 text-6xl leading-none">{p.day}</p>
+          <p className="dp-heading mt-2 tracking-[0.2em] uppercase">
+            {p.month} · {p.year}
+          </p>
+          {data.content.city && (
+            <p className="mt-2 text-sm text-[var(--c-muted)] italic">{data.content.city}</p>
+          )}
+        </div>
+      </ScratchReveal>
+    </Reveal>
+  );
+}
+
 export function Countdown({ data }: SectionProps) {
   const v = useCountdown(data.countdownTo);
   const cells: Array<[string, number | undefined]> = [
@@ -171,6 +225,7 @@ export function Countdown({ data }: SectionProps) {
   ];
   return (
     <section className={wrap}>
+      {Boolean(data.options.scratchDate) && <SaveTheDate data={data} />}
       <SectionTitle
         eyebrow="The auspicious muhurtham"
         title={v?.isPast ? "The celebrations have begun" : "Counting the moments"}
@@ -322,11 +377,15 @@ export function GallerySection({ data }: SectionProps) {
   return (
     <section className={wrap}>
       <SectionTitle eyebrow="Glimpses" title="Moments of Light" />
-      <Gallery
-        images={images}
-        variant="grid"
-        itemClassName="overflow-hidden rounded-2xl border border-[color-mix(in_srgb,var(--c-accent)_40%,transparent)]"
-      />
+      {String(data.options.galleryStyle ?? "carousel") === "grid" ? (
+        <Gallery
+          images={images}
+          variant="grid"
+          itemClassName="overflow-hidden rounded-2xl border border-[color-mix(in_srgb,var(--c-accent)_40%,transparent)]"
+        />
+      ) : (
+        <Gallery images={images} variant="carousel" />
+      )}
     </section>
   );
 }

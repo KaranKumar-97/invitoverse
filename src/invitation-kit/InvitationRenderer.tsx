@@ -8,6 +8,7 @@ import { InvitationProvider, type InvitationPhase } from "./context";
 import { indicFontsClassName, INDIC_FALLBACK } from "./fonts";
 import { MusicToggle } from "./music/MusicToggle";
 import { musicPreferenceOff, useMusicController } from "./music/useMusicController";
+import { ScrollHint } from "./ScrollHint";
 import { SectionBoundary } from "./SectionBoundary";
 import type { RenderableInvitation, TemplateModule } from "./types";
 import "./kit.css";
@@ -185,6 +186,9 @@ export function InvitationRenderer({
         )}
 
         <MusicToggle music={music} visible={phase === "open"} />
+        {module.scrollHint !== false && (
+          <ScrollHint active={phase === "open"} reducedMotion={prefersReduced} />
+        )}
       </div>
     </InvitationProvider>
   );

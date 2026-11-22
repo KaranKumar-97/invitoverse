@@ -26,4 +26,6 @@ export type TemplateModule = {
   /** Page frame / ambient decor around the sections. */
   Layout?: ComponentType<{ data: RenderableInvitation; children: ReactNode }>;
   fonts: { className: string; stacks: Record<string, FontStacks> };
+  /** Show the floating "Scroll to explore" hint after opening (default true). */
+  scrollHint?: boolean;
 };
