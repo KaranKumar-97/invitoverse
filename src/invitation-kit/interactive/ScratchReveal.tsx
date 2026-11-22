@@ -32,7 +32,7 @@ export function ScratchReveal({
   children,
   label = "Scratch to reveal",
   tapLabel = "Or tap to reveal",
-  threshold = 0.5,
+  threshold = 0.3,
   foil,
   className,
   tapClassName,
