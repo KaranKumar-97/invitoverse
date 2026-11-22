@@ -16,11 +16,5 @@ export default async function NewInvitationPage({
   );
   const templates = await listAvailableTemplates();
   const initial = templates.find((t) => t.slug === template)?.slug ?? null;
-  return (
-    <CreateWizard
-      templates={templates}
-      initialTemplate={initial}
-      appUrl={process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"}
-    />
-  );
+  return <CreateWizard templates={templates} initialTemplate={initial} />;
 }

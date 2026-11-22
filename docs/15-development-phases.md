@@ -81,7 +81,7 @@ gantt
 **Tasks**
 1. Services: `invitations.ts` (create, list, getForEditor, saveDraft w/ optimistic lock, updateMeta, checkSlug, changeSlug, duplicate, archive/restore, delete) + authz tests.
 2. Seed templates into DB from registry (`pnpm db:seed`).
-3. Create flow (3 steps), slug suggestions + availability.
+3. Create flow (design → couple; link auto-generated), slug suggestions + availability in the publish dialog.
 4. Invitations list (grid/table, tabs, search, kebab actions, confirmations) and Overview page with stats.
 5. Editor shell: tabs, save-state indicator, autosave (debounced 1 s), conflict handling, mobile bottom bar.
 6. Details tab and Events tab (dnd-kit reorder, presets, maps URL validation).

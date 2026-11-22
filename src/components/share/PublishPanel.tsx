@@ -20,14 +20,16 @@ import type { ChecklistItem, ChecklistTab } from "@/lib/invitation/checklist";
 import { cn } from "@/lib/utils";
 import type { PublishState } from "@/server/services/publishing";
 import {
+  changeSlugAction,
   getPublishStateAction,
   publishInvitationAction,
   unpublishInvitationAction,
 } from "@/app/(editor)/dashboard/invitations/[id]/edit/actions";
+import { LinkPicker, useSlugCheck } from "./LinkPicker";
 import { SharePanel } from "./SharePanel";
 
 /**
- * Checklist → Publish / Publish changes → share tools → Unpublish.
+ * Checklist → Your link (first publish only) → Publish / Publish changes → share tools → Unpublish.
  * Used in the editor's publish dialog and on the standalone Share page.
  */
 export function PublishPanel({
@@ -50,6 +52,10 @@ export function PublishPanel({
   const [state, setState] = useState<PublishState | null>(initialState ?? null);
   const [error, setError] = useState<string | null>(null);
   const [pending, start] = useTransition();
+  const savedSlug = state?.slug ?? "";
+  const [slugDraft, setSlugDraft] = useState(savedSlug);
+  const slugStatus = useSlugCheck(slugDraft, savedSlug, invitationId);
+  useEffect(() => setSlugDraft(savedSlug), [savedSlug]);
 
   const refresh = useCallback(async () => {
     await beforeLoad?.();
@@ -80,6 +86,10 @@ export function PublishPanel({
   const publish = () =>
     start(async () => {
       await beforeLoad?.();
+      if (!published && slugStatus.changed) {
+        const moved = await changeSlugAction({ id: invitationId, slug: slugDraft });
+        if (!moved.ok) return void toast.error(moved.error.message);
+      }
       const res = await publishInvitationAction({ id: invitationId });
       if (!res.ok) {
         toast.error(res.error.message);
@@ -150,6 +160,10 @@ export function PublishPanel({
         </ul>
       </section>
 
+      {!published && (
+        <LinkPicker appUrl={appUrl} value={slugDraft} onChange={setSlugDraft} status={slugStatus} />
+      )}
+
       <div className="flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-between">
         {published ? (
           <AlertDialog>
@@ -189,7 +203,7 @@ export function PublishPanel({
           <Button
             type="button"
             className="h-11 rounded-full px-6"
-            disabled={!state.canPublish || pending}
+            disabled={!state.canPublish || pending || (!published && !slugStatus.ok)}
             onClick={publish}
           >
             {pending ? <Loader2 className="animate-spin" /> : <Send />}{" "}

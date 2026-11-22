@@ -59,6 +59,7 @@ export function SettingsTab({
   const problem = slugDraft !== slug ? slugProblem(slugDraft) : null;
 
   useEffect(() => setTitleDraft(title), [title]);
+  useEffect(() => setSlugDraft(slug), [slug]);
   useEffect(() => {
     if (debounced === slug || slugProblem(debounced)) return;
     let live = true;

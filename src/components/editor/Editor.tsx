@@ -507,6 +507,7 @@ export function Editor({
               }}
               onStateChange={(st) => {
                 setStatus(st.status);
+                setSlug(st.slug);
                 setUnpublishedChanges(st.hasUnpublishedChanges);
               }}
             />

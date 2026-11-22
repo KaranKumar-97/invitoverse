@@ -2,20 +2,20 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState, useTransition } from "react";
-import { ArrowLeft, ArrowRight, Check, ExternalLink, Loader2, X } from "lucide-react";
+import { useState, useTransition } from "react";
+import { ArrowLeft, ArrowRight, Check, ExternalLink, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useDebouncedValue } from "@/lib/hooks";
-import { slugCandidates, slugify, slugProblem, SLUG_PROBLEM_MESSAGES } from "@/lib/slug";
 import { cn } from "@/lib/utils";
 import type { TemplateOption } from "@/server/services/templates";
-import { checkSlugAction, createInvitationAction } from "../actions";
+import { createInvitationAction } from "../actions";
 
-type Step = 0 | 1 | 2;
-const STEPS = ["Choose design", "The couple", "Your link"];
+// The link is chosen last, when publishing (docs/08 §4) — the draft gets a free
+// link from the couple's names, so owners fill in events before picking it.
+type Step = 0 | 1;
+const STEPS = ["Choose design", "The couple"];
 
 function todayIso() {
   const d = new Date();
@@ -25,11 +25,9 @@ function todayIso() {
 export function CreateWizard({
   templates,
   initialTemplate,
-  appUrl,
 }: {
   templates: TemplateOption[];
   initialTemplate: string | null;
-  appUrl: string;
 }) {
   const router = useRouter();
   const [step, setStep] = useState<Step>(initialTemplate ? 1 : 0);
@@ -38,43 +36,8 @@ export function CreateWizard({
   const [groom, setGroom] = useState("");
   const [order, setOrder] = useState<"BRIDE_FIRST" | "GROOM_FIRST">("BRIDE_FIRST");
   const [date, setDate] = useState("");
-  const [slug, setSlug] = useState("");
-  const [slugTouched, setSlugTouched] = useState(false);
   const [touched, setTouched] = useState(false);
   const [pending, start] = useTransition();
-
-  const names = useMemo<[string, string]>(
-    () => (order === "GROOM_FIRST" ? [groom, bride] : [bride, groom]),
-    [order, bride, groom],
-  );
-
-  // Suggest a slug from the names until the user edits it.
-  useEffect(() => {
-    if (!slugTouched) setSlug(slugCandidates(names[0], names[1])[0] ?? "");
-  }, [names, slugTouched]);
-
-  const debouncedSlug = useDebouncedValue(slug, 400);
-  const [check, setCheck] = useState<{
-    slug: string;
-    available: boolean;
-    reason: string | null;
-    suggestions: string[];
-  } | null>(null);
-  const localProblem = slug ? slugProblem(slug) : "TOO_SHORT";
-
-  useEffect(() => {
-    if (step !== 2 || !debouncedSlug || slugProblem(debouncedSlug)) return;
-    let cancelled = false;
-    checkSlugAction({ slug: debouncedSlug, names, weddingDate: date || undefined }).then((res) => {
-      if (!cancelled && res.ok) setCheck(res.data);
-    });
-    return () => {
-      cancelled = true;
-    };
-  }, [debouncedSlug, step, names, date]);
-
-  const checking = step === 2 && !localProblem && (check?.slug !== slug || debouncedSlug !== slug);
-  const slugOk = !localProblem && !checking && check?.slug === slug && check.available;
 
   const coupleErrors = {
     bride: !bride.trim() ? "Enter the bride's first name" : null,
@@ -83,38 +46,21 @@ export function CreateWizard({
   };
   const coupleValid = !coupleErrors.bride && !coupleErrors.groom && !coupleErrors.date;
 
-  const next = () => {
-    if (step === 0 && template) setStep(1);
-    else if (step === 1) {
-      setTouched(true);
-      if (coupleValid) setStep(2);
-    }
-  };
-
   const submit = () =>
     start(async () => {
-      if (!template) return;
+      setTouched(true);
+      if (!template || !coupleValid) return;
       const res = await createInvitationAction({
         templateSlug: template,
         brideName: bride,
         groomName: groom,
         order,
         weddingDate: date,
-        slug,
       });
       if (res.ok) {
         toast.success("Invitation created");
         router.push(`/dashboard/invitations/${res.data.id}/edit`);
-      } else {
-        toast.error(res.error.message);
-        if (res.error.code === "CONFLICT")
-          setCheck({
-            slug,
-            available: false,
-            reason: "This link was just taken.",
-            suggestions: [],
-          });
-      }
+      } else toast.error(res.error.message);
     });
 
   const selected = templates.find((t) => t.slug === template);
@@ -226,8 +172,8 @@ export function CreateWizard({
           <div>
             <h2 className="font-display text-2xl font-semibold">The couple</h2>
             <p className="mt-1 text-ink-soft">
-              {selected ? `Designing with ${selected.name}. ` : ""}Everything else can be filled in
-              the editor.
+              {selected ? `Designing with ${selected.name}. ` : ""}Next you&apos;ll add your events
+              and details in the editor, then choose your link when you publish.
             </p>
             <div className="mt-6 grid gap-5 sm:grid-cols-2">
               <Field
@@ -296,91 +242,6 @@ export function CreateWizard({
             </div>
           </div>
         )}
-
-        {step === 2 && (
-          <div>
-            <h2 className="font-display text-2xl font-semibold">Your link</h2>
-            <p className="mt-1 text-ink-soft">
-              This is the address you&apos;ll share. You can change it until you publish.
-            </p>
-            <div className="mt-6">
-              <Label htmlFor="slug">Invitation link</Label>
-              <div className="mt-1.5 flex items-center overflow-hidden rounded-md border border-input bg-surface focus-within:ring-2 focus-within:ring-ring">
-                <span className="hidden shrink-0 border-r border-line bg-muted px-3 py-2.5 text-sm text-muted-foreground sm:block">
-                  {new URL(appUrl).host}/i/
-                </span>
-                <input
-                  id="slug"
-                  value={slug}
-                  onChange={(e) => {
-                    setSlugTouched(true);
-                    setSlug(
-                      slugify(e.target.value.replace(/\s/g, "-")) +
-                        (e.target.value.endsWith("-") ? "-" : ""),
-                    );
-                  }}
-                  maxLength={48}
-                  autoComplete="off"
-                  spellCheck={false}
-                  aria-describedby="slug-status"
-                  className="h-11 min-w-0 flex-1 bg-transparent px-3 text-sm outline-none"
-                />
-                <span className="px-3" aria-hidden="true">
-                  {checking ? (
-                    <Loader2 className="size-4 animate-spin text-muted-foreground" />
-                  ) : slugOk ? (
-                    <Check className="size-4 text-success" />
-                  ) : (
-                    <X className="size-4 text-destructive" />
-                  )}
-                </span>
-              </div>
-              <p
-                id="slug-status"
-                className={cn(
-                  "mt-2 text-sm",
-                  slugOk
-                    ? "text-success"
-                    : localProblem || (check && !check.available)
-                      ? "text-destructive"
-                      : "text-muted-foreground",
-                )}
-                aria-live="polite"
-              >
-                {localProblem
-                  ? SLUG_PROBLEM_MESSAGES[localProblem]
-                  : checking
-                    ? "Checking availability…"
-                    : slugOk
-                      ? "This link is available."
-                      : (check?.reason ?? "")}
-              </p>
-              {!slugOk && !checking && check?.suggestions && check.suggestions.length > 0 && (
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {check.suggestions.map((s) => (
-                    <button
-                      key={s}
-                      type="button"
-                      onClick={() => {
-                        setSlugTouched(true);
-                        setSlug(s);
-                      }}
-                      className="rounded-full border border-line px-3 py-1 text-sm hover:border-ink"
-                    >
-                      {s}
-                    </button>
-                  ))}
-                </div>
-              )}
-              <p className="mt-6 rounded-md bg-muted px-4 py-3 text-sm break-all">
-                <span className="text-muted-foreground">Guests will open </span>
-                <span className="font-medium">
-                  {appUrl.replace(/\/$/, "")}/i/{slug || "…"}
-                </span>
-              </p>
-            </div>
-          </div>
-        )}
       </section>
 
       <div className="fixed inset-x-0 bottom-0 z-20 flex gap-3 border-t border-line bg-canvas/95 p-4 backdrop-blur sm:static sm:mt-6 sm:justify-between sm:border-0 sm:bg-transparent sm:p-0">
@@ -388,18 +249,18 @@ export function CreateWizard({
           <Button
             variant="outline"
             className="h-11 flex-1 rounded-full sm:flex-none"
-            onClick={() => setStep((s) => (s - 1) as Step)}
+            onClick={() => setStep(0)}
           >
             <ArrowLeft /> Back
           </Button>
         ) : (
           <span className="hidden sm:block" />
         )}
-        {step < 2 ? (
+        {step === 0 ? (
           <Button
             className="h-11 flex-1 rounded-full sm:flex-none sm:px-8"
-            onClick={next}
-            disabled={step === 0 && !template}
+            onClick={() => template && setStep(1)}
+            disabled={!template}
           >
             Continue <ArrowRight />
           </Button>
@@ -407,7 +268,7 @@ export function CreateWizard({
           <Button
             className="h-11 flex-1 rounded-full sm:flex-none sm:px-8"
             onClick={submit}
-            disabled={!slugOk || pending}
+            disabled={pending}
           >
             {pending ? <Loader2 className="animate-spin" /> : null}
             Create invitation

@@ -56,13 +56,14 @@ hamburger → sheet; primary action as a floating button on list screens.
 
 ## 4. Create flow (`/dashboard/invitations/new`)
 
-Three short steps in a centered card (progress dots), each one screen on mobile:
+Two short steps in a centered card (progress dots), each one screen on mobile:
 
 1. **Choose design** — template grid with category chips; hover/tap shows mini live preview; preselected if `?template=`.
 2. **The couple** — Bride first name, Groom first name, order toggle (Bride & Groom / Groom & Bride), wedding date (date picker).
-3. **Your link** — slug auto-suggested (`priya-rahul`), live availability check (✓ / suggestions), preview of full URL.
 
-→ "Create invitation" → editor opens with demo content prefilled for the rest (events, messages) and a dismissible banner: "We've added sample events and text — replace them with yours."
+→ "Create invitation" → the draft gets a free link generated from the names (`priya-rahul`, `priya-rahul-2`…) and the editor opens with demo content prefilled for the rest (events, messages) and a dismissible banner: "We've added sample events and text — replace them with yours."
+
+**Your link is the last step.** The publish dialog (and `/share` page) shows a "Your link" field before the first publish: prefilled with the generated link, live availability check (✓ / suggestions), preview of the full URL. Publishing saves a changed link (`changeSlug`) and then publishes. After publishing, the link can still be changed in Settings (with a warning).
 
 ## 5. Editor (`/dashboard/invitations/[id]/edit`)
 
