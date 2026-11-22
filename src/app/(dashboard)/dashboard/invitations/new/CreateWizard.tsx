@@ -8,8 +8,14 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { LoopVideo } from "@/components/marketing/LoopVideo";
 import { cn } from "@/lib/utils";
 import type { TemplateOption } from "@/server/services/templates";
+
+/** A design option plus its captured opening loop (public/templates/<slug>/). */
+export type WizardTemplate = TemplateOption & {
+  media: { poster: string; mp4: string; webm: string };
+};
 import { createInvitationAction } from "../actions";
 
 // The link is chosen last, when publishing (docs/08 §4) — the draft gets a free
@@ -26,7 +32,7 @@ export function CreateWizard({
   templates,
   initialTemplate,
 }: {
-  templates: TemplateOption[];
+  templates: WizardTemplate[];
   initialTemplate: string | null;
 }) {
   const router = useRouter();
@@ -115,7 +121,11 @@ export function CreateWizard({
             <p className="mt-1 text-ink-soft">
               You can switch designs later without losing your text.
             </p>
-            <ul className="mt-6 grid gap-4 sm:grid-cols-2" role="radiogroup" aria-label="Designs">
+            <ul
+              className="mt-6 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3"
+              role="radiogroup"
+              aria-label="Designs"
+            >
               {templates.map((t) => (
                 <li key={t.slug}>
                   <div
@@ -135,21 +145,24 @@ export function CreateWizard({
                     )}
                   >
                     <div
-                      className="relative grid aspect-[16/10] place-items-center"
+                      className="relative aspect-[9/16] overflow-hidden"
                       style={{ background: t.swatch.bg }}
                     >
-                      <span className="font-display text-2xl" style={{ color: t.swatch.accent }}>
-                        {t.name}
-                      </span>
+                      <LoopVideo
+                        poster={t.media.poster}
+                        mp4={t.media.mp4}
+                        webm={t.media.webm}
+                        label={`${t.name} invitation opening`}
+                      />
                       {template === t.slug && (
-                        <span className="absolute top-3 right-3 grid size-7 place-items-center rounded-full bg-maroon text-canvas">
+                        <span className="absolute top-3 right-3 grid size-7 place-items-center rounded-full bg-maroon text-canvas shadow-card">
                           <Check className="size-4" />
                         </span>
                       )}
                     </div>
-                    <div className="flex items-center justify-between gap-2 bg-surface p-4">
-                      <div>
-                        <p className="font-medium">{t.name}</p>
+                    <div className="flex flex-wrap items-end justify-between gap-x-2 gap-y-1 bg-surface p-3 sm:p-4">
+                      <div className="min-w-0">
+                        <p className="truncate font-medium">{t.name}</p>
                         <p className="text-sm text-muted-foreground">{t.styleLabel}</p>
                       </div>
                       <Link
