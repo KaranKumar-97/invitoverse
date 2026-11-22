@@ -1,5 +1,8 @@
-import { SectionHeading } from "./SectionHeading";
+import Image from "next/image";
+import { Check, CheckCheck } from "lucide-react";
+import { templateMedia } from "@/lib/marketing/catalogue";
 import { SITE } from "@/lib/marketing/site";
+import { SectionHeading } from "./SectionHeading";
 
 const STEPS = [
   {
@@ -52,23 +55,60 @@ export function HowItWorks() {
   );
 }
 
-/* Small looping illustrations — CSS transform/opacity only. */
-function PickArt() {
+/* Small illustrations built from real template art — CSS transform/opacity motion only. */
+
+const poster = (slug: string) => templateMedia(slug).poster;
+
+/** A tiny phone showing a template's opening poster. */
+function MiniPhone({
+  slug,
+  label,
+  className,
+  style,
+  children,
+}: {
+  slug: string;
+  label?: string;
+  className?: string;
+  style?: React.CSSProperties;
+  children?: React.ReactNode;
+}) {
   return (
-    <div className="flex items-end gap-3" aria-hidden>
-      {["#2A0E12", "#F4EFE6", "#7A1F2B"].map((c, i) => (
+    <div
+      className={`relative aspect-[9/16] overflow-hidden rounded-[14px] bg-black shadow-float ring-[3px] ring-[#0f0d0c] ${className ?? ""}`}
+      style={style}
+    >
+      <Image src={poster(slug)} alt={label ?? ""} fill sizes="120px" className="object-cover" />
+      {children}
+    </div>
+  );
+}
+
+function PickArt() {
+  const designs = [
+    { slug: "mandir", tilt: "-9deg", x: "-58%", delay: "400ms" },
+    { slug: "meenakshi", tilt: "0deg", x: "0%", delay: "0ms" },
+    { slug: "royal-heritage", tilt: "9deg", x: "58%", delay: "800ms" },
+  ];
+  return (
+    <div className="relative h-[78%] w-full" aria-hidden>
+      {designs.map((d, i) => (
         <div
-          key={c}
-          className="mk-float h-28 w-16 rounded-lg shadow-card ring-1 ring-black/5"
-          style={
-            {
-              background: c,
-              "--delay": `${i * 500}ms`,
-              "--tilt": `${(i - 1) * 6}deg`,
-            } as React.CSSProperties
-          }
+          key={d.slug}
+          className="absolute top-1/2 left-1/2 h-full"
+          style={{ transform: `translate(calc(-50% + ${d.x}), -50%)`, zIndex: i === 1 ? 2 : 1 }}
         >
-          {i === 1 && <div className="mx-auto mt-10 size-5 rounded-full border-2 border-maroon" />}
+          <MiniPhone
+            slug={d.slug}
+            className={`mk-float h-full ${i === 1 ? "" : "scale-[0.86] opacity-80"}`}
+            style={{ "--tilt": d.tilt, "--delay": d.delay } as React.CSSProperties}
+          >
+            {i === 1 && (
+              <span className="absolute right-1.5 bottom-1.5 grid size-6 place-items-center rounded-full bg-[#E7C77B] text-[#2A0E12] shadow-card">
+                <Check className="size-3.5" strokeWidth={3} />
+              </span>
+            )}
+          </MiniPhone>
         </div>
       ))}
     </div>
@@ -76,36 +116,78 @@ function PickArt() {
 }
 
 function EditArt() {
+  const fields = [
+    { label: "Bride", value: "Meera" },
+    { label: "Groom", value: "Aarav", typing: true },
+  ];
   return (
-    <div className="flex w-[78%] gap-3" aria-hidden>
-      <div className="flex-1 space-y-2 rounded-lg border border-line p-3">
-        <div className="h-2 w-1/2 rounded bg-line" />
-        <div className="h-6 rounded border border-maroon/40 bg-maroon-soft/50" />
-        <div className="h-2 w-2/3 rounded bg-line" />
-        <div className="h-6 rounded border border-line" />
+    <div className="flex h-[78%] w-[86%] items-center gap-4" aria-hidden>
+      <div className="flex-1 space-y-2.5 rounded-lg border border-line bg-canvas p-3 shadow-card">
+        {fields.map((f) => (
+          <div key={f.label}>
+            <p className="text-[10px] font-medium text-muted-foreground">{f.label}</p>
+            <p
+              className={`mt-0.5 flex h-7 items-center rounded-md border px-2 text-xs font-medium ${
+                f.typing ? "border-maroon/50 ring-2 ring-maroon/15" : "border-line"
+              }`}
+            >
+              {f.value}
+              {f.typing && <span className="mk-caret ml-px h-3.5 w-px bg-ink" />}
+            </p>
+          </div>
+        ))}
+        <div className="flex flex-wrap gap-1 pt-0.5">
+          {["Haldi", "Sangeet", "Wedding"].map((e) => (
+            <span
+              key={e}
+              className="rounded-full bg-maroon-soft px-2 py-0.5 text-[10px] font-medium text-maroon"
+            >
+              {e}
+            </span>
+          ))}
+        </div>
       </div>
-      <div className="grid w-16 place-items-center rounded-lg bg-[#2A0E12] px-1 text-center">
-        <span className="mk-float font-display text-[11px] leading-tight text-[#E7C77B]">
-          Meera
-          <br />
-          &amp;
-          <br />
-          Aarav
+      <div className="relative h-full">
+        <MiniPhone slug="royal-heritage" className="h-full" />
+        <span className="absolute -top-2 -right-2 rounded-full bg-[#E7C77B] px-2 py-0.5 text-[9px] font-semibold tracking-wide text-[#2A0E12] uppercase shadow-card">
+          Live
         </span>
       </div>
     </div>
   );
 }
 
+/** WhatsApp-style chat. Fixed WhatsApp colours (with fixed text colours) in both themes. */
 function ShareArt() {
+  const host = new URL(SITE.url).host;
   return (
-    <div className="w-[70%] space-y-2" aria-hidden>
-      <div className="ml-auto w-4/5 rounded-xl rounded-br-sm bg-[#dcf8c6] p-2.5 text-[11px] text-ink shadow-card">
-        <p className="font-semibold">You&apos;re invited 💌</p>
-        <p className="truncate text-[10px] text-ink-soft">{new URL(SITE.url).host}/i/meera-aarav</p>
+    <div
+      className="flex h-full w-full flex-col justify-center gap-2 bg-[#efe7dd] px-[9%] dark:bg-[#0b141a]"
+      aria-hidden
+    >
+      <div className="ml-auto w-[78%] rounded-xl rounded-tr-sm bg-[#d9fdd3] p-1.5 text-[#111b21] shadow-card dark:bg-[#005c4b] dark:text-[#e9edef]">
+        <div className="flex gap-2 rounded-lg bg-black/5 p-1.5 dark:bg-black/20">
+          <div className="relative aspect-square w-11 shrink-0 overflow-hidden rounded-md">
+            <Image
+              src={templateMedia("royal-heritage").og}
+              alt=""
+              fill
+              sizes="44px"
+              className="object-cover"
+            />
+          </div>
+          <div className="min-w-0 text-[10px] leading-tight">
+            <p className="font-semibold">Meera &amp; Aarav — 13 Feb 2027</p>
+            <p className="mt-0.5 truncate opacity-70">{host}</p>
+          </div>
+        </div>
+        <p className="px-1 pt-1.5 text-[11px]">You&apos;re invited 💌</p>
+        <p className="flex items-center justify-end gap-0.5 px-1 text-[9px] opacity-60">
+          7:42 PM <CheckCheck className="size-3 text-[#53bdeb]" />
+        </p>
       </div>
       <div
-        className="mk-float w-3/5 rounded-xl rounded-bl-sm bg-surface p-2.5 text-[11px] shadow-card ring-1 ring-line"
+        className="mk-float w-[62%] rounded-xl rounded-tl-sm bg-white p-2 text-[11px] text-[#111b21] shadow-card dark:bg-[#202c33] dark:text-[#e9edef]"
         style={{ "--delay": "900ms" } as React.CSSProperties}
       >
         So beautiful! See you at the Sangeet 🎶

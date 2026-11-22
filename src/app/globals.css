@@ -251,6 +251,15 @@
   animation: mk-float 6s ease-in-out infinite;
   animation-delay: var(--delay, 0ms);
 }
+@keyframes mk-caret {
+  50% {
+    opacity: 0;
+  }
+}
+.mk-caret {
+  animation: mk-caret 1s steps(1) infinite;
+}
+
 @keyframes mk-sheet-in {
   from {
     transform: translateX(100%);
@@ -361,6 +370,7 @@
   .mk-word,
   .mk-fade-up,
   .mk-float,
+  .mk-caret,
   .mk-sheet[open],
   .text-foil {
     animation: none !important;
