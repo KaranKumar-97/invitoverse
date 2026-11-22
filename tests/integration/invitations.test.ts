@@ -44,6 +44,13 @@ describe("createInvitation", () => {
     expect(inv.content.couple.bride.firstName).toBe("Priya");
     expect(inv.content.weddingDate).toBe("2027-02-14");
     expect(inv.content.events.length).toBeGreaterThan(0);
+    // Sample events follow the chosen date (demo: 13 Feb, events 11–14 Feb → shifted by +1 day).
+    expect(inv.content.events.map((e) => e.date).sort()).toEqual([
+      "2027-02-12",
+      "2027-02-13",
+      "2027-02-14",
+      "2027-02-15",
+    ]);
     expect(inv.content.sample).toContain("events");
     expect(inv.design.paletteId).toBe("maroon-gold");
   });

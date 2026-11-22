@@ -46,6 +46,31 @@ export function formatTimeRange(start: string, end?: string): string {
   return end ? `${formatTime(start)} – ${formatTime(end)}` : formatTime(start);
 }
 
+const DAY_MS = 86_400_000;
+
+/** Whole days from `from` to `to` (both "YYYY-MM-DD"). */
+export function daysBetween(from: string, to: string): number {
+  return Math.round((utcDate(to).getTime() - utcDate(from).getTime()) / DAY_MS);
+}
+
+/** "YYYY-MM-DD" moved by `days`. */
+export function addDays(isoDate: string, days: number): string {
+  return new Date(utcDate(isoDate).getTime() + days * DAY_MS).toISOString().slice(0, 10);
+}
+
+/**
+ * Moves sample events from the demo's wedding date to the couple's, keeping their spacing
+ * (e.g. a cocktail the evening before stays the evening before). Undated events are left alone.
+ */
+export function alignEventsToWedding<E extends { date: string }>(
+  events: readonly E[],
+  fromWeddingDate: string,
+  toWeddingDate: string,
+): E[] {
+  const shift = daysBetween(fromWeddingDate, toWeddingDate);
+  return events.map((e) => (e.date ? { ...e, date: addDays(e.date, shift) } : e));
+}
+
 /** Wall-clock date/time in the invitation's timezone → absolute instant. */
 export function toInstant(isoDate: string, hhmm: string, timezone: string): Date {
   return fromZonedTime(`${isoDate}T${hhmm}:00`, timezone);

@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 import {
+  addDays,
+  alignEventsToWedding,
   dateParts,
+  daysBetween,
   formatLongDate,
   formatTime,
   formatTimeRange,
@@ -66,5 +69,26 @@ describe("buildIcs", () => {
     expect(ics).toContain("DTEND:20270213T160000Z");
     expect(ics).toContain("SUMMARY:Wedding\\; Pheras · Meera & Aarav");
     expect(ics).toContain("LOCATION:City Palace\\, Udaipur\\, Rajasthan");
+  });
+});
+
+describe("aligning sample events to the wedding date", () => {
+  it("counts whole days and moves dates across months and years", () => {
+    expect(daysBetween("2027-11-27", "2026-11-25")).toBe(-367);
+    expect(addDays("2026-12-31", 1)).toBe("2027-01-01");
+    expect(addDays("2026-03-01", -1)).toBe("2026-02-28");
+  });
+
+  it("keeps the spacing between events and skips undated ones", () => {
+    const events = [
+      { name: "Cocktail", date: "2027-11-26" },
+      { name: "Wedding", date: "2027-11-27" },
+      { name: "TBD", date: "" },
+    ];
+    expect(alignEventsToWedding(events, "2027-11-27", "2026-11-25")).toEqual([
+      { name: "Cocktail", date: "2026-11-24" },
+      { name: "Wedding", date: "2026-11-25" },
+      { name: "TBD", date: "" },
+    ]);
   });
 });

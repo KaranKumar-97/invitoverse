@@ -1,6 +1,7 @@
 import "server-only";
 import { Prisma, type InvitationStatus } from "@prisma/client";
 import { AppError } from "@/lib/action-result";
+import { alignEventsToWedding } from "@/lib/invitation/dates";
 import { defaultDesign } from "@/lib/invitation/defaults";
 import {
   DesignConfigSchema,
@@ -259,6 +260,8 @@ export async function createInvitation(
   const sample = toDraft(demo.content);
   const content: DraftContent = {
     ...sample,
+    // Sample events follow the couple's date, so the countdown and dates aren't the demo's year.
+    events: alignEventsToWedding(sample.events, demo.content.weddingDate, input.weddingDate),
     couple: {
       order: input.order,
       bride: { firstName: input.brideName.trim(), lastName: "", shortBio: "" },
