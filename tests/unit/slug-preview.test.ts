@@ -38,14 +38,20 @@ const draft = () =>
   DraftContentSchema.parse(InvitationContentSchema.parse(templateDemos["royal-heritage"].content));
 
 describe("coerceForPreview", () => {
-  it("fills placeholders for empty names and drops incomplete events", () => {
+  it("fills placeholders for empty names and keeps incomplete events", () => {
     const d = draft();
     d.couple.bride.firstName = "";
     d.events[0].date = "";
+    d.events[0].startTime = "";
+    d.events[0].venue.address = "42 Lake Road";
     d.events[1].venue.mapsUrl = "javascript:alert(1)";
     const c = coerceForPreview(d);
     expect(c.couple.bride.firstName).toBe("Bride");
-    expect(c.events).toHaveLength(d.events.length - 1);
+    expect(c.events).toHaveLength(d.events.length);
+    const first = c.events.find((e) => e.id === d.events[0].id);
+    expect(first?.date).toBe(d.weddingDate);
+    expect(first?.startTime).toBe("18:00");
+    expect(first?.venue.address).toBe("42 Lake Road");
     expect(c.events.find((e) => e.id === d.events[1].id)?.venue.mapsUrl).toBeUndefined();
     expect(() => InvitationContentSchema.parse(c)).not.toThrow();
   });

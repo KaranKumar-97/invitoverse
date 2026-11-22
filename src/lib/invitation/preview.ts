@@ -1,7 +1,8 @@
 /**
  * Turns a possibly-incomplete draft into strict content that templates can render
- * (editor live preview). Never throws: missing values get gentle placeholders and invalid
- * links/events are dropped rather than rendered.
+ * (editor live preview). Never throws: missing values get gentle placeholders (an event without
+ * a date or time still renders, so every field the owner types shows up live) and invalid links
+ * are dropped rather than rendered.
  */
 import {
   EventSchema,
@@ -14,19 +15,22 @@ import {
 import { isAllowedMapsUrl } from "./urls";
 
 const PLACEHOLDER_DATE = "2030-01-01";
+const PLACEHOLDER_TIME = "18:00";
 const nonEmpty = (s: string | undefined) => (s && s.trim() ? s.trim() : undefined);
 
 export function coerceForPreview(draft: DraftContent): InvitationContent {
+  const weddingDate =
+    draft.weddingDate || draft.events.find((e) => e.date)?.date || PLACEHOLDER_DATE;
   const events: InvitationEvent[] = [];
   for (const e of draft.events) {
-    if (!e.date || !e.startTime) continue;
     const candidate = {
       id: e.id,
       name: nonEmpty(e.name) ?? "Untitled event",
       icon: e.icon,
-      date: e.date,
-      startTime: e.startTime,
-      endTime: e.endTime || undefined,
+      date: e.date || weddingDate,
+      startTime: e.startTime || PLACEHOLDER_TIME,
+      // An end time only makes sense next to the owner's own start time.
+      endTime: (e.startTime && e.endTime) || undefined,
       venue: {
         name: nonEmpty(e.venue.name) ?? "Venue to be announced",
         address: e.venue.address,
@@ -39,7 +43,6 @@ export function coerceForPreview(draft: DraftContent): InvitationContent {
     if (parsed.success) events.push(parsed.data);
   }
 
-  const weddingDate = draft.weddingDate || events[0]?.date || PLACEHOLDER_DATE;
   const cleanLines = (xs: string[]) => xs.map((x) => x.trim()).filter(Boolean);
 
   const content = {
@@ -118,7 +121,7 @@ const PLACEHOLDER_EVENT = (date: string) => ({
   name: "Wedding",
   icon: "rings" as const,
   date,
-  startTime: "18:00",
+  startTime: PLACEHOLDER_TIME,
   venue: { name: "Venue to be announced", address: "" },
 });
 
