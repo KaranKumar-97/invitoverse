@@ -67,27 +67,43 @@ Two short steps in a centered card (progress dots), each one screen on mobile:
 
 ## 5. Editor (`/dashboard/invitations/[id]/edit`)
 
+### Guided steps
+
+The editor is a step-by-step flow, not free tabs: **1 Details → 2 Events → 3 Photos & music → 4 Design → 5 Publish**.
+
+- "Step N of 5" with a segmented progress bar above the form; **Back** / **Continue to …** below it
+  (mobile: in the sticky bottom bar next to **Preview**).
+- **Soft steps**: Continue never blocks. The step list marks each step ✓ (visited, no required problem),
+  a red dot (visited, a required publish-checklist item fails) or its number (not visited yet). Any step can be
+  opened from the list. The **Publish** step (checklist + "Your link" + Publish) is the only gate.
+- Opening the editor with no `?tab=` lands on the first unfinished step (Publish once all are done). Visited
+  steps are remembered per invitation in `localStorage`. Logic: `src/components/editor/steps.ts`.
+- **Settings** (name, link, archive) and **Guests ↗** sit below the steps — they are not part of the flow.
+- The header **Publish** button jumps to the Publish step.
+
 ### Layout
 
 ```
 ┌──────────────────────────────────────────────────────────────────────────────┐
 │ ← Invitations   Rahul & Priya Wedding ✎    ● Saved 2s ago   [Preview ▢▭] [Publish ▸]│
 ├───────────────┬───────────────────────────────┬──────────────────────────────┤
-│ Tabs          │  Form panel (scroll)          │  Live preview (sticky)        │
-│ • Details     │                               │  ┌──────────┐  device toggle  │
-│ • Events      │                               │  │ iframe   │  Replay intro   │
-│ • Media       │                               │  │ 390×844  │  Open in new tab│
-│ • Design      │                               │  └──────────┘                 │
-│ • Guests ↗    │                               │                              │
-│ • Settings    │                               │                              │
+│ Steps         │  Step 2 of 5  ▬▬▬▭▭▭          │  Live preview (sticky)        │
+│ ✓ Details     │  Form panel (scroll)          │  ┌──────────┐  device toggle  │
+│ ② Events      │                               │  │ iframe   │  Replay intro   │
+│ ③ Photos&music│                               │  │ 390×844  │  Open in new tab│
+│ ④ Design      │                               │  └──────────┘                 │
+│ ⑤ Publish     │  [← Back]   [Continue to … →] │                              │
+│ ─ Settings    │                               │                              │
+│ ─ Guests ↗    │                               │                              │
 └───────────────┴───────────────────────────────┴──────────────────────────────┘
 ```
 
 - **Desktop ≥ 1280**: three columns (nav 200 / form 480–560 / preview fluid, phone frame scaled to fit).
-- **Tablet 768–1279**: tabs become a top segmented control; preview in a right drawer toggled by "Preview".
-- **Mobile**: full-width form; sticky bottom bar with **Preview** (opens full-screen preview sheet) and **Publish**.
+- **Tablet 768–1279**: steps become a top scrolling strip; preview in a right drawer toggled by "Preview".
+- **Mobile**: full-width form; the step strip scrolls the current step into view; sticky bottom bar with
+  **← Back**, **Preview** (opens full-screen preview sheet) and **Continue**.
 - **Save state** indicator: `Saving…` / `Saved` / `Offline — changes will retry` / `Conflict — reload`.
-- **Publish button** states: "Publish" (draft) · "Publish changes" (published + dirty) · "Published ✓" (clean, opens share sheet).
+- **Publish button** states: "Publish" (draft) · "Publish changes" (published + dirty) · "Share" (clean) — all open the Publish step.
 - Focusing a field sends `preview:scrollTo` for its section.
 
 ### 5.1 Details tab

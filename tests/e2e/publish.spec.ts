@@ -27,7 +27,7 @@ test("publish → live page; edits stay private until 'Publish changes'; unpubli
 }, info) => {
   test.skip(
     info.project.name === "mobile",
-    "Covered on desktop; the publish dialog is the same component on mobile.",
+    "Covered on desktop; the Publish step is the same component on mobile.",
   );
   const { id, slug } = await createInvitationFor(owner.user.id);
 
@@ -39,14 +39,14 @@ test("publish → live page; edits stay private until 'Publish changes'; unpubli
   await page.goto(`/dashboard/invitations/${id}/edit`);
   await page.locator("[data-ready]").waitFor();
 
-  // Publish from the editor.
+  // Publish from the editor: the header button jumps to the last step.
   await page.getByRole("button", { name: "Publish", exact: true }).first().click();
-  const dialog = page.getByRole("dialog");
+  const dialog = page.locator("#editor-form");
+  await expect(dialog.getByText("Step 5 of 5")).toBeVisible();
   await expect(dialog.getByText("Before you publish")).toBeVisible({ timeout: 15_000 });
   await dialog.getByRole("button", { name: "Publish invitation" }).click();
   await expect(dialog.getByRole("button", { name: /Copy link/ })).toBeVisible({ timeout: 15_000 });
   await expect(dialog.getByText(`/i/${slug}`)).toBeVisible();
-  await page.keyboard.press("Escape");
 
   // Live for anyone (fresh, signed-out request).
   const live = await request.get(`/i/${slug}`);
@@ -69,6 +69,7 @@ test("publish → live page; edits stay private until 'Publish changes'; unpubli
   expect(await ics.text()).toMatch(/DTSTART:\d{8}T\d{6}Z/);
 
   // Edit after publishing → still the old version publicly.
+  await page.getByRole("button", { name: /^Details/ }).click();
   await page.locator("#bride-first").fill("Ashwini");
   await expect(page.getByRole("status").filter({ hasText: /Saved/ }).first()).toBeVisible({
     timeout: 15_000,

@@ -38,19 +38,18 @@ test("create → publish → personal link → guest opens → owner sees it", a
   await page.getByLabel("Groom's first name").fill("Neel");
   await page.getByLabel("Wedding date").fill("2027-12-12");
   await page.getByRole("button", { name: "Create invitation" }).last().click();
-  await page.waitForURL(/\/edit$/, { timeout: 30_000 });
+  await page.waitForURL(/\/edit(\?|$)/, { timeout: 30_000 });
   await page.locator("[data-ready]").waitFor();
 
   // 2. Publish
   await page.getByRole("button", { name: "Publish", exact: true }).first().click();
-  const dialog = page.getByRole("dialog");
+  const dialog = page.locator("#editor-form");
   // The link is chosen last, right before the first publish.
   const slug = `ira-neel-${Date.now().toString(36)}`;
   await dialog.getByLabel("Invitation link").fill(slug);
   await expect(dialog.getByText("This link is available.")).toBeVisible({ timeout: 10_000 });
   await dialog.getByRole("button", { name: "Publish invitation" }).click();
   await expect(dialog.getByRole("button", { name: /Copy link/ })).toBeVisible({ timeout: 15_000 });
-  await page.keyboard.press("Escape");
 
   // 3. Guest
   const inv = await prisma.invitation.findUniqueOrThrow({ where: { slug } });

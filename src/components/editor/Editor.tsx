@@ -2,16 +2,14 @@
 
 import { ThemeToggle } from "@/components/ThemeToggle";
 import Link from "next/link";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
   ArrowLeft,
+  ArrowRight,
   ArrowUpRight,
-  CalendarDays,
+  Check,
   Eye,
-  ImageIcon,
-  Palette,
-  PenLine,
   Send,
   Settings,
   Sparkles,
@@ -29,17 +27,11 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { PublishPanel } from "@/components/share/PublishPanel";
 import { StatusPill } from "@/components/dashboard/StatusPill";
 import { useMediaQuery } from "@/lib/hooks";
+import { buildChecklist } from "@/lib/invitation/checklist";
 import { sampleKeyForPath } from "@/lib/invitation/preview";
 import type { DesignConfig, DraftContent, SectionKey } from "@/lib/invitation/schema";
 import type { EditorToPreview } from "@/lib/preview/messages";
@@ -54,21 +46,23 @@ import {
 } from "@/app/(editor)/dashboard/invitations/[id]/edit/actions";
 import { PreviewPane, type PreviewHandle } from "./PreviewPane";
 import { SaveIndicator } from "./SaveIndicator";
-import type { EditorTab } from "./tab-keys";
+import { adjacentStep, loadVisited, saveVisited, startStep, stepIssues, stepState } from "./steps";
+import { EDITOR_STEPS, isEditorStep, type EditorStep, type EditorTab } from "./tab-keys";
 import { DesignTab } from "./tabs/DesignTab";
 import { DetailsTab } from "./tabs/DetailsTab";
+import { EditorCard } from "./fields";
 import { EventsTab } from "./tabs/EventsTab";
 import { MediaTab } from "./tabs/MediaTab";
 import { SettingsTab } from "./tabs/SettingsTab";
 import { useAutosave } from "./useAutosave";
 
-const EDITOR_TABS: ReadonlyArray<{ key: EditorTab; label: string; icon: typeof PenLine }> = [
-  { key: "details", label: "Details", icon: PenLine },
-  { key: "events", label: "Events", icon: CalendarDays },
-  { key: "media", label: "Media", icon: ImageIcon },
-  { key: "design", label: "Design", icon: Palette },
-  { key: "settings", label: "Settings", icon: Settings },
-];
+const STEP_LABELS: Record<EditorStep, string> = {
+  details: "Details",
+  events: "Events",
+  media: "Photos & music",
+  design: "Design",
+  publish: "Publish",
+};
 
 const SAMPLE_LABELS: Record<string, string> = {
   couple: "names",
@@ -90,7 +84,8 @@ export function Editor({
   initial: EditorInvitation;
   templates: TemplateOption[];
   appUrl: string;
-  initialTab: EditorTab;
+  /** `null` → open the first unfinished step. */
+  initialTab: EditorTab | null;
   initialUsedBytes: number;
   /** SELECTED guests per event id — warns before deleting an event people are invited to. */
   guestCounts?: Record<string, number>;
@@ -105,14 +100,14 @@ export function Editor({
   const [usedBytes, setUsedBytes] = useState(initialUsedBytes);
   const [title, setTitle] = useState(initial.title);
   const [slug, setSlug] = useState(initial.slug);
-  const [tab, setTab] = useState<EditorTab>(initialTab);
+  const [tab, setTab] = useState<EditorTab>(initialTab ?? "details");
+  const [visited, setVisited] = useState<ReadonlySet<EditorStep>>(() => new Set());
   const [switching, setSwitching] = useState(false);
   const [mobilePreview, setMobilePreview] = useState(false);
   const [sampleDismissed, setSampleDismissed] = useState(true);
   const [hydrated, setHydrated] = useState(false);
   const [status, setStatus] = useState(initial.status);
   const [unpublishedChanges, setUnpublishedChanges] = useState(initial.hasUnpublishedChanges);
-  const [publishOpen, setPublishOpen] = useState(false);
   useEffect(() => setHydrated(true), []);
   const wide = useMediaQuery("(min-width: 1280px)");
   const phone = !useMediaQuery("(min-width: 640px)");
@@ -120,6 +115,7 @@ export function Editor({
   const deskPreview = useRef<PreviewHandle>(null);
   const sheetPreview = useRef<PreviewHandle>(null);
   const lastSection = useRef<SectionKey | null>(null);
+  const stepNav = useRef<HTMLElement>(null);
   const queued = useRef(false);
 
   const getContent = useCallback(() => form.getValues(), [form]);
@@ -218,6 +214,7 @@ export function Editor({
   );
 
   const changeTab = (t: EditorTab) => {
+    if (t !== tab) void flush();
     setTab(t);
     lastSection.current = null;
     const url = new URL(window.location.href);
@@ -225,6 +222,47 @@ export function Editor({
     window.history.replaceState(null, "", url);
     document.getElementById("editor-form")?.scrollTo({ top: 0 });
   };
+
+  // ── Guided steps (soft: Continue never blocks; Publish does) ──
+  const savedAt = autosave.savedAt;
+  const issues = useMemo(
+    () =>
+      stepIssues(
+        buildChecklist({ content: form.getValues(), design, slug, templateAvailable: true }),
+      ),
+    // Re-checked after each save, design change and step change — not on every keystroke.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [form, design, slug, savedAt, tab],
+  );
+  const step = isEditorStep(tab) ? tab : null;
+  const prevStep = step ? adjacentStep(step, -1) : null;
+  const nextStep = step ? adjacentStep(step, 1) : null;
+
+  // Returning owners land on the first unfinished step unless the URL names one.
+  useEffect(() => {
+    const seen = loadVisited(initial.id);
+    setVisited(seen);
+    if (!initialTab) changeTab(startStep(seen, issues));
+    // Once, on mount.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Keep the current step in view in the phone's scrolling strip.
+  useEffect(() => {
+    stepNav.current
+      ?.querySelector("[aria-current]")
+      ?.scrollIntoView({ block: "nearest", inline: "nearest" });
+  }, [tab]);
+
+  useEffect(() => {
+    if (!hydrated || !step) return;
+    setVisited((prev) => {
+      if (prev.has(step)) return prev;
+      const next = new Set(prev).add(step);
+      saveVisited(initial.id, next);
+      return next;
+    });
+  }, [step, hydrated, initial.id]);
 
   const onSwitch = async (next: string) => {
     setSwitching(true);
@@ -262,7 +300,7 @@ export function Editor({
   const publishLabel =
     status !== "PUBLISHED" ? "Publish" : unpublishedChanges ? "Publish changes" : "Share";
   const publishButton = (
-    <Button className="h-10 rounded-full px-5" onClick={() => setPublishOpen(true)}>
+    <Button className="h-10 rounded-full px-5" onClick={() => changeTab("publish")}>
       <Send /> {publishLabel}
     </Button>
   );
@@ -324,28 +362,68 @@ export function Editor({
       <div className="flex min-h-0 flex-1 flex-col xl:grid xl:grid-cols-[13rem_minmax(0,1fr)_minmax(400px,44%)]">
         {/* Tabs */}
         <nav
-          aria-label="Editor sections"
+          ref={stepNav}
+          aria-label="Editor steps"
           className="shrink-0 border-b border-line xl:border-r xl:border-b-0 xl:p-3"
         >
           <ul className="flex gap-1 overflow-x-auto px-2 py-2 xl:flex-col xl:overflow-visible xl:p-0">
-            {EDITOR_TABS.map(({ key, label, icon: Icon }) => (
-              <li key={key} className="shrink-0">
-                <button
-                  type="button"
-                  onClick={() => changeTab(key)}
-                  aria-current={tab === key ? "page" : undefined}
-                  className={cn(
-                    "flex h-9 items-center gap-2 rounded-full px-3.5 text-sm font-medium transition-colors xl:h-10 xl:w-full xl:rounded-md",
-                    tab === key
-                      ? "bg-primary text-primary-foreground xl:bg-surface xl:text-ink xl:shadow-card"
-                      : "text-ink-soft hover:bg-muted hover:text-ink",
-                  )}
-                >
-                  <Icon className="size-4" aria-hidden="true" /> {label}
-                </button>
-              </li>
-            ))}
+            {EDITOR_STEPS.map((key, i) => {
+              const state = stepState(key, visited, issues);
+              return (
+                <li key={key} className="shrink-0">
+                  <button
+                    type="button"
+                    onClick={() => changeTab(key)}
+                    aria-current={tab === key ? "step" : undefined}
+                    // `relative` keeps the sr-only status inside the scrolling strip.
+                    className={cn(
+                      "relative flex h-9 items-center gap-2 rounded-full px-3.5 text-sm font-medium transition-colors xl:h-10 xl:w-full xl:rounded-md",
+                      tab === key
+                        ? "bg-primary text-primary-foreground xl:bg-surface xl:text-ink xl:shadow-card"
+                        : "text-ink-soft hover:bg-muted hover:text-ink",
+                    )}
+                  >
+                    <span
+                      aria-hidden="true"
+                      className={cn(
+                        "grid size-5 shrink-0 place-items-center rounded-full border text-[11px] font-semibold",
+                        tab === key ? "border-current" : "border-line",
+                        state === "done" && tab !== key && "border-success text-success",
+                      )}
+                    >
+                      {state === "done" ? <Check className="size-3" /> : i + 1}
+                    </span>
+                    {STEP_LABELS[key]}
+                    {state === "attention" && (
+                      <span className="size-1.5 rounded-full bg-destructive" aria-hidden="true" />
+                    )}
+                    <span className="sr-only">
+                      {state === "done"
+                        ? " (done)"
+                        : state === "attention"
+                          ? " (needs attention)"
+                          : ""}
+                    </span>
+                  </button>
+                </li>
+              );
+            })}
             <li className="shrink-0 xl:mt-2 xl:border-t xl:border-line xl:pt-2">
+              <button
+                type="button"
+                onClick={() => changeTab("settings")}
+                aria-current={tab === "settings" ? "page" : undefined}
+                className={cn(
+                  "flex h-9 items-center gap-2 rounded-full px-3.5 text-sm font-medium transition-colors xl:h-10 xl:w-full xl:rounded-md",
+                  tab === "settings"
+                    ? "bg-primary text-primary-foreground xl:bg-surface xl:text-ink xl:shadow-card"
+                    : "text-ink-soft hover:bg-muted hover:text-ink",
+                )}
+              >
+                <Settings className="size-4" aria-hidden="true" /> Settings
+              </button>
+            </li>
+            <li className="shrink-0">
               <Link
                 href={`/dashboard/invitations/${initial.id}/guests`}
                 onClick={() => void flush()}
@@ -371,6 +449,24 @@ export function Editor({
             className="mx-auto max-w-2xl space-y-5"
             noValidate
           >
+            {step && (
+              <div>
+                <p className="text-sm text-muted-foreground">
+                  Step {EDITOR_STEPS.indexOf(step) + 1} of {EDITOR_STEPS.length}
+                </p>
+                <div className="mt-2 flex gap-1.5" aria-hidden="true">
+                  {EDITOR_STEPS.map((s, i) => (
+                    <span
+                      key={s}
+                      className={cn(
+                        "h-1.5 flex-1 rounded-full",
+                        i <= EDITOR_STEPS.indexOf(step) ? "bg-primary" : "bg-muted",
+                      )}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
             {showSample && (
               <div className="flex items-start gap-3 rounded-lg border border-gold/40 bg-[#fbf3e4] p-4 text-sm dark:bg-[#2a2016]">
                 <Sparkles className="mt-0.5 size-4 shrink-0 text-gold" aria-hidden="true" />
@@ -435,6 +531,54 @@ export function Editor({
                 beforeLeave={flush}
               />
             )}
+            {tab === "publish" && (
+              <EditorCard
+                title={status === "PUBLISHED" ? "Share your invitation" : "Publish your invitation"}
+                description={
+                  status === "PUBLISHED"
+                    ? "Guests see the published version. Edits stay private until you publish them."
+                    : "Last step: check everything, choose your link and go live."
+                }
+              >
+                <PublishPanel
+                  invitationId={initial.id}
+                  appUrl={appUrl}
+                  coupleTitle={shareTitle}
+                  beforeLoad={flush}
+                  onFix={changeTab}
+                  onStateChange={(st) => {
+                    setStatus(st.status);
+                    setSlug(st.slug);
+                    setUnpublishedChanges(st.hasUnpublishedChanges);
+                  }}
+                />
+              </EditorCard>
+            )}
+            {step && (
+              <div className="hidden items-center justify-between gap-3 pt-2 sm:flex">
+                {prevStep ? (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="h-11 rounded-full"
+                    onClick={() => changeTab(prevStep)}
+                  >
+                    <ArrowLeft /> Back
+                  </Button>
+                ) : (
+                  <span />
+                )}
+                {nextStep && (
+                  <Button
+                    type="button"
+                    className="h-11 rounded-full px-8"
+                    onClick={() => changeTab(nextStep)}
+                  >
+                    Continue to {STEP_LABELS[nextStep]} <ArrowRight />
+                  </Button>
+                )}
+              </div>
+            )}
           </form>
         </main>
 
@@ -451,6 +595,17 @@ export function Editor({
 
       {/* Mobile bottom bar */}
       <div className="fixed inset-x-0 bottom-0 z-30 flex gap-3 border-t border-line bg-canvas/95 p-3 backdrop-blur sm:hidden">
+        {prevStep && (
+          <Button
+            variant="outline"
+            size="icon"
+            className="size-11 shrink-0 rounded-full"
+            aria-label={`Back to ${STEP_LABELS[prevStep]}`}
+            onClick={() => changeTab(prevStep)}
+          >
+            <ArrowLeft />
+          </Button>
+        )}
         <Button
           variant="outline"
           className="h-11 flex-1 rounded-full"
@@ -458,9 +613,17 @@ export function Editor({
         >
           <Eye /> Preview
         </Button>
-        <Button className="h-11 flex-1 rounded-full" onClick={() => setPublishOpen(true)}>
-          <Send /> {publishLabel}
-        </Button>
+        {nextStep ? (
+          <Button className="h-11 flex-1 rounded-full" onClick={() => changeTab(nextStep)}>
+            Continue <ArrowRight />
+          </Button>
+        ) : (
+          tab === "settings" && (
+            <Button className="h-11 flex-1 rounded-full" onClick={() => changeTab("publish")}>
+              <Send /> {publishLabel}
+            </Button>
+          )
+        )}
       </div>
 
       <Sheet open={mobilePreview && !wide} onOpenChange={setMobilePreview}>
@@ -482,38 +645,6 @@ export function Editor({
           )}
         </SheetContent>
       </Sheet>
-
-      <Dialog open={publishOpen} onOpenChange={setPublishOpen}>
-        <DialogContent className="max-h-[90dvh] overflow-y-auto sm:max-w-lg">
-          <DialogHeader>
-            <DialogTitle>
-              {status === "PUBLISHED" ? "Share your invitation" : "Publish your invitation"}
-            </DialogTitle>
-            <DialogDescription>
-              {status === "PUBLISHED"
-                ? "Guests see the published version. Edits stay private until you publish them."
-                : "Publishing makes your invitation available at its link."}
-            </DialogDescription>
-          </DialogHeader>
-          {publishOpen && (
-            <PublishPanel
-              invitationId={initial.id}
-              appUrl={appUrl}
-              coupleTitle={shareTitle}
-              beforeLoad={flush}
-              onFix={(t) => {
-                setPublishOpen(false);
-                changeTab(t);
-              }}
-              onStateChange={(st) => {
-                setStatus(st.status);
-                setSlug(st.slug);
-                setUnpublishedChanges(st.hasUnpublishedChanges);
-              }}
-            />
-          )}
-        </DialogContent>
-      </Dialog>
 
       <AlertDialog open={autosave.status === "conflict"}>
         <AlertDialogContent>
