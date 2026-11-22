@@ -87,3 +87,26 @@
     transform: scale(1.06);
   }
 }
+/*
+ * Painted page layers (backdrop + frame), sized to the column (.md-col) and one screen tall.
+ * Where the column is 9:16 or wider the painting covers it (the frame lines up with the content
+ * on wide screens; short landscape screens crop top and bottom). On taller screens (phones),
+ * covering would crop the floral sides off, so the painting is shown at full width and sliced:
+ * the arch and the pavilions keep their proportions and only the straight band between them
+ * stretches. Variables come from the layout: --md-img, --md-art-w, --md-slice-t, --md-slice-b
+ * (rows of the art file, see PAGE_SLICE in art.ts).
+ */
+[data-template="mandir"] .md-paint {
+  background: var(--md-img) center / cover no-repeat;
+}
+@media (max-aspect-ratio: 9/16) {
+  [data-template="mandir"] .md-paint {
+    background: none;
+    border-style: solid;
+    border-image-source: var(--md-img);
+    border-image-slice: var(--md-slice-t) 0 calc(var(--md-art-h) - var(--md-slice-b)) fill;
+    border-image-width: calc(var(--md-col) * var(--md-slice-t) / var(--md-art-w)) 0
+      calc(var(--md-col) * (var(--md-art-h) - var(--md-slice-b)) / var(--md-art-w));
+    border-image-repeat: stretch;
+  }
+}

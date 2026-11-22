@@ -263,7 +263,11 @@ export function Countdown({ data }: SectionProps) {
         title={v?.isPast ? "The celebrations have begun" : "Until we say “I do”"}
       />
       {!v?.isPast && (
-        <Reveal className="mx-auto grid max-w-[21rem] grid-cols-4 gap-2" role="timer" aria-live="off">
+        <Reveal
+          className="mx-auto grid max-w-[21rem] grid-cols-4 gap-2"
+          role="timer"
+          aria-live="off"
+        >
           {cells.map(([label, n]) => (
             <div key={label} className="md-tile flex flex-col items-center px-1 pt-3 pb-2.5">
               <span className="f-display text-[1.65rem] leading-none tabular-nums">

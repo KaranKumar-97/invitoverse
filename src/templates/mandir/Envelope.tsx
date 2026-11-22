@@ -164,7 +164,7 @@ export function MandirEnvelope({
       {/* Invitation line + call to action over the marble floor. */}
       <div
         data-ui
-        className="absolute inset-x-0 bottom-0 flex flex-col items-center px-6 pt-24 pb-[max(2.25rem,env(safe-area-inset-bottom))] [@media(max-height:500px)]:pt-10 [@media(max-height:500px)]:pb-4 text-center"
+        className="absolute inset-x-0 bottom-0 flex flex-col items-center px-6 pt-24 pb-[max(2.25rem,env(safe-area-inset-bottom))] text-center [@media(max-height:500px)]:pt-10 [@media(max-height:500px)]:pb-4"
         style={{
           background:
             "linear-gradient(180deg, transparent, rgba(42,19,6,0.55) 38%, rgba(42,19,6,0.82))",
