@@ -2,22 +2,21 @@
 
 import { useEffect, useMemo, useState } from "react";
 import type { TemplateCategory } from "@/lib/invitation/manifest";
-import { CATEGORIES, type CatalogueItem, type ComingSoonItem } from "@/lib/marketing/catalogue";
+import { CATEGORIES, type CatalogueItem } from "@/lib/marketing/catalogue";
 import { cn } from "@/lib/utils";
-import { ComingSoonCard, TemplateCard } from "./TemplateCard";
+import { MoreComingCard, TemplateCard } from "./TemplateCard";
 
 type Sort = "featured" | "newest";
 
 type Props = {
   items: CatalogueItem[];
-  comingSoon: ComingSoonItem[];
   /** Catalogue page: sort control + `?category=` / `?sort=` kept in the URL. */
   withUrlState?: boolean;
   className?: string;
 };
 
 /** Category chips (with counts) + responsive grid. Filtering is client-side over static data. */
-export function TemplateGrid({ items, comingSoon, withUrlState = false, className }: Props) {
+export function TemplateGrid({ items, withUrlState = false, className }: Props) {
   const [category, setCategory] = useState<TemplateCategory | "ALL">("ALL");
   // Newest designs first by default; "Featured" keeps the curated registry order.
   const [sort, setSort] = useState<Sort>("newest");
@@ -57,7 +56,6 @@ export function TemplateGrid({ items, comingSoon, withUrlState = false, classNam
     const list = items.filter((t) => category === "ALL" || t.category === category);
     return sort === "newest" ? [...list].sort((a, b) => b.rank - a.rank) : list;
   }, [items, category, sort]);
-  const soon = comingSoon.filter((t) => category === "ALL" || t.category === category);
 
   return (
     <div className={className}>
@@ -104,11 +102,9 @@ export function TemplateGrid({ items, comingSoon, withUrlState = false, classNam
             <TemplateCard item={item} priority={i < 2} />
           </li>
         ))}
-        {soon.map((t) => (
-          <li key={t.name}>
-            <ComingSoonCard item={t} />
-          </li>
-        ))}
+        <li>
+          <MoreComingCard />
+        </li>
       </ul>
       <p className="sr-only" aria-live="polite">
         {visible.length} designs shown

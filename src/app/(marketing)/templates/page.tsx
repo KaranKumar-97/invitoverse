@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { SectionHeading } from "@/components/marketing/home/SectionHeading";
 import { TemplateGrid } from "@/components/marketing/TemplateGrid";
-import { CATALOGUE, COMING_SOON } from "@/lib/marketing/catalogue";
+import { CATALOGUE } from "@/lib/marketing/catalogue";
 
 export const metadata: Metadata = {
   title: "Wedding Invitation Designs",
@@ -20,7 +20,7 @@ export default function TemplatesPage() {
         accent="design"
         lead="Every design opens with its own moment. Tap one to see it live — envelope, music and all."
       />
-      <TemplateGrid items={CATALOGUE} comingSoon={COMING_SOON} withUrlState className="mt-10" />
+      <TemplateGrid items={CATALOGUE} withUrlState className="mt-10" />
     </section>
   );
 }

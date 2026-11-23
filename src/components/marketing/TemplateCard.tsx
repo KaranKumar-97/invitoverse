@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
-import type { CatalogueItem, ComingSoonItem } from "@/lib/marketing/catalogue";
+import { ArrowRight, Sparkles } from "lucide-react";
+import type { CatalogueItem } from "@/lib/marketing/catalogue";
 import { track } from "@/lib/analytics";
 import { LoopVideo } from "./LoopVideo";
 
@@ -52,40 +52,32 @@ export function TemplateCard({
   );
 }
 
-export function ComingSoonCard({ item }: { item: ComingSoonItem }) {
-  const { bg, accent, text } = item.colors;
+/** One generic placeholder after the live designs: more templates are on the way. */
+export function MoreComingCard() {
   return (
-    <div aria-label={`${item.name}, coming soon`}>
-      <div
-        className="relative grid aspect-[9/16] place-items-center overflow-hidden rounded-xl p-6 text-center shadow-card"
-        style={{ background: bg, color: text }}
-      >
-        <div
-          aria-hidden
-          className="absolute inset-4 rounded-lg border opacity-40"
-          style={{ borderColor: accent }}
-        />
+    <div aria-label="More templates coming soon">
+      <div className="relative grid aspect-[9/16] place-items-center overflow-hidden rounded-xl border border-dashed border-line bg-surface p-6 text-center">
         <div className="relative">
-          <p
-            className="text-[11px] font-semibold tracking-[0.3em] uppercase"
-            style={{ color: text }}
-          >
+          <span className="mx-auto grid size-12 place-items-center rounded-full bg-primary text-primary-foreground">
+            <Sparkles className="size-5" aria-hidden="true" />
+          </span>
+          <p className="mt-5 text-[11px] font-semibold tracking-[0.3em] text-muted-foreground uppercase">
             Coming soon
           </p>
-          <p className="mt-4 font-display text-3xl leading-tight font-semibold">
-            {item.name.split(" ").map((w) => (
-              <span key={w} className="block">
-                {w}
-              </span>
-            ))}
+          <p className="mt-3 font-display text-3xl leading-tight font-semibold text-ink">
+            More
+            <span className="block">templates</span>
+          </p>
+          <p className="mx-auto mt-3 max-w-[14rem] text-sm text-muted-foreground">
+            New designs are added regularly.
           </p>
         </div>
       </div>
       <div className="mt-4 px-1">
         <p className="font-display text-xl font-semibold tracking-tight text-ink-soft">
-          {item.name}
+          More templates
         </p>
-        <p className="mt-0.5 text-sm text-muted-foreground">{item.styleLabel} · Coming soon</p>
+        <p className="mt-0.5 text-sm text-muted-foreground">Coming soon</p>
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { CATALOGUE, COMING_SOON } from "@/lib/marketing/catalogue";
+import { CATALOGUE } from "@/lib/marketing/catalogue";
 import { TemplateGrid } from "../TemplateGrid";
 import { SectionHeading } from "./SectionHeading";
 
@@ -17,7 +17,7 @@ export function Showcase() {
             View all designs <ArrowRight className="size-4" />
           </Link>
         </div>
-        <TemplateGrid items={CATALOGUE} comingSoon={COMING_SOON} className="mt-8" />
+        <TemplateGrid items={CATALOGUE} className="mt-8" />
       </div>
     </section>
   );

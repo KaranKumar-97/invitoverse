@@ -439,7 +439,7 @@ events the guest isn't invited to.
    (`poster.jpg`, `og.jpg`, `loop.mp4`, `loop.webm` in `public/templates/<slug>/`):
    `node scripts/capture-template-media.mjs http://localhost:3000 <slug>` (needs ffmpeg). A unit test fails
    until they exist. Optionally add the envelope/animation ids to `ENVELOPE_STYLE` / `REVEAL_STYLE` in
-   `src/lib/marketing/catalogue.ts` for the detail page copy, and remove the design from `COMING_SOON`.
+   `src/lib/marketing/catalogue.ts` for the detail page copy. (The grid ends with one generic "More templates coming soon" card; there is no per-design coming-soon list.)
 6. Add the template to `CASES` in `tests/templates/contract.test.tsx` and run `pnpm test` — it renders the
    demo, a guest view, every palette × font pair, every option value, and runs the opening sequence with
    and without reduced motion, plus skip and envelope-off.

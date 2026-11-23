@@ -2,7 +2,7 @@ import { existsSync, statSync } from "node:fs";
 import path from "node:path";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ContactSchema, MIN_FILL_MS } from "@/lib/contact";
-import { CATALOGUE, CATEGORIES, COMING_SOON, relatedTemplates } from "@/lib/marketing/catalogue";
+import { CATALOGUE, CATEGORIES, relatedTemplates } from "@/lib/marketing/catalogue";
 import { TEMPLATE_SLUGS } from "@/templates/registry";
 
 const sendEmail = vi.fn<(msg: unknown) => Promise<void>>();
@@ -84,10 +84,8 @@ describe("marketing catalogue", () => {
     },
   );
 
-  it("maps every category to a URL param, and coming-soon designs are not live", () => {
+  it("maps every category to a URL param", () => {
     expect(new Set(CATEGORIES.map((c) => c.param)).size).toBe(CATEGORIES.length);
-    const live = new Set(CATALOGUE.map((t) => t.name));
-    for (const t of COMING_SOON) expect(live.has(t.name)).toBe(false);
   });
 
   it("never recommends the template you're looking at", () => {

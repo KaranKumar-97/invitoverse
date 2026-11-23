@@ -27,34 +27,6 @@ export type CatalogueItem = {
   media: { poster: string; mp4: string; webm: string; og: string };
 };
 
-export type ComingSoonItem = {
-  name: string;
-  styleLabel: string;
-  category: TemplateCategory;
-  colors: { bg: string; accent: string; text: string };
-};
-
-export const COMING_SOON: ComingSoonItem[] = [
-  {
-    name: "Floral Romance",
-    styleLabel: "Floral · Blush & Sage",
-    category: "FLORAL",
-    colors: { bg: "#F7E6E3", accent: "#7E9A7A", text: "#4A3A36" },
-  },
-  {
-    name: "Cinematic Elegance",
-    styleLabel: "Cinematic · Noir & Gold",
-    category: "CINEMATIC",
-    colors: { bg: "#121110", accent: "#C9A45C", text: "#EDE6DA" },
-  },
-  {
-    name: "Modern Editorial",
-    styleLabel: "Modern · Ivory & Terracotta",
-    category: "MODERN",
-    colors: { bg: "#F3EEE6", accent: "#B4532F", text: "#1E1A16" },
-  },
-];
-
 export function templateMedia(slug: string) {
   const base = `/templates/${slug}`;
   return {
