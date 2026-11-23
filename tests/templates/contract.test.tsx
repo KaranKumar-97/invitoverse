@@ -22,6 +22,7 @@ import MinimalLuxury from "@/templates/minimal-luxury";
 import Deepam from "@/templates/deepam";
 import Meenakshi from "@/templates/meenakshi";
 import Mandir from "@/templates/mandir";
+import Kashi from "@/templates/kashi";
 import Starter from "@/templates/_starter";
 import { starterManifest } from "@/templates/_starter/manifest";
 import { starterDemo } from "@/templates/_starter/demo";
@@ -57,6 +58,11 @@ const CASES: Case[] = [
     manifest: templateManifests.mandir,
     demo: templateDemos.mandir,
     Component: Mandir,
+  },
+  {
+    manifest: templateManifests.kashi,
+    demo: templateDemos.kashi,
+    Component: Kashi,
   },
   { manifest: starterManifest, demo: starterDemo, Component: Starter },
 ];

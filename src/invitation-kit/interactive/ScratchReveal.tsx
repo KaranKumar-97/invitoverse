@@ -1,6 +1,13 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type ReactNode,
+} from "react";
 import { cn } from "@/lib/utils";
 import { useInvitation } from "../context";
 import { burstPetals } from "./petalBurst";
@@ -10,13 +17,17 @@ type Props = {
   children: ReactNode;
   /** Text printed on the foil. */
   label?: string;
-  /** Text for the accessible / no-scratch fallback button. */
-  tapLabel?: string;
+  /** Content of the accessible / no-scratch fallback button (text, or a styled hint). */
+  tapLabel?: ReactNode;
   /** Fraction of foil to scratch before it clears by itself. */
   threshold?: number;
   /** Two foil colours (CSS colours or variables); defaults to the template accent. */
   foil?: [string, string];
+  /** Painted foil instead of the gradient (drawn cover-fit; the label sits in its centre). */
+  foilImage?: string;
   className?: string;
+  /** Style for the scratch surface (e.g. a mask that gives the card a custom shape). */
+  surfaceStyle?: CSSProperties;
   /** Extra class for the fallback button. */
   tapClassName?: string;
   onReveal?: () => void;
@@ -34,7 +45,9 @@ export function ScratchReveal({
   tapLabel = "Or tap to reveal",
   threshold = 0.3,
   foil,
+  foilImage,
   className,
+  surfaceStyle,
   tapClassName,
   onReveal,
 }: Props) {
@@ -80,6 +93,8 @@ export function ScratchReveal({
       return;
     }
     let painted = false;
+    let art: HTMLImageElement | null = null;
+    let cancelled = false;
     const paint = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       const { width, height } = box.getBoundingClientRect();
@@ -100,24 +115,31 @@ export function ScratchReveal({
       el.height = h;
       const css = getComputedStyle(box);
       const accent = css.getPropertyValue("--c-accent").trim() || "#c9a227";
-      const [a, b] = foilA && foilB ? [foilA, foilB] : [accent, "#fff3cf"];
-      const g = ctx.createLinearGradient(0, 0, el.width, el.height);
-      g.addColorStop(0, a);
-      g.addColorStop(0.45, b);
-      g.addColorStop(0.55, a);
-      g.addColorStop(1, b);
       ctx.globalCompositeOperation = "source-over";
-      ctx.fillStyle = g;
-      ctx.fillRect(0, 0, el.width, el.height);
-      // Fine sparkle texture.
-      ctx.fillStyle = "rgba(255,255,255,0.18)";
-      for (let i = 0; i < (el.width * el.height) / 900; i++)
-        ctx.fillRect(Math.random() * el.width, Math.random() * el.height, dpr, dpr);
-      ctx.fillStyle = "rgba(0,0,0,0.55)";
+      if (art) {
+        const k = Math.max(el.width / art.naturalWidth, el.height / art.naturalHeight);
+        const dw = art.naturalWidth * k;
+        const dh = art.naturalHeight * k;
+        ctx.drawImage(art, (el.width - dw) / 2, (el.height - dh) / 2, dw, dh);
+      } else {
+        const [a, b] = foilA && foilB ? [foilA, foilB] : [accent, "#fff3cf"];
+        const g = ctx.createLinearGradient(0, 0, el.width, el.height);
+        g.addColorStop(0, a);
+        g.addColorStop(0.45, b);
+        g.addColorStop(0.55, a);
+        g.addColorStop(1, b);
+        ctx.fillStyle = g;
+        ctx.fillRect(0, 0, el.width, el.height);
+        // Fine sparkle texture.
+        ctx.fillStyle = "rgba(255,255,255,0.18)";
+        for (let i = 0; i < (el.width * el.height) / 900; i++)
+          ctx.fillRect(Math.random() * el.width, Math.random() * el.height, dpr, dpr);
+      }
+      ctx.fillStyle = art ? "rgba(70,40,5,0.85)" : "rgba(0,0,0,0.55)";
       ctx.font = `600 ${Math.round(13 * dpr)}px ${css.getPropertyValue("--f-heading") || "serif"}`;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-      ctx.fillText(label.toUpperCase(), el.width / 2, el.height / 2);
+      if (label) ctx.fillText(label.toUpperCase(), el.width / 2, el.height / 2);
       if (scratched) {
         // Keep the new foil only where the old one was still intact (scaled to the new size).
         ctx.globalCompositeOperation = "destination-in";
@@ -128,8 +150,26 @@ export function ScratchReveal({
     paint();
     const ro = new ResizeObserver(paint);
     ro.observe(box);
-    return () => ro.disconnect();
-  }, [foilA, foilB, label, revealed]);
+    if (foilImage) {
+      // Painted foil: the gradient covers the card until the art decodes, then the art replaces
+      // it (unless the guest has already started scratching).
+      const img = new Image();
+      img.src = foilImage;
+      img
+        .decode()
+        .then(() => {
+          if (cancelled || moves.current > 0) return;
+          art = img;
+          painted = false;
+          paint();
+        })
+        .catch(() => {});
+    }
+    return () => {
+      cancelled = true;
+      ro.disconnect();
+    };
+  }, [foilA, foilB, foilImage, label, revealed]);
 
   const point = (e: React.PointerEvent<HTMLCanvasElement>) => {
     const r = e.currentTarget.getBoundingClientRect();
@@ -179,7 +219,11 @@ export function ScratchReveal({
 
   return (
     <div className={cn("flex flex-col items-center", className)}>
-      <div ref={wrap} className="relative w-full overflow-hidden rounded-[inherit]">
+      <div
+        ref={wrap}
+        className="relative w-full overflow-hidden rounded-[inherit]"
+        style={surfaceStyle}
+      >
         <div aria-hidden={!revealed || undefined}>{children}</div>
         {!revealed && canScratch && (
           <canvas

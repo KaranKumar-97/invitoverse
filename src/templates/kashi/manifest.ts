@@ -1,0 +1,128 @@
+import type { TemplateManifest } from "@/lib/invitation/manifest";
+
+export const kashiManifest = {
+  slug: "kashi",
+  name: "Kashi",
+  version: 1,
+  category: "ROYAL",
+  tagline: "Step through a carved arch onto the ghats of Varanasi.",
+  description:
+    "A wedding on the banks of the Ganga. Guests step through a carved stone arch onto the ghats, scratch a painted ghat card for the date, meet the couple in a paper-cut diorama, swipe through each function on arched cards and count down inside painted Kashi murals.",
+  styleLabel: "Ghats · Ganga Blue",
+  supportedSections: [
+    "hero",
+    "greeting",
+    "couple",
+    "families",
+    "countdown",
+    "events",
+    "gallery",
+    "video",
+    "footer",
+  ],
+  defaultSections: [
+    "hero",
+    "greeting",
+    "families",
+    "couple",
+    "events",
+    "countdown",
+    "gallery",
+    "footer",
+  ],
+  palettes: [
+    {
+      id: "ganga",
+      name: "Ganga Gold",
+      colors: {
+        bg: "#F6E7C8",
+        surface: "#FCF4E3",
+        text: "#2B1D12",
+        muted: "#6B5643",
+        accent: "#8A5A14",
+        accentContrast: "#FCF4E3",
+      },
+    },
+    {
+      id: "sindoor",
+      name: "Sindoor",
+      colors: {
+        bg: "#F6E7C8",
+        surface: "#FCF4E3",
+        text: "#2E1A14",
+        muted: "#6E5246",
+        accent: "#A3321E",
+        accentContrast: "#FCF4E3",
+      },
+    },
+    {
+      id: "dusk",
+      name: "Ghat Dusk",
+      colors: {
+        bg: "#EFE6D6",
+        surface: "#FAF5EB",
+        text: "#1E2638",
+        muted: "#55607A",
+        accent: "#24467A",
+        accentContrast: "#FAF5EB",
+      },
+    },
+  ],
+  customizablePaletteKeys: ["accent", "text"],
+  fontPairs: [
+    {
+      id: "playfair-cormorant",
+      name: "Playfair & Cormorant",
+      display: "Playfair Display",
+      heading: "Playfair Display",
+      body: "Cormorant Garamond",
+      script: "Great Vibes",
+    },
+    {
+      id: "cinzel-garamond",
+      name: "Cinzel & Garamond",
+      display: "Cinzel",
+      heading: "Cinzel",
+      body: "EB Garamond",
+      script: "Great Vibes",
+    },
+  ],
+  backgrounds: [
+    { id: "kashi-murals", name: "Kashi murals", src: null },
+    { id: "plain", name: "Plain", src: null },
+  ],
+  allowCustomBackground: true,
+  animation: {
+    intro: "ghat-arch",
+    sectionReveal: "ghat-rise",
+    particles: "petals",
+    durationsMs: { SUBTLE: 1400, STANDARD: 2400, DRAMATIC: 3400 },
+  },
+  options: [
+    {
+      key: "scrollMotion",
+      type: "boolean",
+      label: "Layered scenery moves as guests scroll",
+      default: true,
+    },
+    { key: "petals", type: "boolean", label: "Falling marigold petals", default: true },
+    {
+      key: "scratchDate",
+      type: "boolean",
+      label: "Scratch card to reveal the date",
+      default: true,
+    },
+    {
+      key: "galleryStyle",
+      type: "select",
+      label: "Gallery style",
+      default: "arches",
+      choices: [
+        { value: "arches", label: "Arched swipe carousel" },
+        { value: "grid", label: "Grid" },
+      ],
+    },
+  ],
+  media: { couplePhotos: { max: 2 }, gallery: { max: 24 }, video: true, music: true },
+  defaultMusicTrackId: "raag-dawn",
+} as const satisfies TemplateManifest;

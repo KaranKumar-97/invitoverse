@@ -140,6 +140,29 @@ Demo photos: commissioned or licensed stock (Unsplash/Pexels license) uploaded t
 | Options | `showGopuram`, `showToran`, `lampRow` (lamp columns either side on desktop) |
 | Desktop | Centered 640px column with columns of lamps either side |
 
+## 5c. Kashi (built 2026-11-23)
+
+**Identity:** A wedding on the ghats of Varanasi — watercolour sky, carved stone arches, paper-cut
+scenery and painted Kashi murals. Storyboard: `design-references/radha-krishna-preview/` (local only).
+Art is placeholder until rights are confirmed (`src/templates/kashi/CREDITS.md`).
+
+| Aspect | Spec |
+|---|---|
+| Palettes | Ganga Gold (default) · Sindoor · Ghat Dusk. Text painted on the sky uses fixed scene colours |
+| Fonts | Playfair Display / Cormorant Garamond / Great Vibes · Cinzel / EB Garamond / Great Vibes |
+| Envelope | Looking out through a carved stone arch at the ghats; names (or guest name) in the sky |
+| Opening | Tap → the cover text lifts, clouds drift, the ghats settle; the jharokha stays → hero shows the same view with the names |
+| Hero | Names in the sky inside the jharokha; with `scrollMotion` five layers move at different speeds (sky, clouds, names, ghats, jharokha swelling past), then a simple "Save our date" block in the flow; jharokha-shaped card in a gold frame; `scratchDate` hides the date under shiny gold foil with a sweeping light to scratch away |
+| Greeting | Ganesha, invocation, "We cordially INVITE you" and the welcome inside the ghats arch |
+| Families | Grandparents, parents and names inside the carved jharokha (border-image sliced; pillars grow with the content), ghats below |
+| Couple | Paper diorama in a sandstone arch with 6-depth parallax (sky → clouds → temples → waves → couple, nearer layers travel further and swell; pointer tilt on desktop; paper drop shadows) and the couple's first names and short bios in the sky; first couple photo replaces the paper couple |
+| Events | "Wedding Events" on cream paper with pale ghats: jharokha-arch cards (art, name, date, time, "View Details" → dialog with venue, notes, directions, calendar). 2 per row on phones; on wide screens the section breaks out of the phone column and shows them in one row. Card art by event type: Mehendi illustration; Haldi, Sangeet/Baraat, Wedding/Rings/Mandap, Reception/Cocktail and a generic ritual photo for the rest |
+| Countdown | Sage mural (border-image sliced) with a tappable photo stack and round counters |
+| Gallery | Navy mural: a photo tile-reveal (4×5 tiles, diagonal wave) then arched swipe cards or a grid |
+| Footer | Clouds over the ghats, names on a cream card (no separate invitation-message section) |
+| Options | `scrollMotion`, `petals`, `scratchDate`, `galleryStyle` (arches / grid); background "Plain" swaps murals for flat cards |
+| Desktop | Centred 480px column on a soft blurred sky |
+
 ---
 
 ## 6. Envelope component contract

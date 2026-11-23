@@ -15,4 +15,5 @@ export const templateComponents: Record<TemplateSlug, TemplateComponent> = {
   deepam: dynamic(() => import("./deepam")),
   meenakshi: dynamic(() => import("./meenakshi")),
   mandir: dynamic(() => import("./mandir")),
+  kashi: dynamic(() => import("./kashi")),
 };

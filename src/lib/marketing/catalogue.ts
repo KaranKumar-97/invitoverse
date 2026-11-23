@@ -104,10 +104,12 @@ export const ENVELOPE_STYLE: Record<string, string> = {
   "card-slide": "Linen envelope; the card slides out and unfolds",
   "lamp-lighting": "A diya on a brass plate is lit; rings of light open the invitation",
   "temple-doors": "Carved temple doors swing open onto a mandir at sunset",
+  "ghat-arch": "Step through a carved stone arch onto the ghats of Varanasi",
 };
 export const REVEAL_STYLE: Record<string, string> = {
   "gilded-rise": "Sections rise with a gold rule drawing in",
   "quiet-fade": "Slow, quiet fades with generous spacing",
   "lamp-rise": "Sections rise softly in warm lamp-light",
   "soft-rise": "Sections rise softly beneath a floral arch; petals drift down",
+  "ghat-rise": "Layered ghats, clouds and paper scenery drift as you scroll",
 };

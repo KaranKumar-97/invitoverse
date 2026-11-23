@@ -1,0 +1,244 @@
+/* Kashi — scoped to the template root. Animations use transform/opacity only. */
+[data-template="kashi"] {
+  /* One phone-width column, centred on wide screens (the painted scenes are portrait art). */
+  --ks-col: min(100vw, 480px);
+  --ks-line: color-mix(in srgb, var(--c-accent) 38%, #d9bd84);
+  /* Fixed scene colours: text sitting on the painted sky, which never changes with the palette. */
+  --ks-sky-ink: #13284f;
+  --ks-sky-gold: #6b430b;
+  --ks-cream: #fff3d6;
+}
+[data-template="kashi"] .ks-col {
+  width: var(--ks-col);
+}
+[data-template="kashi"] .ks-eyebrow {
+  font-family: var(--f-heading);
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  font-size: 0.68rem;
+  color: var(--c-accent);
+}
+[data-template="kashi"] .ks-heading {
+  font-family: var(--f-heading);
+  color: var(--c-text);
+}
+[data-template="kashi"] .ks-accent {
+  color: var(--c-accent);
+}
+
+/* Painted sky behind scene sections, lightened so navy text stays readable on it. */
+[data-template="kashi"] .ks-sky {
+  background-color: #6aa7e4;
+  background-image:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0.18)), var(--ks-sky-img);
+  background-size: cover;
+  background-position: center top;
+}
+/* Names and lines set directly on the painted sky (hero, cover). */
+[data-template="kashi"] .ks-on-sky {
+  color: var(--ks-cream);
+  text-shadow:
+    0 2px 0 rgba(70, 40, 5, 0.35),
+    0 6px 22px rgba(8, 32, 76, 0.55);
+}
+
+/*
+ * Painted Kashi murals (navy / sage) around a cream centre, sliced as a border image so the arched
+ * head and base keep their shape while the straight sides repeat to fit any amount of content.
+ * Slice rows come from MURAL_SLICE in art.ts (900×1608 files), passed in as variables.
+ */
+[data-template="kashi"] .ks-mural {
+  border-style: solid;
+  border-image-source: var(--ks-mural);
+  border-image-slice: var(--ks-slice-t) var(--ks-slice-s) var(--ks-slice-b) fill;
+  border-image-width: calc(var(--ks-col) * var(--ks-slice-t) / 900)
+    calc(var(--ks-col) * var(--ks-slice-s) / 900) calc(var(--ks-col) * var(--ks-slice-b) / 900);
+  border-image-repeat: stretch round;
+  padding: calc(var(--ks-col) * 0.3) calc(var(--ks-col) * 0.2) calc(var(--ks-col) * 0.24);
+}
+/* The carved jharokha framing a tall block (Families); slices from ARCH_SLICE in art.ts. */
+[data-template="kashi"] .ks-jharokha {
+  border-style: solid;
+  border-image-source: var(--ks-arch);
+  border-image-slice: var(--ks-arch-t) var(--ks-arch-s) var(--ks-arch-b);
+  border-image-width: calc(var(--ks-col) * var(--ks-arch-t) / 900)
+    calc(var(--ks-col) * var(--ks-arch-s) / 900) calc(var(--ks-col) * var(--ks-arch-b) / 900);
+  border-image-repeat: stretch round;
+}
+[data-template="kashi"] .ks-plain .ks-mural {
+  border-image: none;
+  background: var(--c-surface);
+  padding: 4.5rem 2rem;
+}
+
+[data-template="kashi"] .ks-card {
+  background: var(--c-surface);
+  border: 1px solid var(--ks-line);
+  box-shadow: 0 26px 50px -30px rgba(20, 30, 60, 0.55);
+}
+[data-template="kashi"] .ks-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border-radius: 999px;
+  padding: 0.55rem 1.05rem;
+  font-size: 0.8rem;
+  border: 1px solid var(--ks-line);
+  color: var(--c-text);
+  background: transparent;
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease;
+}
+[data-template="kashi"] .ks-button:first-child {
+  background: var(--c-accent);
+  border-color: var(--c-accent);
+  color: var(--c-accent-contrast);
+}
+[data-template="kashi"] .ks-button:hover {
+  background: var(--c-accent);
+  color: var(--c-accent-contrast);
+}
+[data-template="kashi"] .ks-print {
+  background: #fff;
+  padding: 8px 8px 30px;
+  box-shadow: 0 16px 30px -16px rgba(40, 25, 10, 0.6);
+}
+[data-template="kashi"] .ks-circle {
+  background: #fffdf8;
+  border-radius: 999px;
+  box-shadow: 0 10px 22px -12px rgba(60, 40, 10, 0.5);
+}
+
+/* Ambient motion (paused by the kit under reduced motion via [data-ambient]). */
+@keyframes ks-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(22px, -4px, 0);
+  }
+}
+@keyframes ks-bob {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, 6px, 0);
+  }
+}
+@keyframes ks-rise {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(-1.5deg);
+  }
+  50% {
+    transform: translate3d(0, -16px, 0) rotate(1.5deg);
+  }
+}
+[data-template="kashi"] .ks-drift {
+  animation: ks-drift 14s ease-in-out infinite;
+}
+[data-template="kashi"] .ks-bob {
+  animation: ks-bob 5s ease-in-out infinite;
+}
+[data-template="kashi"] .ks-rise {
+  animation: ks-rise 7s ease-in-out infinite;
+}
+
+/* Light sweeping across the gold scratch foil. */
+@keyframes ks-sheen {
+  0% {
+    transform: translateX(0) skewX(-18deg);
+  }
+  55%,
+  100% {
+    transform: translateX(320%) skewX(-18deg);
+  }
+}
+[data-template="kashi"] .ks-sheen {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 252, 235, 0.15) 30%,
+    rgba(255, 255, 245, 0.7) 50%,
+    rgba(255, 252, 235, 0.15) 70%,
+    transparent
+  );
+  animation: ks-sheen 3.4s ease-in-out infinite;
+}
+
+/* Photo split into tiles that flip in on a diagonal wave (see TileReveal in sections.tsx). */
+[data-template="kashi"] .ks-tile {
+  opacity: 0;
+  transform: scale(0.86);
+  transition:
+    opacity 0.5s ease,
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: calc(var(--d) * 70ms);
+}
+[data-template="kashi"] [data-shown] > .ks-tile {
+  opacity: 1;
+  transform: none;
+}
+
+/* Depth-scene layers (couple diorama): eased so scroll and pointer moves glide. */
+[data-template="kashi"] .ks-depth {
+  will-change: transform;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+/* Paper-cut layers cast a soft shadow on the layer behind, for depth. */
+[data-template="kashi"] .ks-paper {
+  filter: drop-shadow(0 -8px 12px rgba(20, 40, 80, 0.28));
+}
+
+/* Pale ghats behind the event cards (Events is its own size container). */
+[data-template="kashi"] .ks-events-ghats {
+  inset: auto 0 0 0;
+  height: min(62%, 30rem);
+  opacity: 0.55;
+  background: no-repeat center 82% / cover;
+  mask-image: linear-gradient(180deg, transparent, #000 45%);
+}
+@container (min-width: 52rem) {
+  [data-template="kashi"] .ks-events-ghats {
+    inset: 0 0 0 auto;
+    width: 58%;
+    height: 100%;
+    background-position: center 60%;
+    mask-image:
+      linear-gradient(90deg, transparent, #000 50%), linear-gradient(180deg, transparent, #000 30%);
+    mask-composite: intersect;
+  }
+}
+
+/* Event details dialog. */
+[data-template="kashi"] .ks-dialog::backdrop {
+  background: rgba(20, 30, 50, 0.55);
+}
+[data-template="kashi"] .ks-dialog[open] {
+  animation: ks-dialog-in 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes ks-dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.97);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-template="kashi"] .ks-drift,
+  [data-template="kashi"] .ks-bob,
+  [data-template="kashi"] .ks-rise,
+  [data-template="kashi"] .ks-sheen,
+  [data-template="kashi"] .ks-dialog[open] {
+    animation: none;
+  }
+  [data-template="kashi"] .ks-tile {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
