@@ -101,7 +101,7 @@ describe("resolveRenderable", () => {
   });
 
   it("resolves library music", () => {
-    expect(resolve().music).toMatchObject({ src: "/music/raag-dawn.m4a" });
+    expect(resolve().music).toMatchObject({ src: "/music/krishna-flute.m4a" });
   });
 });
 

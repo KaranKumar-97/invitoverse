@@ -133,7 +133,7 @@ export const royalHeritageDemo: {
         img(6, 1600, 1067, "Flowers for the mandap"),
       ],
       video: null,
-      music: { type: "LIBRARY", trackId: "raag-dawn", startAtSec: 0 },
+      music: { type: "LIBRARY", trackId: "krishna-flute", startAtSec: 0 },
     },
   },
   design: {},

@@ -45,5 +45,5 @@ export const starterManifest = {
   },
   options: [{ key: "showMonogram", type: "boolean", label: "Show monogram", default: true }],
   media: { couplePhotos: { max: 0 }, gallery: { max: 0 }, video: false, music: true },
-  defaultMusicTrackId: "ivory-waltz",
+  defaultMusicTrackId: "jashn-e-bahara",
 } as const satisfies TemplateManifest;

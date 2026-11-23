@@ -120,7 +120,7 @@ export const mandirDemo: {
         photo(4, "Sharing chai under an umbrella in the rain"),
       ],
       video: null,
-      music: { type: "LIBRARY", trackId: "raag-dawn", startAtSec: 0 },
+      music: { type: "LIBRARY", trackId: "krishna-flute", startAtSec: 0 },
     },
   },
   design: {},

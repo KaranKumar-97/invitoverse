@@ -57,8 +57,7 @@ With `pnpm dev` running:
 Query params: `?palette=<id>`, `?font=<id>`, `?intensity=SUBTLE|STANDARD|DRAMATIC`, `?guest=1`
 (personalised view), `?envelope=0` (skip the envelope), `?embed=1` (hide the demo bar).
 
-Regenerate placeholder demo assets: `node scripts/generate-demo-art.mjs` and
-`node scripts/generate-demo-music.mjs` (macOS, uses `afconvert`).
+Regenerate placeholder demo art: `node scripts/generate-demo-art.mjs`.
 
 ## Scripts
 

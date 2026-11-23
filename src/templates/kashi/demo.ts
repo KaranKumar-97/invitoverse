@@ -123,7 +123,7 @@ export const kashiDemo: {
         photo(6, "A quiet moment on the steps of the ghat"),
       ],
       video: null,
-      music: { type: "LIBRARY", trackId: "raag-dawn", startAtSec: 0 },
+      music: { type: "LIBRARY", trackId: "krishna-flute", startAtSec: 0 },
     },
   },
   design: {},

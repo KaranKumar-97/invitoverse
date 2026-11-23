@@ -114,5 +114,5 @@ export const minimalLuxuryManifest = {
     { key: "paperTexture", type: "boolean", label: "Paper texture", default: true },
   ],
   media: { couplePhotos: { max: 1 }, gallery: { max: 16 }, video: true, music: true },
-  defaultMusicTrackId: "ivory-waltz",
+  defaultMusicTrackId: "jashn-e-bahara",
 } as const satisfies TemplateManifest;

@@ -131,7 +131,7 @@ export const meenakshiDemo: {
         photo(4, "In the mountains, before the temple"),
       ],
       video: null,
-      music: { type: "LIBRARY", trackId: "raag-dawn", startAtSec: 0 },
+      music: { type: "LIBRARY", trackId: "krishna-flute", startAtSec: 0 },
     },
   },
   design: {},

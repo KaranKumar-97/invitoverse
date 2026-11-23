@@ -92,7 +92,7 @@ export const minimalLuxuryDemo: {
         img(4, 1067, 1600, "The venue"),
       ],
       video: null,
-      music: { type: "LIBRARY", trackId: "ivory-waltz", startAtSec: 0 },
+      music: { type: "LIBRARY", trackId: "jashn-e-bahara", startAtSec: 0 },
     },
   },
   design: {},

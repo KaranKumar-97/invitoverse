@@ -24,7 +24,7 @@ export const starterDemo: TemplateDemo = {
         venue: { name: "Terrace", address: "Pune" },
       },
     ],
-    media: { music: { type: "LIBRARY", trackId: "ivory-waltz", startAtSec: 0 } },
+    media: { music: { type: "LIBRARY", trackId: "jashn-e-bahara", startAtSec: 0 } },
   },
   design: {},
   guestEventIds: ["evt_starter002"],

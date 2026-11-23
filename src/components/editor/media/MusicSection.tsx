@@ -4,7 +4,7 @@ import { Music2, Pause, Play, Trash2, Upload } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { MUSIC_LIBRARY } from "@/lib/invitation/music-library";
+import { currentTrackId, MUSIC_LIBRARY } from "@/lib/invitation/music-library";
 import type { MusicRef } from "@/lib/invitation/schema";
 import { MEDIA_RULES } from "@/lib/media";
 import { cn } from "@/lib/utils";
@@ -54,7 +54,7 @@ export function MusicSection({
       .catch(() => toast.error("Couldn't play this track."));
   };
 
-  const selectedTrack = value?.type === "LIBRARY" ? value.trackId : null;
+  const selectedTrack = value?.type === "LIBRARY" ? currentTrackId(value.trackId) : null;
 
   const removeUpload = async () => {
     if (value?.type !== "UPLOAD") return;

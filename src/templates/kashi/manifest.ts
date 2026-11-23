@@ -124,5 +124,5 @@ export const kashiManifest = {
     },
   ],
   media: { couplePhotos: { max: 2 }, gallery: { max: 24 }, video: true, music: true },
-  defaultMusicTrackId: "raag-dawn",
+  defaultMusicTrackId: "krishna-flute",
 } as const satisfies TemplateManifest;

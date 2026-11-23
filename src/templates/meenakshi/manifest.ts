@@ -128,5 +128,5 @@ export const meenakshiManifest = {
     { key: "petals", type: "boolean", label: "Falling marigold petals", default: true },
   ],
   media: { couplePhotos: { max: 1 }, gallery: { max: 24 }, video: true, music: true },
-  defaultMusicTrackId: "raag-dawn",
+  defaultMusicTrackId: "krishna-flute",
 } as const satisfies TemplateManifest;

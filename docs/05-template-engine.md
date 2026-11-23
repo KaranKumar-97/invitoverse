@@ -215,7 +215,7 @@ The first palette, font pair and background are the defaults. Source of truth fo
     { "key": "showInvocationArt", "type": "boolean", "label": "Ornament above invocation", "default": true }
   ],
   "media": { "couplePhotos": { "min": 0, "max": 2 }, "gallery": { "max": 24 }, "video": true, "music": true },
-  "defaultMusicTrackId": "raag-dawn"
+  "defaultMusicTrackId": "krishna-flute"
 }
 ```
 

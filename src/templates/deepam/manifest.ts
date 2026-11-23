@@ -132,5 +132,5 @@ export const deepamManifest = {
     { key: "scrollMotion", type: "boolean", label: "Cover moves as guests scroll", default: true },
   ],
   media: { couplePhotos: { max: 2 }, gallery: { max: 24 }, video: true, music: true },
-  defaultMusicTrackId: "raag-dawn",
+  defaultMusicTrackId: "krishna-flute",
 } as const satisfies TemplateManifest;

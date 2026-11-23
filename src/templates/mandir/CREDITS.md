@@ -7,12 +7,12 @@
 > (same file names and proportions). If `gate.webp` changes, re-measure `DOORWAY` and the arch points in `art.ts`.
 > Then re-run `node scripts/capture-template-media.mjs http://localhost:3000 mandir`.
 
-| Asset                                      | File(s) in `/public/templates/mandir/art/`                                            | Status                           |
-| ------------------------------------------ | ------------------------------------------------------------------------------------- | -------------------------------- |
-| Carved temple doors (opening cover)        | `gate.webp` (750×1333)                                                                | Placeholder — rights unconfirmed |
-| Sunset temple with couple (hero, doorway)  | `temple.webp` (864×1536)                                                              | Placeholder — rights unconfirmed |
-| Floral arch & pavilions page               | `page.webp` (864×1536)                                                                | Placeholder — rights unconfirmed |
-| Demo photos                                | `photo-1.jpg` … `photo-4.jpg`                                                         | Placeholder — rights unconfirmed |
-| Sun divider, arch card cap (`decor.tsx`)   | Original, hand-coded SVG                                                              | Project-owned                    |
-| Demo music (`/public/music/raag-dawn.m4a`) | Synthesized by `scripts/generate-demo-music.mjs`                                      | Project-owned placeholder        |
-| Fonts                                      | Google Fonts (Bodoni Moda, Cormorant Garamond, Pinyon Script, Marcellus, EB Garamond) | SIL Open Font License            |
+| Asset                                          | File(s) in `/public/templates/mandir/art/`                                            | Status                           |
+| ---------------------------------------------- | ------------------------------------------------------------------------------------- | -------------------------------- |
+| Carved temple doors (opening cover)            | `gate.webp` (750×1333)                                                                | Placeholder — rights unconfirmed |
+| Sunset temple with couple (hero, doorway)      | `temple.webp` (864×1536)                                                              | Placeholder — rights unconfirmed |
+| Floral arch & pavilions page                   | `page.webp` (864×1536)                                                                | Placeholder — rights unconfirmed |
+| Demo photos                                    | `photo-1.jpg` … `photo-4.jpg`                                                         | Placeholder — rights unconfirmed |
+| Sun divider, arch card cap (`decor.tsx`)       | Original, hand-coded SVG                                                              | Project-owned                    |
+| Demo music (`/public/music/krishna-flute.m4a`) | Supplied by the owner (film / artist recording)                                       | Not licensed — see docs/16       |
+| Fonts                                          | Google Fonts (Bodoni Moda, Cormorant Garamond, Pinyon Script, Marcellus, EB Garamond) | SIL Open Font License            |
