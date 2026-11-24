@@ -25,9 +25,9 @@ export const metadata: Metadata = {
     type: "website",
     siteName: BRAND.name,
     locale: "en_IN",
-    images: [{ url: "/og", width: 1200, height: 630, alt: BRAND.name }],
+    images: [{ url: "/og?v=2", width: 1200, height: 630, alt: BRAND.name }],
   },
-  twitter: { card: "summary_large_image", images: ["/og"] },
+  twitter: { card: "summary_large_image", images: ["/og?v=2"] },
 };
 
 export const viewport: Viewport = {
