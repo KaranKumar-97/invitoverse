@@ -33,9 +33,7 @@ export async function GET() {
     readFile(fromRoot("src/app/og/fonts/Fraunces-Medium.ttf")),
     readFile(fromRoot("src/app/og/fonts/Fraunces-Italic.ttf")),
     readFile(fromRoot("src/app/og/fonts/Inter-Regular.ttf")),
-    ...PHONES.map((p) =>
-      dataUri(fromRoot("public/templates", p.slug, "poster.jpg"), "image/jpeg"),
-    ),
+    ...PHONES.map((p) => dataUri(fromRoot("public/templates", p.slug, "poster.jpg"), "image/jpeg")),
   ]);
 
   const foil = {
@@ -71,7 +69,8 @@ export async function GET() {
           height: 900,
           display: "flex",
           borderRadius: 9999,
-          backgroundImage: "radial-gradient(circle, rgba(231,199,123,0.4) 0%, rgba(231,199,123,0) 70%)",
+          backgroundImage:
+            "radial-gradient(circle, rgba(231,199,123,0.4) 0%, rgba(231,199,123,0) 70%)",
         }}
       />
 
@@ -84,7 +83,16 @@ export async function GET() {
           padding: "60px 0 60px 72px",
         }}
       >
-        <div style={{ display: "flex", alignItems: "baseline", fontFamily: "Fraunces", fontWeight: 500, fontSize: 36, letterSpacing: -0.5 }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "baseline",
+            fontFamily: "Fraunces",
+            fontWeight: 500,
+            fontSize: 36,
+            letterSpacing: -0.5,
+          }}
+        >
           {`${BRAND.lead}`}
           {BRAND.accent ? (
             <span style={{ ...foil, marginLeft: 10 }}>{`${BRAND.accent}`}</span>
@@ -111,7 +119,9 @@ export async function GET() {
               <span style={foil}>{"love letter."}</span>
             </div>
           </div>
-          <div style={{ marginTop: 26, fontSize: 27, lineHeight: 1.4, color: INK_SOFT, maxWidth: 560 }}>
+          <div
+            style={{ marginTop: 26, fontSize: 27, lineHeight: 1.4, color: INK_SOFT, maxWidth: 560 }}
+          >
             {"Designer, animated invitation websites — personalized for every guest."}
           </div>
         </div>
