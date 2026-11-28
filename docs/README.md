@@ -26,6 +26,7 @@ building it phase by phase.
 | 16 | [Risks & trade-offs](16-risks-and-tradeoffs.md) | 18. Risks, trade-offs, decision log |
 | 17 | [Future payments](17-future-payments.md) | Payment-ready architecture (Razorpay / PayU) — not built in MVP |
 | 18 | [Launch runbook](18-launch-runbook.md) | Accounts, env vars, deploy, CSP rollout, monitoring, restore drill |
+| 19 | [Admin panel](19-admin-panel.md) | Post-MVP plan: RBAC (Superadmin / Admin + per-feature toggles), templates, users, sites, analytics, assets |
 
 ## How to use these docs with Claude Code
 

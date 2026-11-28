@@ -5,6 +5,7 @@
  * yet are kept inactive so the create flow only offers working designs.
  */
 import { PrismaClient, type TemplateCategory } from "@prisma/client";
+import { MUSIC_LIBRARY } from "../src/lib/invitation/music-library";
 import { templateManifests } from "../src/templates/registry";
 
 const prisma = new PrismaClient();
@@ -51,10 +52,20 @@ async function main() {
       version: m.version,
       sortOrder: order,
     };
+    // Visibility, order, New badge, tier and price are managed in /admin/templates (docs/19 §4.1),
+    // so a deploy only sets them when the template is first added.
+    const { sortOrder, ...descriptive } = data;
     await prisma.template.upsert({
       where: { slug: m.slug },
-      create: { slug: m.slug, ...data, tier: "FREE", isActive: true, isNew: true },
-      update: { ...data, isActive: true },
+      create: {
+        slug: m.slug,
+        ...descriptive,
+        sortOrder,
+        tier: "FREE",
+        isActive: true,
+        isNew: true,
+      },
+      update: descriptive,
     });
     order += 10;
   }
@@ -72,6 +83,24 @@ async function main() {
       },
     });
     order += 10;
+  }
+  // Music library: import the bundled tracks once; after that they're managed in /admin/assets/music.
+  for (const [i, t] of MUSIC_LIBRARY.entries()) {
+    await prisma.musicTrack.upsert({
+      where: { id: t.id },
+      create: {
+        id: t.id,
+        title: t.title,
+        mood: t.mood,
+        url: t.src,
+        durationSec: t.durationSec,
+        provider: "STATIC",
+        licence: "UNLICENSED",
+        licenceNote: "Supplied by the owner (film / artist recording); see docs/16",
+        sortOrder: (i + 1) * 10,
+      },
+      update: {},
+    });
   }
   console.log(`Seeded ${built.length} active template(s) and ${PLANNED.length} planned.`);
 }

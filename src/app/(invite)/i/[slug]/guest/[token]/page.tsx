@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
+import { getMusicLibrary } from "@/server/services/music";
 import { notFound } from "next/navigation";
 import { coupleTitle } from "@/lib/invitation/couple";
 import { formatLongDate } from "@/lib/invitation/dates";
@@ -62,6 +63,8 @@ export default async function GuestInvitationPage({ params }: { params: Promise<
     key: `inv:${inv.slug}:v${inv.publishedVersion}:g:${token}`,
     guest,
     links: { beacon: { slug: inv.slug, token }, icsBase: `/api/v1/ics/${inv.slug}` },
+
+    library: await getMusicLibrary(),
   });
   const Template = templateComponents[templateSlug];
   return <Template data={data} />;

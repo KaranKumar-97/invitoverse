@@ -20,20 +20,120 @@ model User {
   name          String?
   image         String?
   role          Role      @default(USER)
+  suspendedAt   DateTime? // admin suspended: can't sign in; published sites stay up unless taken down
   deletedAt     DateTime?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
-  accounts     Account[]
-  sessions     Session[]
-  invitations  Invitation[]
-  mediaAssets  MediaAsset[]
-  entitlements Entitlement[]
+  accounts         Account[]
+  sessions         Session[]
+  invitations      Invitation[]
+  mediaAssets      MediaAsset[]
+  entitlements     Entitlement[]
+  adminPermissions AdminPermission[]
 }
 
 enum Role {
   USER
   ADMIN
+  SUPERADMIN
+}
+
+/// Opens per invitation per day (UTC), counted by the open beacon. Counts only, no personal data.
+model InvitationDailyStat {
+  invitationId String
+  date         DateTime @db.Date
+  opens        Int      @default(0) // every open (public link + guest links)
+  guestOpens   Int      @default(0) // opens through a personal guest link
+
+  invitation Invitation @relation(fields: [invitationId], references: [id], onDelete: Cascade)
+
+  @@id([invitationId, date])
+  @@index([date])
+}
+
+// ───────────── Music library (docs/19 §4.6) ─────────────
+
+/// A song couples can pick for any template. Stored in /public (STATIC) or uploaded by an admin.
+model MusicTrack {
+  id          String        @id // stable id stored in invitations (e.g. "krishna-flute")
+  title       String
+  artist      String?
+  mood        String        @default("")
+  url         String
+  provider    MusicProvider @default(STATIC)
+  publicId    String? // storage key for uploaded tracks
+  durationSec Int           @default(0)
+  licence     MusicLicence  @default(UNLICENSED)
+  licenceNote String?
+  isActive    Boolean       @default(true) // shown in the editor's picker
+  replacedBy  String? // retired: invitations using it play this track instead
+  sortOrder   Int           @default(0)
+  createdBy   String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([isActive, sortOrder])
+}
+
+enum MusicProvider {
+  STATIC
+  LOCAL
+  CLOUDINARY
+}
+
+enum MusicLicence {
+  OWNED
+  LICENSED
+  ROYALTY_FREE
+  UNLICENSED
+}
+
+/// An admin's replacement for one of a template's art files (served via /t-art/<slug>/<file>).
+model TemplateAssetOverride {
+  templateSlug String
+  file         String // e.g. "ghats.webp" (the file name in public/templates/<slug>/art/)
+  url          String
+  provider     MusicProvider
+  publicId     String
+  width        Int?
+  height       Int?
+  licence      MusicLicence  @default(UNLICENSED)
+  updatedBy    String
+  updatedAt    DateTime      @updatedAt
+
+  @@id([templateSlug, file])
+}
+
+// ───────────── Admin (docs/19-admin-panel.md) ─────────────
+
+/// A permission a Superadmin set for one Admin; overrides the catalogue default (src/lib/admin/permissions.ts).
+model AdminPermission {
+  userId    String
+  key       String
+  allowed   Boolean
+  grantedBy String
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, key])
+}
+
+/// Every admin write (and every personal-data reveal). Append-only.
+model AdminAuditLog {
+  id         String   @id @default(cuid())
+  actorId    String
+  action     String
+  targetType String
+  targetId   String
+  before     Json?
+  after      Json?
+  reason     String?
+  createdAt  DateTime @default(now())
+
+  @@index([targetType, targetId, createdAt(sort: Desc)])
+  @@index([actorId, createdAt(sort: Desc)])
 }
 
 model Account {
@@ -76,21 +176,23 @@ model VerificationToken {
 // ───────────── Catalogue ─────────────
 
 model Template {
-  id         String           @id @default(cuid())
-  slug       String           @unique // matches src/templates/<slug>
-  name       String
-  tagline    String?
-  category   TemplateCategory
-  tags       String[]
-  tier       TemplateTier     @default(FREE)
-  pricePaise Int? // future
-  isActive   Boolean          @default(true)
-  isNew      Boolean          @default(false)
-  sortOrder  Int              @default(0)
-  version    Int              @default(1)
-  posterUrl  String?
-  createdAt  DateTime         @default(now())
-  updatedAt  DateTime         @updatedAt
+  id             String           @id @default(cuid())
+  slug           String           @unique // matches src/templates/<slug>
+  name           String
+  tagline        String?
+  category       TemplateCategory
+  tags           String[]
+  tier           TemplateTier     @default(FREE)
+  pricePaise     Int? // future
+  isActive       Boolean          @default(true)
+  defaultTrackId String? // admin override of the manifest's defaultMusicTrackId
+  retiredAt      DateTime? // admin retired it: hidden everywhere, not choosable; existing invitations keep rendering
+  isNew          Boolean          @default(false)
+  sortOrder      Int              @default(0)
+  version        Int              @default(1)
+  posterUrl      String?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
 
   invitations Invitation[]
 
@@ -143,10 +245,11 @@ model Invitation {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  owner       User         @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-  template    Template     @relation(fields: [templateSlug], references: [slug])
+  owner       User                  @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  template    Template              @relation(fields: [templateSlug], references: [slug])
   guests      Guest[]
   mediaAssets MediaAsset[]
+  dailyStats  InvitationDailyStat[]
 
   @@index([ownerId, status, updatedAt(sort: Desc)])
   @@index([slug, status])

@@ -2,7 +2,9 @@
  * Art for Deepotsav (paths + natural sizes, so layouts can reserve space).
  * PLACEHOLDER until confirmed project-owned — see CREDITS.md.
  */
-const BASE = "/templates/deepotsav/art";
+// Served through /t-art so admins can replace art from the portal (docs/19 §4.6); the files live
+// in /public/templates/deepotsav/art/.
+const BASE = "/t-art/deepotsav";
 
 export type ArtImage = { src: string; w: number; h: number };
 

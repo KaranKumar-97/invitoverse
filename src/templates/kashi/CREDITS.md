@@ -20,3 +20,6 @@
 | Demo photos                                    | `photo-1.jpg` … `photo-6.jpg`                                                         | Placeholder — rights unconfirmed |
 | Demo music (`/public/music/krishna-flute.m4a`) | Supplied by the owner (film / artist recording)                                       | Not licensed — see docs/16       |
 | Fonts                                          | Google Fonts (Playfair Display, Cormorant Garamond, Great Vibes, Cinzel, EB Garamond) | SIL Open Font License            |
+
+> Art is served through `/t-art/kashi/<file>`; an admin can replace any file from `/admin/assets/templates`
+> (same shape) without changing this folder (docs/19 §4.6).

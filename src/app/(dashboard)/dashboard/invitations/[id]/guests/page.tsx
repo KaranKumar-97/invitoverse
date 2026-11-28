@@ -8,6 +8,7 @@ import { GuestManager } from "@/components/guests/GuestManager";
 import { AppError } from "@/lib/action-result";
 import { formatLongDate, formatTime } from "@/lib/invitation/dates";
 import { requireUserOrRedirect } from "@/server/auth/session";
+import { actingForInvitation } from "@/server/services/admin-acting";
 import { listGuests } from "@/server/services/guests";
 import { getInvitationForEditor } from "@/server/services/invitations";
 
@@ -16,7 +17,14 @@ export const metadata: Metadata = { title: "Guests" };
 export default async function GuestsPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const user = await requireUserOrRedirect(`/dashboard/invitations/${id}/guests`);
-  const ctx = { userId: user.id };
+  // Owners, or admins with invitations.guests acting as the owner (docs/19 §4.2).
+  const acting = await actingForInvitation({ userId: user.id }, id, "invitations.guests").catch(
+    (e) => {
+      if (e instanceof AppError && e.code === "NOT_FOUND") notFound();
+      throw e;
+    },
+  );
+  const ctx = acting.ctx;
   const [inv, guests] = await Promise.all([
     getInvitationForEditor(ctx, id),
     listGuests(ctx, id),

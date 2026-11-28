@@ -4,7 +4,7 @@ import { Music2, Pause, Play, Trash2, Upload } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { currentTrackId, MUSIC_LIBRARY } from "@/lib/invitation/music-library";
+import { currentTrackId, pickableTracks, type LibraryTrack } from "@/lib/invitation/music-library";
 import type { MusicRef } from "@/lib/invitation/schema";
 import { MEDIA_RULES } from "@/lib/media";
 import { cn } from "@/lib/utils";
@@ -18,11 +18,14 @@ export function MusicSection({
   invitationId,
   value,
   onChange,
+  library,
   onBytesChange,
 }: {
   invitationId: string;
   value: MusicRef | null;
   onChange: (next: MusicRef | null) => void;
+  /** The managed music library (all tracks; only pickable ones are listed). */
+  library: readonly LibraryTrack[];
   onBytesChange?: (delta: number) => void;
 }) {
   const audio = useRef<HTMLAudioElement | null>(null);
@@ -54,7 +57,7 @@ export function MusicSection({
       .catch(() => toast.error("Couldn't play this track."));
   };
 
-  const selectedTrack = value?.type === "LIBRARY" ? currentTrackId(value.trackId) : null;
+  const selectedTrack = value?.type === "LIBRARY" ? currentTrackId(value.trackId, library) : null;
 
   const removeUpload = async () => {
     if (value?.type !== "UPLOAD") return;
@@ -70,7 +73,7 @@ export function MusicSection({
         role="radiogroup"
         aria-label="Background music"
       >
-        {MUSIC_LIBRARY.map((t) => (
+        {pickableTracks(library).map((t) => (
           <li key={t.id} className="flex items-center gap-3 px-3 py-2.5">
             <button
               type="button"

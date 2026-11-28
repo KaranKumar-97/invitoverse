@@ -206,3 +206,27 @@ gantt
 Payments (doc 17) · RSVP · editable WhatsApp message · custom domains · shareable draft preview links ·
 co-editor invites · more templates (regional: South Indian, Punjabi, Nikah, Bengali) · engagement/other
 event types · multi-language UI · slug redirects · template marketplace.
+
+### Next phase — platform readiness (deferred, not needed now)
+
+Suggested on 2026-11-28 alongside the admin panel plan ([19-admin-panel.md](19-admin-panel.md)).
+Pick these up after the admin panel, in roughly this order; none is in current scope.
+
+1. **Licences for art and music** — replace or license the placeholder template art and the
+   unlicensed library songs (see each template's `CREDITS.md` and the doc 16 log); block unlicensed
+   items from new invitations behind a launch switch.
+2. **Payments and checkout** (Razorpay) — coupons, GST invoices, refunds (doc 17).
+3. **Privacy compliance (India DPDP Act 2023)** — privacy policy and terms, consent where couples add
+   guests, self-serve data download and account deletion, grievance contact, retention rules.
+4. **Abuse reports and a review queue** — report button on public pages feeding an admin queue with
+   one-click take-down (replaces today's `mailto:`).
+5. **Support tools** — admin inbox for contact messages and WhatsApp leads, notes on users, "view as
+   user" with consent.
+6. **Backups, restore drill and a maintenance banner** switchable from the admin.
+7. **Emails to couples** — published confirmation, first guest opened, weekly opens, unfinished-draft
+   reminders.
+8. **Feature flags and announcement banners.**
+9. **Marketing-site content editing** — FAQs, testimonials, showcase and offers without a deploy.
+10. **Sign-up abuse protection** — disposable-email blocking, sign-up rate limits, flags for unusual
+    activity.
+11. **RSVP and guest replies** — next product feature after payments.

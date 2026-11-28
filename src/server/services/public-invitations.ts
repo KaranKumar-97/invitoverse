@@ -75,15 +75,28 @@ export async function getPublishedInvitationBySlug(slug: string) {
   }
 }
 
+/** Adds one open to today's row for an invitation (docs/19 §4.4 analytics). */
+async function countDailyOpen(invitationId: string, guest: boolean) {
+  await prisma.$executeRaw`
+    INSERT INTO "InvitationDailyStat" ("invitationId", "date", "opens", "guestOpens")
+    VALUES (${invitationId}, CURRENT_DATE, 1, ${guest ? 1 : 0})
+    ON CONFLICT ("invitationId", "date") DO UPDATE
+    SET "opens" = "InvitationDailyStat"."opens" + 1,
+        "guestOpens" = "InvitationDailyStat"."guestOpens" + ${guest ? 1 : 0}`;
+}
+
 /** Counts an open (public link). Never throws, never reveals whether the slug exists. */
 export async function recordPublicOpen(slug: string) {
   if (!/^[a-z0-9-]{3,48}$/.test(slug)) return;
-  await prisma.invitation
-    .updateMany({
-      where: { slug, status: "PUBLISHED", disabledAt: null },
-      data: { openCount: { increment: 1 } },
-    })
-    .catch(() => {});
+  try {
+    const rows = await prisma.$queryRaw<Array<{ id: string }>>`
+      UPDATE "Invitation" SET "openCount" = "openCount" + 1
+      WHERE "slug" = ${slug} AND "status" = 'PUBLISHED'::"InvitationStatus" AND "disabledAt" IS NULL
+      RETURNING "id"`;
+    if (rows[0]) await countDailyOpen(rows[0].id, false);
+  } catch {
+    /* never fail a beacon */
+  }
 }
 
 // ───────────── Guests (docs/07-guest-links-and-privacy.md) ─────────────
@@ -137,11 +150,13 @@ export async function recordGuestOpen(slug: string, token: string) {
       WHERE g."invitationId" = i."id" AND g."token" = ${token} AND i."slug" = ${slug}
         AND i."status" = 'PUBLISHED'::"InvitationStatus" AND i."disabledAt" IS NULL
       RETURNING g."invitationId"`;
-    if (rows[0])
+    if (rows[0]) {
       await prisma.invitation.update({
         where: { id: rows[0].invitationId },
         data: { openCount: { increment: 1 } },
       });
+      await countDailyOpen(rows[0].invitationId, true);
+    }
   } catch {
     /* never fail a beacon */
   }

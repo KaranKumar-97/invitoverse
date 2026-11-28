@@ -12,12 +12,12 @@ export type TemplateOption = {
   swatch: { bg: string; accent: string; text: string };
 };
 
-/** Active catalogue rows that also have template code registered, newest first (seed numbers
- * `sortOrder` in registry order, so a later template has a higher value). */
+/** Active, non-retired catalogue rows that also have template code registered, in the order set
+ * in /admin/templates (docs/19 §4.1; the seed numbers new templates in registry order). */
 export async function listAvailableTemplates(): Promise<TemplateOption[]> {
   const rows = await prisma.template.findMany({
-    where: { isActive: true },
-    orderBy: { sortOrder: "desc" },
+    where: { isActive: true, retiredAt: null },
+    orderBy: { sortOrder: "asc" },
     select: { slug: true, tier: true, isNew: true },
   });
   return rows

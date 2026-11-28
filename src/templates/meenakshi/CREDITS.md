@@ -20,3 +20,6 @@
 
 The gilded frame's transparent window is measured in `art.ts` (`FRAME_WINDOW`); update it if the
 replacement frame differs.
+
+> Art is served through `/t-art/meenakshi/<file>`; an admin can replace any file from `/admin/assets/templates`
+> (same shape) without changing this folder (docs/19 §4.6).

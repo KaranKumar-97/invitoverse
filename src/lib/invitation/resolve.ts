@@ -5,7 +5,7 @@
  */
 import { findFontPair, findPalette, optionsToZod, type TemplateManifest } from "./manifest";
 import { countdownTarget, sortEvents } from "./dates";
-import { findTrack } from "./music-library";
+import { findTrack, type LibraryTrack } from "./music-library";
 import { coerceForPreview } from "./preview";
 import {
   DesignConfigSchema,
@@ -86,6 +86,8 @@ export function resolveRenderable(input: {
   key: string;
   guest?: GuestInput | null;
   links?: Partial<RenderableInvitation["links"]>;
+  /** The managed music library (src/server/services/music.ts); defaults to the bundled list. */
+  library?: readonly LibraryTrack[];
 }): RenderableInvitation {
   const { manifest, mode } = input;
   // Editor previews render drafts (possibly incomplete); everything else must be strictly valid.
@@ -134,7 +136,7 @@ export function resolveRenderable(input: {
 
   // Music
   const m = content.media.music;
-  const track = m?.type === "LIBRARY" ? findTrack(m.trackId) : undefined;
+  const track = m?.type === "LIBRARY" ? findTrack(m.trackId, input.library) : undefined;
   const music = m
     ? m.type === "LIBRARY"
       ? track

@@ -154,6 +154,8 @@ export function ScratchReveal({
       // Painted foil: the gradient covers the card until the art decodes, then the art replaces
       // it (unless the guest has already started scratching).
       const img = new Image();
+      // Art may be redirected to a CDN (admin replacements); CORS keeps the canvas readable.
+      img.crossOrigin = "anonymous";
       img.src = foilImage;
       img
         .decode()

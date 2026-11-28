@@ -1,5 +1,6 @@
 "use client";
 
+import type { LibraryTrack } from "@/lib/invitation/music-library";
 import { useWatch, type UseFormReturn } from "react-hook-form";
 import type { TemplateManifest } from "@/lib/invitation/manifest";
 import type { DraftContent, SectionKey } from "@/lib/invitation/schema";
@@ -17,6 +18,7 @@ type Props = {
   onBytesChange: (delta: number) => void;
   onPreviewFocus: (s: SectionKey) => void;
   ensureSectionVisible: (s: SectionKey) => void;
+  musicLibrary: readonly LibraryTrack[];
 };
 
 export function MediaTab({
@@ -27,6 +29,7 @@ export function MediaTab({
   onBytesChange,
   onPreviewFocus,
   ensureSectionVisible,
+  musicLibrary,
 }: Props) {
   const media = useWatch({ control: form.control, name: "media" });
   const set = <K extends keyof DraftContent["media"]>(key: K, value: DraftContent["media"][K]) =>
@@ -122,6 +125,7 @@ export function MediaTab({
             value={media.music}
             onBytesChange={onBytesChange}
             onChange={(next) => set("music", next)}
+            library={musicLibrary}
           />
         </EditorCard>
       )}

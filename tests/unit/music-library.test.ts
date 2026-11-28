@@ -1,7 +1,12 @@
 import { existsSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import { currentTrackId, findTrack, MUSIC_LIBRARY } from "@/lib/invitation/music-library";
+import {
+  currentTrackId,
+  findTrack,
+  MUSIC_LIBRARY,
+  pickableTracks,
+} from "@/lib/invitation/music-library";
 import { templateManifests } from "@/templates/registry";
 
 describe("music library", () => {
@@ -23,5 +28,31 @@ describe("music library", () => {
         MUSIC_LIBRARY.some((t) => t.id === m.defaultMusicTrackId),
         m.slug,
       ).toBe(true);
+  });
+});
+
+describe("managed library", () => {
+  const lib = [
+    { id: "a", title: "A", mood: "", src: "/a.mp3", durationSec: 10, active: true },
+    {
+      id: "b",
+      title: "B",
+      mood: "",
+      src: "/b.mp3",
+      durationSec: 10,
+      active: false,
+      replacedBy: "c",
+    },
+    { id: "c", title: "C", mood: "", src: "/c.mp3", durationSec: 10, active: true },
+    { id: "h", title: "H", mood: "", src: "/h.mp3", durationSec: 10, active: false },
+  ];
+
+  it("follows an admin retirement to its replacement", () => {
+    expect(findTrack("b", lib)?.id).toBe("c");
+  });
+
+  it("keeps hidden tracks playable but out of the picker", () => {
+    expect(findTrack("h", lib)?.id).toBe("h");
+    expect(pickableTracks(lib).map((t) => t.id)).toEqual(["a", "c"]);
   });
 });

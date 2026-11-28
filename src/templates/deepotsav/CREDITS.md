@@ -18,3 +18,6 @@
 | Demo photos                                    | `/templates/kashi/art/photo-*.jpg` (shared with Kashi)                | Placeholder — rights unconfirmed   |
 | Demo music (`/public/music/krishna-flute.m4a`) | Supplied by the owner (film / artist recording)                       | Not licensed — see docs/16         |
 | Fonts                                          | Google Fonts (Cormorant Garamond, Pinyon Script, Cinzel, EB Garamond) | SIL Open Font License              |
+
+> Art is served through `/t-art/deepotsav/<file>`; an admin can replace any file from `/admin/assets/templates`
+> (same shape) without changing this folder (docs/19 §4.6).

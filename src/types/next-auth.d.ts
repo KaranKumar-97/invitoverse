@@ -1,6 +1,6 @@
 import type { DefaultSession } from "next-auth";
 
-type Role = "USER" | "ADMIN";
+type Role = "USER" | "ADMIN" | "SUPERADMIN";
 
 declare module "next-auth" {
   interface Session {
@@ -9,5 +9,6 @@ declare module "next-auth" {
   interface User {
     role?: Role;
     deletedAt?: Date | null;
+    suspendedAt?: Date | null;
   }
 }

@@ -8,7 +8,7 @@ export type SessionUser = {
   email: string | null;
   name: string | null;
   image: string | null;
-  role: "USER" | "ADMIN";
+  role: "USER" | "ADMIN" | "SUPERADMIN";
 };
 
 /** Returns the signed-in user, or null. */
@@ -39,8 +39,9 @@ export async function requireUserOrRedirect(callbackUrl = "/dashboard"): Promise
   return user;
 }
 
+/** Any admin (Admin or Superadmin). Everyone else gets NOT_FOUND so admin pages stay invisible. */
 export async function requireAdmin(): Promise<SessionUser> {
   const user = await requireUser();
-  if (user.role !== "ADMIN") throw new AppError("NOT_FOUND");
+  if (user.role !== "ADMIN" && user.role !== "SUPERADMIN") throw new AppError("NOT_FOUND");
   return user;
 }

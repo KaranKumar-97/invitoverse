@@ -1,5 +1,6 @@
 "use client";
 
+import type { LibraryTrack } from "@/lib/invitation/music-library";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -80,6 +81,7 @@ export function Editor({
   initialTab,
   initialUsedBytes,
   guestCounts = {},
+  musicLibrary,
 }: {
   initial: EditorInvitation;
   templates: TemplateOption[];
@@ -89,6 +91,8 @@ export function Editor({
   initialUsedBytes: number;
   /** SELECTED guests per event id — warns before deleting an event people are invited to. */
   guestCounts?: Record<string, number>;
+  /** The managed music library for the music picker. */
+  musicLibrary: readonly LibraryTrack[];
 }) {
   const form = useForm<DraftContent>({ defaultValues: initial.content });
   const [design, setDesign] = useState<DesignConfig>(initial.design);
@@ -504,6 +508,7 @@ export function Editor({
                 onBytesChange={(d) => setUsedBytes((b) => Math.max(0, b + d))}
                 onPreviewFocus={onPreviewFocus}
                 ensureSectionVisible={ensureSectionVisible}
+                musicLibrary={musicLibrary}
               />
             )}
             {tab === "design" && (

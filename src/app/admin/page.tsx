@@ -1,24 +1,15 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
-import { Logo } from "@/components/brand/Logo";
-import { AppError } from "@/lib/action-result";
-import { requireAdmin } from "@/server/auth/session";
+import { requireAdminPage } from "@/server/auth/admin";
 import { getPlatformStats } from "@/server/services/admin";
 
-export const metadata: Metadata = { title: "Admin", robots: { index: false, follow: false } };
-export const dynamic = "force-dynamic";
+export const metadata: Metadata = { title: "Overview" };
 
 const nf = new Intl.NumberFormat("en-IN");
 const mb = (bytes: number) => `${nf.format(Math.round(bytes / 1024 / 1024))} MB`;
 
-/** Read-only platform stats for the ADMIN role (docs/15 Phase 7, task 6). Everyone else: 404. */
+/** Read-only platform stats for any admin (docs/19 §3). Everyone else: 404. */
 export default async function AdminPage() {
-  try {
-    await requireAdmin();
-  } catch (e) {
-    if (e instanceof AppError) notFound();
-    throw e;
-  }
+  await requireAdminPage();
   const s = await getPlatformStats();
   const tiles = [
     ["Accounts", nf.format(s.users.total), `+${nf.format(s.users.last7d)} this week`],
@@ -34,9 +25,8 @@ export default async function AdminPage() {
   ] as const;
 
   return (
-    <main className="mx-auto max-w-5xl px-4 py-8 sm:px-6">
-      <Logo href="/dashboard" />
-      <h1 className="mt-8 font-display text-3xl font-semibold tracking-tight">Platform overview</h1>
+    <div>
+      <h1 className="font-display text-3xl font-semibold tracking-tight">Platform overview</h1>
       <p className="mt-1 text-sm text-muted-foreground">
         Read-only. Counts only — no personal data.
       </p>
@@ -66,6 +56,6 @@ export default async function AdminPage() {
           <li className="px-5 py-3 text-sm text-ink-soft">Nothing yet.</li>
         )}
       </ul>
-    </main>
+    </div>
   );
 }

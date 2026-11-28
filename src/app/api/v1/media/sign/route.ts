@@ -3,6 +3,7 @@ import { z } from "zod";
 import { AppError } from "@/lib/action-result";
 import { requireUser } from "@/server/auth/session";
 import { assertSameOrigin, errorResponse } from "@/server/http/guards";
+import { actingForInvitation } from "@/server/services/admin-acting";
 import { signUpload } from "@/server/services/media";
 
 const Body = z.object({
@@ -19,7 +20,9 @@ export async function POST(req: Request) {
     const user = await requireUser();
     const parsed = Body.safeParse(await req.json().catch(() => null));
     if (!parsed.success) throw new AppError("VALIDATION");
-    const ticket = await signUpload({ userId: user.id }, parsed.data);
+    // Owners sign for themselves; admins with invitations.edit sign as the owner (docs/19 §4.2).
+    const acting = await actingForInvitation({ userId: user.id }, parsed.data.invitationId);
+    const ticket = await signUpload(acting.ctx, parsed.data);
     return NextResponse.json(ticket, { headers: { "Cache-Control": "no-store" } });
   } catch (e) {
     return errorResponse(e);

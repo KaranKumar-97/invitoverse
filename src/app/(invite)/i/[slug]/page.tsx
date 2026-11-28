@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getMusicLibrary } from "@/server/services/music";
 import { notFound } from "next/navigation";
 import { coupleTitle } from "@/lib/invitation/couple";
 import { formatLongDate } from "@/lib/invitation/dates";
@@ -49,6 +50,8 @@ export default async function PublicInvitationPage({ params }: { params: Promise
     mode: "PUBLIC",
     key: `inv:${inv.slug}:v${inv.publishedVersion}`,
     links: { beacon: { slug: inv.slug }, icsBase: `/api/v1/ics/${inv.slug}` },
+
+    library: await getMusicLibrary(),
   });
   const Template = templateComponents[inv.templateSlug];
   return <Template data={data} />;

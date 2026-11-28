@@ -32,7 +32,7 @@ Rules:
 - Never accept `ownerId` from the client. Never query by `id` alone in an owner context.
 - Guests, media and share actions check ownership via the parent invitation (`where: { id, invitation: { ownerId } }`).
 - `/dashboard/**` and `/preview/**` gated in middleware (cheap redirect) **and** in layouts/pages/actions (real check — middleware is not a security boundary on its own).
-- Admin-only operations check `role === "ADMIN"`.
+- Admin operations check the caller's permission (`assertPermission(ctx, key)` / `assertSuperadmin(ctx)` in `src/server/services/admin-access.ts`; pages use `requireAdminPage`). Superadmins pass every check; Admins get the catalogue defaults in `src/lib/admin/permissions.ts` plus any overrides. Failures return NOT_FOUND. Every admin write is recorded in `AdminAuditLog` in the same transaction (docs/19).
 - Authz tests for every service function: owner A cannot read/modify owner B's resources.
 
 ## 3. Public data exposure

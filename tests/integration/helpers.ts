@@ -2,7 +2,7 @@ import { prisma } from "@/server/db/prisma";
 
 export async function resetDb() {
   await prisma.$executeRawUnsafe(
-    'TRUNCATE "RevokedGuestToken", "Guest", "MediaAsset", "Invitation", "Entitlement", "Session", "Account", "User" CASCADE',
+    'TRUNCATE "TemplateAssetOverride", "InvitationDailyStat", "MusicTrack", "AdminAuditLog", "AdminPermission", "RevokedGuestToken", "Guest", "MediaAsset", "Invitation", "Entitlement", "Session", "Account", "User" CASCADE',
   );
 }
 

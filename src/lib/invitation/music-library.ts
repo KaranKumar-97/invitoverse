@@ -8,6 +8,10 @@ export type LibraryTrack = {
   mood: string;
   src: string;
   durationSec: number;
+  /** Shown in the editor's picker (false = hidden or retired; existing invitations still play it). */
+  active?: boolean;
+  /** Retired: invitations that picked this track play the replacement instead. */
+  replacedBy?: string | null;
 };
 
 export const MUSIC_LIBRARY: readonly LibraryTrack[] = [
@@ -78,12 +82,33 @@ const RETIRED_TRACKS: Readonly<Record<string, string>> = {
   "ivory-waltz": "jashn-e-bahara",
 };
 
-/** The current id for a stored track id (follows retired ids to their replacement). */
-export function currentTrackId(id: string): string {
-  return RETIRED_TRACKS[id] ?? id;
+/**
+ * The current id for a stored track id: follows a retired track to its replacement (admin
+ * `replacedBy`, then the built-in map). `library` is the managed list from the database
+ * (src/server/services/music.ts); the bundled list is the fallback.
+ */
+export function currentTrackId(
+  id: string,
+  library: readonly LibraryTrack[] = MUSIC_LIBRARY,
+): string {
+  let current = RETIRED_TRACKS[id] ?? id;
+  for (let hops = 0; hops < 5; hops++) {
+    const next = library.find((t) => t.id === current)?.replacedBy;
+    if (!next) break;
+    current = next;
+  }
+  return current;
 }
 
-export function findTrack(id: string): LibraryTrack | undefined {
-  const current = currentTrackId(id);
-  return MUSIC_LIBRARY.find((t) => t.id === current);
+export function findTrack(
+  id: string,
+  library: readonly LibraryTrack[] = MUSIC_LIBRARY,
+): LibraryTrack | undefined {
+  const current = currentTrackId(id, library);
+  return library.find((t) => t.id === current) ?? MUSIC_LIBRARY.find((t) => t.id === current);
+}
+
+/** Tracks owners can pick, in library order. */
+export function pickableTracks(library: readonly LibraryTrack[] = MUSIC_LIBRARY) {
+  return library.filter((t) => t.active !== false && !t.replacedBy);
 }

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { getVisibleCatalogue } from "@/server/services/catalogue";
 import { Check, ChevronRight, Sparkles, Wand2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { JsonLd } from "@/components/marketing/JsonLd";
@@ -8,13 +9,7 @@ import { TemplateCard } from "@/components/marketing/TemplateCard";
 import { TemplatePreviewer } from "@/components/marketing/TemplatePreviewer";
 import { TrackedLink } from "@/components/marketing/TrackedLink";
 import { SECTION_LABELS } from "@/lib/invitation/section-labels";
-import {
-  CATEGORIES,
-  ENVELOPE_STYLE,
-  REVEAL_STYLE,
-  relatedTemplates,
-  templateMedia,
-} from "@/lib/marketing/catalogue";
+import { CATEGORIES, ENVELOPE_STYLE, REVEAL_STYLE, templateMedia } from "@/lib/marketing/catalogue";
 import { SITE } from "@/lib/marketing/site";
 import { getManifest, TEMPLATE_SLUGS } from "@/templates/registry";
 
@@ -49,9 +44,12 @@ export default async function TemplateDetailPage({ params }: { params: Promise<P
   const { slug } = await params;
   const m = getManifest(slug);
   if (!m) notFound();
+  // Hidden or retired in /admin/templates → not listed publicly.
+  const visible = await getVisibleCatalogue();
+  if (!visible.some((t) => t.slug === m.slug)) notFound();
   const media = templateMedia(m.slug);
   const category = CATEGORIES.find((c) => c.id === m.category);
-  const related = relatedTemplates(m.slug);
+  const related = visible.filter((t) => t.slug !== m.slug).slice(0, 3);
 
   return (
     <>

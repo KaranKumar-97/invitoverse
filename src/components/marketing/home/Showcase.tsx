@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { CATALOGUE } from "@/lib/marketing/catalogue";
 import { TemplateGrid } from "../TemplateGrid";
 import { SectionHeading } from "./SectionHeading";
+import { getVisibleCatalogue } from "@/server/services/catalogue";
 
-export function Showcase() {
+export async function Showcase() {
+  const items = await getVisibleCatalogue();
   return (
     <section id="designs" className="mk-auto-hide scroll-mt-20 py-20 sm:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -17,7 +18,7 @@ export function Showcase() {
             View all designs <ArrowRight className="size-4" />
           </Link>
         </div>
-        <TemplateGrid items={CATALOGUE} className="mt-8" />
+        <TemplateGrid items={items} className="mt-8" />
       </div>
     </section>
   );

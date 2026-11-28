@@ -277,6 +277,14 @@ export async function createInvitation(
     ...defaultDesign(manifest),
     ...(demo.design as Partial<DesignConfig>),
   };
+  // An admin may set a different default song for the template (docs/19 §4.6).
+  const defaultTrack = await prisma.template.findUnique({
+    where: { slug: input.templateSlug },
+    select: { defaultTrackId: true },
+  });
+  if (defaultTrack?.defaultTrackId && content.media.music?.type !== "UPLOAD") {
+    content.media.music = { type: "LIBRARY", trackId: defaultTrack.defaultTrackId, startAtSec: 0 };
+  }
   const [first, second] =
     input.order === "GROOM_FIRST"
       ? [input.groomName, input.brideName]

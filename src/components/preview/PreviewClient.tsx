@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import type { LibraryTrack } from "@/lib/invitation/music-library";
 import { resolveRenderable, type RenderableInvitation } from "@/lib/invitation/resolve";
 import type { DesignConfig, DraftContent, SectionKey } from "@/lib/invitation/schema";
 import { readEditorMessage, wrap, type PreviewToEditor } from "@/lib/preview/messages";
@@ -16,11 +17,14 @@ export function PreviewClient({
   invitationKey,
   initialContent,
   initialDesign,
+  library,
 }: {
   templateSlug: TemplateSlug;
   invitationKey: string;
   initialContent: DraftContent;
   initialDesign: DesignConfig;
+  /** The managed music library (server-provided). */
+  library?: readonly LibraryTrack[];
 }) {
   const manifest = templateManifests[templateSlug];
   const Template = templateComponents[templateSlug];
@@ -37,6 +41,7 @@ export function PreviewClient({
         design: draft.design,
         mode: "PREVIEW",
         key: invitationKey,
+        library,
       });
       lastGood.current = resolved;
       return resolved;
@@ -44,7 +49,7 @@ export function PreviewClient({
       post({ type: "preview:error", message: e instanceof Error ? e.message : "Preview failed" });
       return lastGood.current;
     }
-  }, [manifest, draft, invitationKey]);
+  }, [manifest, draft, invitationKey, library]);
 
   useEffect(() => {
     const onMessage = (e: MessageEvent) => {

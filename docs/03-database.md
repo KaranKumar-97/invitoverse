@@ -163,7 +163,12 @@ model User {
   entitlements  Entitlement[]
 }
 
-enum Role { USER ADMIN }
+enum Role { USER ADMIN SUPERADMIN }
+
+// Admin panel (docs/19): AdminPermission (userId + key → allowed, overrides catalogue defaults),
+// AdminAuditLog (append-only record of every admin write), MusicTrack (music library),
+// TemplateAssetOverride (replaced template art), InvitationDailyStat (opens per day);
+// User.suspendedAt, Template.retiredAt, Template.defaultTrackId. See prisma/schema.prisma.
 
 model Account {
   id                String  @id @default(cuid())

@@ -2,7 +2,9 @@
  * Painted scene art for Mandir (paths + natural sizes, so layouts can reserve space).
  * PLACEHOLDER until confirmed project-owned — see CREDITS.md.
  */
-const BASE = "/templates/mandir/art";
+// Served through /t-art so admins can replace art from the portal (docs/19 §4.6); the files live
+// in /public/templates/mandir/art/.
+const BASE = "/t-art/mandir";
 
 export type ArtImage = { src: string; w: number; h: number };
 

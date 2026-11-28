@@ -91,10 +91,11 @@ Events are scrubbed before sending (guest tokens, emails, phone numbers) — `sr
 3. Deploy. Then Settings → Domains → add `yourdomain` (and `www` → redirect). HTTPS is automatic.
 4. Settings → **Cron Jobs**: confirm both jobs from `vercel.json` are listed
    (03:00 and 03:30 IST).
-5. To make yourself an admin (for `/admin`), run once against production:
+5. To make yourself the first **Superadmin** (for `/admin`), sign in once, then run once against
+   production. After that, add and manage other admins from `/admin/admins` (docs/19).
 
 ```bash
-psql "$DATABASE_URL_UNPOOLED" -c "UPDATE \"User\" SET role='ADMIN' WHERE email='you@example.com'"
+psql "$DATABASE_URL_UNPOOLED" -c "UPDATE \"User\" SET role='SUPERADMIN' WHERE email='you@example.com'"
 ```
 
 ## 8. CSP rollout

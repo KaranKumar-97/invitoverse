@@ -3,7 +3,9 @@
  * PLACEHOLDER: the files in /public/templates/meenakshi/art/ are reference art from a third-party
  * site. Replace them with project-owned art (same names, similar proportions). See CREDITS.md.
  */
-const BASE = "/templates/meenakshi/art";
+// Served through /t-art so admins can replace art from the portal (docs/19 §4.6); the files live
+// in /public/templates/meenakshi/art/.
+const BASE = "/t-art/meenakshi";
 
 export type ArtImage = { src: string; w: number; h: number };
 

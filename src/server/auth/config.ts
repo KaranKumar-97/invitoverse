@@ -54,8 +54,9 @@ export const authConfig = {
   },
   callbacks: {
     async signIn({ user }) {
-      // Soft-deleted accounts cannot sign in again.
+      // Soft-deleted and suspended accounts cannot sign in.
       if (user && "deletedAt" in user && user.deletedAt) return false;
+      if (user && "suspendedAt" in user && user.suspendedAt) return false;
       return true;
     },
     async session({ session, user }) {

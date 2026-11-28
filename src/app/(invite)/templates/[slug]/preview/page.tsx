@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getMusicLibrary } from "@/server/services/music";
 import { notFound } from "next/navigation";
 import { defaultDesign } from "@/lib/invitation/defaults";
 import { IntensitySchema } from "@/lib/invitation/schema";
@@ -68,6 +69,7 @@ export default async function TemplatePreviewPage({
     mode: "DEMO",
     key: `demo:${slug}:${guest ? "guest" : "public"}`,
     guest,
+    library: await getMusicLibrary(),
   });
   const Template = templateComponents[slug];
   const embed = search.embed === "1";

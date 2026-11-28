@@ -10,9 +10,9 @@ const launchAllFree = () => process.env.LAUNCH_ALL_FREE !== "false";
 export async function canUseTemplate(userId: string, templateSlug: string): Promise<boolean> {
   const t = await prisma.template.findUnique({
     where: { slug: templateSlug },
-    select: { isActive: true, tier: true },
+    select: { isActive: true, retiredAt: true, tier: true },
   });
-  if (!t?.isActive) return false;
+  if (!t?.isActive || t.retiredAt) return false;
   if (t.tier === "FREE" || launchAllFree()) return true;
   const ent = await prisma.entitlement.findFirst({
     where: {
