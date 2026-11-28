@@ -163,6 +163,31 @@ Art is placeholder until rights are confirmed (`src/templates/kashi/CREDITS.md`)
 | Options | `scrollMotion`, `petals`, `scratchDate`, `galleryStyle` (arches / grid); background "Plain" swaps murals for flat cards |
 | Desktop | Centred 480px column on a soft blurred sky |
 
+## 5d. Deepotsav (built 2026-11-28)
+
+**Identity:** A night-time temple on a still river, lit for the wedding — navy and gold, photographic
+scene art, fireworks and diyas drawn in code. Reference: `design-references/Light mandir/` (local only).
+Art is placeholder until rights are confirmed (`src/templates/deepotsav/CREDITS.md`).
+
+| Aspect | Spec |
+|---|---|
+| Palettes | Diwali Night (default) · Temple Maroon · Peacock. Text on the night photo uses fixed scene colours |
+| Fonts | Pinyon Script / Cormorant Garamond · Cinzel / EB Garamond / Pinyon Script |
+| Envelope | The temple and ghats at night with every lamp unlit, still until tapped; "You're invited to a wedding in {city}" (or the guest's name) and "Open Invitation · Tap to light the diya" |
+| Opening | Tap → the floating diya flares → the lighting film plays (lamps catch along the ghats, then the temple lights from its base to the shikhara), sped up to fit the intensity → fireworks over the temple → "Welcome to the wedding of" and the names write in letter by letter → the hero shows the same lit frame and names. No film support → the lit frame crossfades in. Reduced motion → 300ms crossfade |
+| Hero | The lit temple with the names in the sky; star twinkle and light shivering on the water; ambient fireworks (`fireworks`); with `scrollMotion` the temple sinks while the names rise and fade. Then "The Date": day / month / year on three gold scratch tiles (`scratchDate`) |
+| Greeting | Deity in a carved gold arch (`deity`: Ganesha / none), invocation, monogram, guest greeting, welcome |
+| Couple | Formal block in a double gold frame: each full name, parents, short bio, "with", date and city; couple photos in arched frames when present |
+| Message | "Our story" — the invitation message, with three diyas |
+| Gallery | "Us, so far" — arched swipe cards |
+| Events | "The celebrations" — a gold timeline; each function alternates art (arched) and day, time, venue, notes, dress code, directions and calendar; a diya on the line |
+| Countdown | "The celebration begins" — gold numerals, then a row of nine diyas lighting one by one |
+| Families | "With the blessings of" (grandparents) and "Eager to see you" (the families) |
+| Footer | "Getting there" (main ceremony venue + Google Maps), names, closing line, monogram, the lit temple front with occasional fireworks |
+| Options | `fireworks`, `scrollMotion`, `scratchDate`, `deity`; background "Plain" turns off the gold jaali |
+| Desktop | Centred 480px column on a blurred, dimmed copy of the lit temple |
+| Not included | RSVP form, song card (music uses the usual toggle) — MVP scope |
+
 ---
 
 ## 6. Envelope component contract

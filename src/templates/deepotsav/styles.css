@@ -1,0 +1,315 @@
+/* Deepotsav — scoped to the template root. Animations use transform/opacity only. */
+[data-template="deepotsav"] {
+  --dp-col-w: min(100vw, 480px);
+  --dp-line: color-mix(in srgb, var(--c-accent) 55%, transparent);
+  --dp-gold-1: #f6dfa4;
+  --dp-gold-2: #c9963e;
+  /* Fixed scene colours: text on the night photo never changes with the palette. */
+  --dp-night-ink: #fff4da;
+}
+[data-template="deepotsav"] .dp-col {
+  width: var(--dp-col-w);
+}
+[data-template="deepotsav"] .dp-gold {
+  color: var(--c-accent);
+}
+[data-template="deepotsav"] .dp-eyebrow {
+  font-family: var(--f-heading);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--c-accent);
+}
+[data-template="deepotsav"] .dp-on-night {
+  color: var(--dp-night-ink);
+  text-shadow:
+    0 2px 10px rgba(5, 10, 30, 0.75),
+    0 0 1px rgba(5, 10, 30, 0.6);
+}
+[data-template="deepotsav"] .dp-name {
+  color: #ffe7b0;
+  text-shadow:
+    0 0 18px rgba(255, 190, 90, 0.45),
+    0 2px 12px rgba(5, 10, 30, 0.8);
+}
+
+/* Gold jaali pattern behind the sections (fine diagonal lattice + soft glow from the top). */
+[data-template="deepotsav"] .dp-jaali {
+  background-image:
+    radial-gradient(
+      circle at 50% 0%,
+      color-mix(in srgb, var(--c-accent) 12%, transparent),
+      transparent 55%
+    ),
+    repeating-linear-gradient(
+      45deg,
+      color-mix(in srgb, var(--c-accent) 7%, transparent) 0 1px,
+      transparent 1px 26px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      color-mix(in srgb, var(--c-accent) 7%, transparent) 0 1px,
+      transparent 1px 26px
+    );
+  background-size:
+    100% 900px,
+    auto,
+    auto;
+  background-repeat: no-repeat, repeat, repeat;
+}
+
+/* ── Cover + hero scene ── */
+/* Darkens the top of the night sky so the names read over the lit temple. */
+[data-template="deepotsav"] .dp-sky-dim {
+  background: linear-gradient(
+    180deg,
+    rgba(8, 13, 38, 0.6) 0%,
+    rgba(8, 13, 38, 0.2) 34%,
+    transparent 50%
+  );
+}
+/* A few extra twinkling stars over the photo's sky. */
+[data-template="deepotsav"] .dp-stars {
+  pointer-events: none;
+  background-image:
+    radial-gradient(1.4px 1.4px at 12% 18%, #fff, transparent),
+    radial-gradient(1.2px 1.2px at 78% 10%, #fff, transparent),
+    radial-gradient(1.6px 1.6px at 64% 26%, #fff8e0, transparent),
+    radial-gradient(1.1px 1.1px at 30% 34%, #fff, transparent),
+    radial-gradient(1.3px 1.3px at 88% 38%, #fff, transparent),
+    radial-gradient(1.2px 1.2px at 44% 8%, #fff, transparent);
+  animation: dp-twinkle 4.5s ease-in-out infinite alternate;
+}
+@keyframes dp-twinkle {
+  from {
+    opacity: 0.25;
+  }
+  to {
+    opacity: 1;
+  }
+}
+/* Light shivering on the water under the temple. */
+[data-template="deepotsav"] .dp-shimmer {
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    180deg,
+    rgba(255, 210, 140, 0.1) 0 2px,
+    transparent 2px 9px
+  );
+  mix-blend-mode: screen;
+  animation: dp-ripple 3.2s ease-in-out infinite alternate;
+}
+@keyframes dp-ripple {
+  from {
+    opacity: 0.2;
+    transform: translateY(0) scaleY(1);
+  }
+  to {
+    opacity: 0.75;
+    transform: translateY(4px) scaleY(1.04);
+  }
+}
+/* The floating diya catching: a warm glow centred on its bowl. */
+[data-template="deepotsav"] .dp-flare {
+  width: 120px;
+  height: 120px;
+  margin: -72px 0 0 -60px;
+  border-radius: 9999px;
+  background: radial-gradient(
+    circle,
+    rgba(255, 246, 208, 0.95) 0 6%,
+    rgba(255, 190, 90, 0.6) 16%,
+    rgba(255, 140, 40, 0.18) 42%,
+    transparent 68%
+  );
+  mix-blend-mode: screen;
+  transform-origin: 50% 60%;
+}
+
+/* Names write themselves in on the cover (data-on); elsewhere they are simply there. */
+[data-template="deepotsav"] [data-writing] .dp-letter,
+[data-template="deepotsav"] [data-writing] .dp-fade {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(0.3em);
+}
+[data-template="deepotsav"] [data-writing] .dp-fade {
+  display: block;
+}
+[data-template="deepotsav"] [data-writing][data-on] .dp-letter,
+[data-template="deepotsav"] [data-writing][data-on] .dp-fade {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity calc(0.55s * var(--dp-f, 1)) ease-out,
+    transform calc(0.7s * var(--dp-f, 1)) cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: calc((var(--i, var(--d, 0)) * 55ms + 200ms) * var(--dp-f, 1));
+}
+[data-template="deepotsav"] [data-writing][data-on] .dp-names > .dp-fade:first-child {
+  transition-delay: 0ms;
+}
+
+/* ── Date tiles ── */
+[data-template="deepotsav"] .dp-tile {
+  border-radius: 14px;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--c-surface) 92%, #fff 8%),
+    var(--c-surface)
+  );
+  box-shadow:
+    inset 0 0 0 1px var(--dp-line),
+    0 10px 24px -12px rgba(0, 0, 0, 0.6);
+}
+[data-template="deepotsav"] .dp-ink {
+  color: var(--c-text);
+}
+
+/* ── Carved gold arch around the deity ── */
+[data-template="deepotsav"] .dp-arch {
+  padding: 7px;
+  border-radius: 999px 999px 18px 18px;
+  background: linear-gradient(140deg, var(--dp-gold-1), var(--dp-gold-2) 40%, #f3d690 60%, #9c6f2c);
+  box-shadow: 0 20px 40px -18px rgba(0, 0, 0, 0.7);
+}
+[data-template="deepotsav"] .dp-arch-inner {
+  border-radius: 999px 999px 12px 12px;
+  background:
+    radial-gradient(circle at 50% 58%, rgba(255, 196, 100, 0.38), transparent 60%),
+    linear-gradient(180deg, #121c44, #0b1230);
+  box-shadow: inset 0 0 0 1.5px rgba(246, 223, 164, 0.55);
+}
+[data-template="deepotsav"] .dp-deity {
+  filter: drop-shadow(0 0 18px rgba(255, 190, 90, 0.45));
+  animation: dp-glow 4s ease-in-out infinite alternate;
+}
+@keyframes dp-glow {
+  from {
+    opacity: 0.9;
+    transform: scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1.02);
+  }
+}
+
+/* Double gold frame around a block (couple, film). */
+[data-template="deepotsav"] .dp-frame {
+  position: relative;
+  border: 1px solid var(--dp-line);
+  border-radius: 6px;
+  outline: 1px solid color-mix(in srgb, var(--c-accent) 30%, transparent);
+  outline-offset: 5px;
+  background: color-mix(in srgb, var(--c-surface) 55%, transparent);
+}
+
+/* Arched photo frames (gallery cards, event art, couple photos). */
+[data-template="deepotsav"] .dp-arch-photo {
+  overflow: hidden;
+  border-radius: 999px 999px 14px 14px;
+  border: 1.5px solid var(--c-accent);
+  box-shadow:
+    0 0 0 4px color-mix(in srgb, var(--c-bg) 100%, transparent),
+    0 0 0 5px var(--dp-line),
+    0 18px 30px -16px rgba(0, 0, 0, 0.7);
+  background: var(--c-surface);
+}
+
+/* ── Clay diya with a flickering flame ── */
+[data-template="deepotsav"] .dp-diya {
+  position: relative;
+  display: inline-block;
+  width: calc(18px * var(--s, 1));
+  height: calc(7px * var(--s, 1));
+  border-radius: 0 0 10px 10px;
+  background: linear-gradient(180deg, #c9883f, #7a4a1e);
+  box-shadow: 0 -8px 18px rgba(255, 176, 70, 0.45);
+}
+[data-template="deepotsav"] .dp-diya > i {
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  width: calc(7px * var(--s, 1));
+  height: calc(12px * var(--s, 1));
+  margin-left: calc(-3.5px * var(--s, 1));
+  border-radius: 50% 50% 45% 45% / 65% 65% 35% 35%;
+  background: radial-gradient(circle at 50% 72%, #fff6d0, #ffc44d 50%, #ff7a1a);
+  transform-origin: 50% 100%;
+  animation:
+    dp-catch 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) var(--delay, 0ms) both,
+    dp-flicker 1.7s ease-in-out calc(var(--delay, 0ms) + 600ms) infinite;
+}
+@keyframes dp-catch {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+@keyframes dp-flicker {
+  0%,
+  100% {
+    transform: scale(1, 1) rotate(0deg);
+  }
+  35% {
+    transform: scale(0.92, 1.08) rotate(2deg);
+  }
+  70% {
+    transform: scale(1.04, 0.95) rotate(-1.5deg);
+  }
+}
+
+/* The events timeline's gold spine. */
+[data-template="deepotsav"] .dp-timeline::before {
+  content: "";
+  position: absolute;
+  top: 1.5rem;
+  bottom: 0.5rem;
+  left: 50%;
+  width: 1px;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    var(--dp-line) 6%,
+    var(--dp-line) 94%,
+    transparent
+  );
+}
+
+/* Calendar / map links inside the timeline: understated gold text links. */
+[data-template="deepotsav"] .dp-link {
+  min-height: 2.25rem;
+  padding: 0;
+  background: none;
+  border: 0;
+  color: var(--c-accent);
+  font-size: 0.85rem;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+[data-template="deepotsav"] .dp-button {
+  border-radius: 9999px;
+  border: 1px solid var(--c-accent);
+  background: linear-gradient(180deg, var(--dp-gold-1), var(--dp-gold-2));
+  color: #2a1a06;
+  font-family: var(--f-heading);
+  font-weight: 600;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-template="deepotsav"] .dp-stars,
+  [data-template="deepotsav"] .dp-shimmer,
+  [data-template="deepotsav"] .dp-deity,
+  [data-template="deepotsav"] .dp-diya > i {
+    animation: none;
+  }
+  [data-template="deepotsav"] [data-writing] .dp-letter,
+  [data-template="deepotsav"] [data-writing] .dp-fade {
+    transition: none;
+  }
+}

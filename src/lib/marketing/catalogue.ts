@@ -77,6 +77,7 @@ export const ENVELOPE_STYLE: Record<string, string> = {
   "lamp-lighting": "A diya on a brass plate is lit; rings of light open the invitation",
   "temple-doors": "Carved temple doors swing open onto a mandir at sunset",
   "ghat-arch": "Step through a carved stone arch onto the ghats of Varanasi",
+  "light-the-diya": "Light one diya and a temple on the river lights up, with fireworks",
 };
 export const REVEAL_STYLE: Record<string, string> = {
   "gilded-rise": "Sections rise with a gold rule drawing in",

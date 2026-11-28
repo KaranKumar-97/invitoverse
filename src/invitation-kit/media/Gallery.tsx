@@ -20,12 +20,15 @@ export function Gallery({
   className,
   itemClassName,
   imageClassName,
+  captionClassName,
 }: {
   images: MediaRef[];
   variant?: "masonry" | "grid" | "editorial" | "carousel";
   className?: string;
   itemClassName?: string;
   imageClassName?: string;
+  /** Carousel only: class for the caption under each photo (default: dark ink for light cards). */
+  captionClassName?: string;
 }) {
   const [open, setOpen] = useState<number | null>(null);
   if (images.length === 0) return null;
@@ -33,7 +36,12 @@ export function Gallery({
   if (variant === "carousel") {
     return (
       <>
-        <Carousel images={images} onOpen={setOpen} cardClassName={itemClassName} />
+        <Carousel
+          images={images}
+          onOpen={setOpen}
+          cardClassName={itemClassName}
+          captionClassName={captionClassName}
+        />
         {open !== null && (
           <LightboxView images={images} index={open} onClose={() => setOpen(null)} />
         )}

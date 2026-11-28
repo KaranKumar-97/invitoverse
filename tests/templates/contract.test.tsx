@@ -23,6 +23,7 @@ import Deepam from "@/templates/deepam";
 import Meenakshi from "@/templates/meenakshi";
 import Mandir from "@/templates/mandir";
 import Kashi from "@/templates/kashi";
+import Deepotsav from "@/templates/deepotsav";
 import Starter from "@/templates/_starter";
 import { starterManifest } from "@/templates/_starter/manifest";
 import { starterDemo } from "@/templates/_starter/demo";
@@ -63,6 +64,11 @@ const CASES: Case[] = [
     manifest: templateManifests.kashi,
     demo: templateDemos.kashi,
     Component: Kashi,
+  },
+  {
+    manifest: templateManifests.deepotsav,
+    demo: templateDemos.deepotsav,
+    Component: Deepotsav,
   },
   { manifest: starterManifest, demo: starterDemo, Component: Starter },
 ];
