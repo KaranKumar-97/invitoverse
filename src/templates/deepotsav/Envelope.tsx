@@ -173,38 +173,30 @@ export function DeepotsavEnvelope({
               </p>
             )
           )}
-          <div className="mt-auto mb-[16dvh] flex flex-col items-center">
-            <div className="relative">
-              <span
-                data-ambient
-                aria-hidden="true"
-                className="absolute -inset-1 rounded-full border border-[#F3DC9C]/70"
-                style={{ animation: "vs-pulse-ring 2.4s ease-out infinite" }}
-              />
-              <button
-                type="button"
-                onClick={open}
-                disabled={busy}
-                className="relative overflow-hidden rounded-full border border-[#F3DC9C]/60 px-9 py-3.5 text-[0.78rem] tracking-[0.26em] text-[#FFF4DA] uppercase backdrop-blur-sm"
-                style={{ fontFamily: "var(--f-heading)", background: "rgba(14,22,52,0.55)" }}
-              >
-                <span
-                  data-ambient
-                  aria-hidden="true"
-                  className="absolute inset-y-0 left-0 w-1/3 bg-white/15"
-                  style={{ animation: "vs-shimmer 3.4s ease-in-out infinite" }}
-                />
-                <span className="relative">Open Invitation</span>
-              </button>
-            </div>
-            <p
-              className="dp-on-night mt-3 text-[1.05rem] italic"
-              style={{ fontFamily: "var(--f-heading)" }}
-            >
-              Tap to light the diya
-            </p>
-          </div>
+          <p
+            aria-hidden="true"
+            className="dp-on-night dp-beckon-text mt-auto mb-[15dvh] text-[1.35rem] italic"
+            style={{ fontFamily: "var(--f-heading)" }}
+          >
+            Tap to light the diya
+          </p>
         </div>
+        {/* A soft glow pulses round the floating diya, inviting the tap. */}
+        <span
+          data-ui
+          data-ambient
+          aria-hidden="true"
+          className="dp-beckon pointer-events-none absolute"
+          style={{ left: `${FLOATING_DIYA.left}%`, top: `${FLOATING_DIYA.top}%` }}
+        />
+        {/* No button chrome: the whole cover is the tap target. */}
+        <button
+          type="button"
+          onClick={open}
+          disabled={busy}
+          aria-label="Tap to light the diya · Open invitation"
+          className="dp-cover-tap absolute inset-0 cursor-pointer"
+        />
       </div>
     </div>
   );

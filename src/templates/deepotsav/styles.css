@@ -127,6 +127,48 @@
   transform-origin: 50% 60%;
 }
 
+/* Cover: the glow beckoning at the floating diya, the breathing hint, and the full-cover tap. */
+[data-template="deepotsav"] .dp-beckon {
+  width: 84px;
+  height: 84px;
+  margin: -56px 0 0 -42px;
+  border-radius: 9999px;
+  background: radial-gradient(
+    circle,
+    rgba(255, 200, 110, 0.55),
+    rgba(255, 170, 70, 0.15) 45%,
+    transparent 70%
+  );
+  animation: dp-beckon 2.6s ease-in-out infinite;
+}
+@keyframes dp-beckon {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
+[data-template="deepotsav"] .dp-beckon-text {
+  animation: dp-breathe 3s ease-in-out infinite;
+}
+@keyframes dp-breathe {
+  0%,
+  100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+[data-template="deepotsav"] .dp-cover-tap:focus-visible {
+  outline: 2px solid #f3dc9c;
+  outline-offset: -6px;
+}
+
 /* Names write themselves in on the cover (data-on); elsewhere they are simply there. */
 [data-template="deepotsav"] [data-writing] .dp-letter,
 [data-template="deepotsav"] [data-writing] .dp-fade {
@@ -302,6 +344,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  [data-template="deepotsav"] .dp-beckon,
+  [data-template="deepotsav"] .dp-beckon-text,
   [data-template="deepotsav"] .dp-stars,
   [data-template="deepotsav"] .dp-shimmer,
   [data-template="deepotsav"] .dp-deity,

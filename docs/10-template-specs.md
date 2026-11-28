@@ -173,7 +173,7 @@ Art is placeholder until rights are confirmed (`src/templates/deepotsav/CREDITS.
 |---|---|
 | Palettes | Diwali Night (default) · Temple Maroon · Peacock. Text on the night photo uses fixed scene colours |
 | Fonts | Pinyon Script / Cormorant Garamond · Cinzel / EB Garamond / Pinyon Script |
-| Envelope | The temple and ghats at night with every lamp unlit, still until tapped; "You're invited to a wedding in {city}" (or the guest's name) and "Open Invitation · Tap to light the diya" |
+| Envelope | The temple and ghats at night with every lamp unlit, still until tapped; "You're invited to a wedding in {city}" (or the guest's name) and "Tap to light the diya" with a glow pulsing at the floating diya; no button — the whole cover is the tap target |
 | Opening | Tap → the floating diya flares → the lighting film plays (lamps catch along the ghats, then the temple lights from its base to the shikhara), sped up to fit the intensity → fireworks over the temple → "Welcome to the wedding of" and the names write in letter by letter → the hero shows the same lit frame and names. No film support → the lit frame crossfades in. Reduced motion → 300ms crossfade |
 | Hero | The lit temple with the names in the sky; star twinkle and light shivering on the water; ambient fireworks (`fireworks`); with `scrollMotion` the temple sinks while the names rise and fade. Then "The Date": day / month / year on three gold scratch tiles (`scratchDate`) |
 | Greeting | Deity in a carved gold arch (`deity`: Ganesha / none), invocation, monogram, guest greeting, welcome |
